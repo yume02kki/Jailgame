@@ -6,7 +6,7 @@ static class Terminal
 
     public static void renderPlayer(Player player)
     {
-        String phrase = String.Format(INFO_PHRASE, player.getCurrentRoom(), player.getCurrentRoom()?.getName());
+        String phrase = String.Format(INFO_PHRASE, player.getCurrentRoom(), player.getCurrentRoom() + "'s loot");
         Console.WriteLine(phrase);
     }
 }

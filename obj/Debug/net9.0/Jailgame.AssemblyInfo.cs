@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Jailgame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93ea6c70585ac25ff66958c3490c66f8a542d722")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db604e981bbf2d7319379bcde116e8d973c22dd4")]
 [assembly: System.Reflection.AssemblyProductAttribute("Jailgame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Jailgame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

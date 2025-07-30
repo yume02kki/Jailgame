@@ -2,11 +2,20 @@
 
 class Room
 {
+    private Room? upRoom;
+    private Room? rightRoom;
+    private Room? downRoom;
+    private Room? leftRoom;
     private String name = "";
-    private Room? upRoom = null;
-    private Room? rightRoom = null;
-    private Room? downRoom = null;
-    private Room? leftRoom = null;
+
+    public Room(String name)
+    {
+        this.upRoom = null;
+        this.rightRoom = null;
+        this.downRoom = null;
+        this.leftRoom = null;
+        this.name = name;
+    }
 
     public Room? getRoom(Direction direction)
     {
@@ -20,14 +29,14 @@ class Room
         };
     }
 
-    public void SetRoom(Direction direction, Room? room)
+    public void linkRoom(Direction direction, Room otherRoom)
     {
         switch (direction)
         {
-            case Direction.up: this.upRoom = room; break;
-            case Direction.right: this.rightRoom = room; break;
-            case Direction.down: this.downRoom = room; break;
-            case Direction.left: this.leftRoom = room; break;
+            case Direction.up: this.upRoom = otherRoom; otherRoom.downRoom = this; break;
+            case Direction.right: this.rightRoom = otherRoom; otherRoom.leftRoom = this; break;
+            case Direction.down: this.downRoom = otherRoom; otherRoom.upRoom = this; break;
+            case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
         }
     }
 
@@ -35,10 +44,9 @@ class Room
     {
         return this.name;
     }
-
-    public void setName(String name)
+    public override string ToString()
     {
-        this.name = name;
+        return this.name;
     }
 }
 
