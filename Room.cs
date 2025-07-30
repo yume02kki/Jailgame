@@ -17,7 +17,8 @@ class Room
         this.name = name;
     }
 
-    public Room? getRoom(Direction direction)
+
+    public virtual Room? getRoom(Direction direction)
     {
         return direction switch
         {

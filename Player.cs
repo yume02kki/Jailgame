@@ -22,7 +22,7 @@ class Player
 
     public void move(Direction direction)
     {
-        if (getCurrentRoom().getRoom(direction) != null)
+        if (getCurrentRoom()!.getRoom(direction) != null)
         {
             setCurrentRoom(getCurrentRoom().getRoom(direction)!);
         }
