@@ -2,6 +2,7 @@
 
 class Room
 {
+    private String name = "";
     private Room? upRoom = null;
     private Room? rightRoom = null;
     private Room? downRoom = null;
@@ -29,4 +30,16 @@ class Room
             case Direction.left: this.leftRoom = room; break;
         }
     }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 }
+
+
