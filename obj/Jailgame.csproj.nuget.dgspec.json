@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\Jailgame\\Jailgame.csproj": {}
+    "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\source\\Jailgame\\Jailgame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\Jailgame\\Jailgame.csproj": {
+    "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\source\\Jailgame\\Jailgame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\Jailgame\\Jailgame.csproj",
+        "projectUniqueName": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\source\\Jailgame\\Jailgame.csproj",
         "projectName": "Jailgame",
-        "projectPath": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\Jailgame\\Jailgame.csproj",
+        "projectPath": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\source\\Jailgame\\Jailgame.csproj",
         "packagesPath": "C:\\Users\\ben\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\Jailgame\\obj\\",
+        "outputPath": "C:\\Users\\ben\\Desktop\\8200game\\Jailgame\\source\\Jailgame\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ben\\AppData\\Roaming\\NuGet\\NuGet.Config"
