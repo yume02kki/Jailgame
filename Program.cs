@@ -1,11 +1,12 @@
 ﻿using System;
 
-class GFG {
+class GFG
+{
 
     // Main Method
     public static void Main(String[] args)
     {
-
-        Console.WriteLine("Main Method");
+        Player player = new Player();
+        Terminal.renderPlayer(player);
     }
 }
