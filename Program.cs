@@ -6,6 +6,7 @@ class GFG
 {
     public static void Main(String[] args)
     {
+        Boolean gameOver = false;
         var rooms = new Dictionary<string, Room>
         {
             ["C4"] = new Room("C4"),
@@ -32,6 +33,9 @@ class GFG
         
         Player player = new Player(rooms["C4"]);
         
-        GameManager.render(player);
+        while (gameOver == false)
+        {
+            TerminalManager.render(player);
+        }
     }
 }

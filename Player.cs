@@ -20,4 +20,17 @@ public class Player
     {
         return inventory;
     }
+
+    private void forceMove(Direction direction)
+    {
+        currentRoom = currentRoom.getRoom(direction) ?? currentRoom;
+    }
+
+    public void requestMove(Direction direction)
+    {
+        if (MovementEnforcer.isMoveLegal(this, direction))
+        {
+            forceMove(direction);
+        }
+    }
 }
