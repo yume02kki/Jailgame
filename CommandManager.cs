@@ -1,4 +1,6 @@
-﻿namespace MazeGame;
+﻿using MazeGame.Entitys;
+
+namespace MazeGame;
 
 public static class CommandManager
 {
@@ -22,22 +24,22 @@ public static class CommandManager
         }
     }
 
-    private static void tempFunc(String[] a)
+    private static Entity strToFunc(String[] a)
     {
-        Console.WriteLine($"ran <{String.Join(", ", a)}>");
+        return God.Instance.player.currentRoom.getEntity(a[0])!;
     }
 
     static CommandManager()
     {
-        commands.Add("open", (a) => tempFunc(a));
-        commands.Add("examine", (a) => tempFunc(a));
-        commands.Add("inventory", (a) => tempFunc(a));
-        commands.Add("use", (a) => tempFunc(a));
-        commands.Add("save", (a) => tempFunc(a));
-        commands.Add("load", (a) => tempFunc(a));
-        commands.Add("up", (a) => tempFunc(a));
-        commands.Add("down", (a) => tempFunc(a));
-        commands.Add("left", (a) => tempFunc(a));
-        commands.Add("right", (a) => tempFunc(a));
+        commands.Add("open", (a) => strToFunc(a));
+        commands.Add("examine", (a) => God.Instance.examine(strToFunc(a)));
+        commands.Add("inv", (a) => God.Instance.inventory());
+        commands.Add("use", (a) => strToFunc(a));
+        commands.Add("save", (a) => strToFunc(a));
+        commands.Add("load", (a) => strToFunc(a));
+        commands.Add("up", (a) => strToFunc(a));
+        commands.Add("down", (a) => strToFunc(a));
+        commands.Add("left", (a) => strToFunc(a));
+        commands.Add("right", (a) => strToFunc(a));
     }
 }

@@ -2,7 +2,7 @@
 
 public class Player
 {
-    private List<String> inventory = new List<string>();
+    private HashSet<String> inventory = new HashSet<string>();
     private Room _currentRoom;
 
     public Player(Room room)
@@ -16,21 +16,37 @@ public class Player
         set => _currentRoom = value;
     }
 
-    public List<String> getInv()
+    public HashSet<String> getInventory()
     {
         return inventory;
     }
 
-    private void forceMove(Direction direction)
+    public void setInventory(String item)
     {
-        currentRoom = currentRoom.getRoom(direction) ?? currentRoom;
+        inventory.Add(item);
     }
-
-    public void requestMove(Direction direction)
+public void removeInventory(String item)
     {
-        if (MovementEnforcer.isMoveLegal(this, direction))
+        inventory.Remove(item);
+    }
+    public void move(Direction direction)
+    {
+        if (currentRoom.getRoom(direction) == null)
         {
-            forceMove(direction);
+            return;
+        }
+
+        Room selectedRoom = currentRoom.getRoom(direction)!;
+        if (selectedRoom is Scripted)
+        {
+            if (((Scripted)selectedRoom).onEnter())
+            {
+                currentRoom = selectedRoom;
+            }
+        }
+        else
+        {
+            currentRoom = selectedRoom;
         }
     }
 }

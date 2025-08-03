@@ -9,8 +9,7 @@ public class Room
     private Room? downRoom;
     private Room? leftRoom;
     private String name = "";
-    private List<Entity> entityList = new List<Entity>();
-
+    private Dictionary<string, Entity> entityDict = new Dictionary<string, Entity>();
     public Room(String name)
     {
         this.upRoom = null;
@@ -32,6 +31,10 @@ public class Room
         };
     }
 
+    public List<Entity> getEntityList()
+    {
+        return entityDict.Values.ToList();
+    }
     public void linkRoom(Direction direction, Room otherRoom)
     {
         switch (direction)
@@ -43,21 +46,15 @@ public class Room
         }
     }
 
-    public List<Entity> getEntityList()
-    {
-        return entityList;
-    }
-
     public void addEntity(Entity entity)
     {
-        entityList.Add(entity);
+        entityDict.TryAdd(entity.Name, entity);
     }
 
-    public void removeEntity(Entity entity)
+    public Entity? getEntity(string name)
     {
-        entityList.Remove(entity);
+        return entityDict.TryGetValue(name, out var entity) ? entity : null;
     }
-    
     public String getName()
     {
         return this.name;
@@ -66,4 +63,5 @@ public class Room
     {
         return this.name;
     }
+
 }
