@@ -13,6 +13,8 @@ public static class TerminalManager
             .Aggregate((acc, next) => acc + ", " + next):"";
         String phrase = String.Format(INFO_PHRASE, player.currentRoom, entityNames);
         Console.WriteLine(phrase);
+        
+        tui();
         commandFetch();
     }
 
@@ -35,4 +37,18 @@ public static class TerminalManager
             }
         }
     }
+
+    public static void tui()
+    {
+
+                string top =    "┌────────────┐";
+                string middle = "│ Hello TUI! │";
+                string bottom = "└────────────┘";
+
+                Console.WriteLine(top);
+                Console.WriteLine(middle);
+                Console.WriteLine(bottom);
+
+    }
+    
 }

@@ -37,7 +37,7 @@ public class God
         rooms["C4"].addEntity(new Bed("bed"));
         player = new Player(rooms["C4"]);
     }
-
+    
     public void examine(Entity ent)
     {
         if (ent is Iexamine)
@@ -45,7 +45,7 @@ public class God
             player.setInventory(((Iexamine)ent).examine());
         }
     }
-
+    
     public void inventory()
     {
         Console.WriteLine("You have: " + String.Join(", ", player.getInventory()));
