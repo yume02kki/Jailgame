@@ -4,7 +4,6 @@ public abstract class Entity : Renderable
 {
     private string _name;
     private int _x,_y;
-
     public Entity(string name, int x, int y)
     {
         _name = name;
@@ -29,7 +28,11 @@ public abstract class Entity : Renderable
         get { return _y; }
         set { _y = value; }
     }
-    
+
+    public bool collide()
+    {
+        return true;
+    }
     public override string ToString()
     {
         return this._name;

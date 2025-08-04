@@ -6,7 +6,7 @@ public class Bed : Entity , Iexamine
 {
     private string contains = "Needle";
 
-    public Bed(string name,string icon,int x,int y) : base(name,x,y)
+    public Bed(string name,int x,int y) : base(name,x,y)
     {
     }
 
@@ -19,6 +19,6 @@ public class Bed : Entity , Iexamine
     
     public override string icon()
     {
-        return "🛏";
+        return "-";
     }
 }

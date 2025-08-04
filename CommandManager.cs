@@ -31,7 +31,7 @@ public static class CommandManager
 
     static CommandManager()
     {
-        commands.Add("open", (a) => strToFunc(a));
+        commands.Add("open", (a) => God.Instance.open(strToFunc(a)));
         commands.Add("examine", (a) => God.Instance.examine(strToFunc(a)));
         commands.Add("inv", (a) => God.Instance.inventory());
         commands.Add("use", (a) => strToFunc(a));

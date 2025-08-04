@@ -80,6 +80,14 @@ public class Room
        return this.map.GetLength(0); 
     }
 
+    public int playAreaWidth()
+    {
+        return getWidth() - 1;
+    }
+    public int playAreaHeight()
+    {
+        return getHeight() - 1;
+    }
     public int getHeight()
     {
         return this.map.GetLength(1);

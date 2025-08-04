@@ -36,10 +36,12 @@ public class God
         rooms["C2"].linkRoom(Direction.up, rooms["C1"]);
         rooms["C1"].linkRoom(Direction.left, rooms["B1"]);
         rooms["B1"].linkRoom(Direction.left, rooms["A1"]);
-        rooms["C4"].addEntity(new Bed("bed","⊹",0,0));
+        rooms["C4"].addEntity(new Bed("bed",2,3));
+        rooms["C4"].addEntity(new Door("door",0,3));
+        rooms["B4"].addEntity(new Door("door",rooms["B4"].getWidth()-1,3)); //todo automatically add door on other side
 
         Room spawnRoom = rooms["C4"];
-        player = new Player(spawnRoom,spawnRoom.getWidth()-1, spawnRoom.getHeight()-1);
+        player = new Player(spawnRoom,spawnRoom.playAreaWidth()-1, spawnRoom.playAreaHeight()-1);
     }
 
     public void move(Direction direction)
@@ -51,6 +53,14 @@ public class God
         if (ent is Iexamine)
         {
             player.setInventory(((Iexamine)ent).examine());
+        }
+    }
+
+    public void open(Entity ent)
+    {
+        if (ent is Iopen)
+        {
+            ((Iopen)ent).open();
         }
     }
     

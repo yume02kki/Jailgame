@@ -1,4 +1,5 @@
-﻿using MazeGame.Entitys;
+﻿using System.Security.Cryptography;
+using MazeGame.Entitys;
 
 namespace MazeGame;
 
@@ -56,6 +57,8 @@ public class Player : Renderable
 
     public void move(Direction direction)
     {
+        int oldX = x;
+        int oldY = y;
         int[] offset = { 0, 0 };
         switch (direction)
         {
@@ -75,5 +78,21 @@ public class Player : Renderable
 
         x += offset[0];
         y += offset[1];
+        Console.WriteLine(x + " " + y);
+        
+        if (currentRoom.tryGet(x, y) is Door)
+        {
+            currentRoom = currentRoom.getRoom(direction)!;
+            if (x != oldX)
+            { //fix this lol :3
+                x = currentRoom.playAreaWidth();
+            }
+            else
+            {
+                y = currentRoom.playAreaHeight();
+            }
+
+            Console.WriteLine($"<{x},{y}>");
+        }
     }
 }

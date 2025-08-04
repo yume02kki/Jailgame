@@ -13,7 +13,7 @@ class GFG
         {
             TerminalManager.tui(god.player);
             TerminalManager.render(god.player);
-            Console.Clear();
+            //Console.Clear();
         }
     }
 }
