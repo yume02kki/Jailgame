@@ -11,7 +11,9 @@ class GFG
         God god = God.Instance;
         while (!god.gameOver)
         {
+            TerminalManager.tui(god.player);
             TerminalManager.render(god.player);
+            Console.Clear();
         }
     }
 }

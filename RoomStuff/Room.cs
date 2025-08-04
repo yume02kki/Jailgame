@@ -8,10 +8,12 @@ public class Room
     private Room? rightRoom;
     private Room? downRoom;
     private Room? leftRoom;
-    private String name = "";
+    private String name;
+    Entity[,] map;
     private Dictionary<string, Entity> entityDict = new Dictionary<string, Entity>();
-    public Room(String name)
+    public Room(String name,int width, int height)
     {
+        map = new Entity[width, height];
         this.upRoom = null;
         this.rightRoom = null;
         this.downRoom = null;
@@ -48,8 +50,12 @@ public class Room
 
     public void addEntity(Entity entity)
     {
-        entityDict.TryAdd(entity.Name, entity);
-    }
+        if (entityDict.TryAdd(entity.Name, entity))
+        {
+            map[entity.x, entity.y] = entity;
+        }
+
+}
 
     public Entity? getEntity(string name)
     {
@@ -64,4 +70,27 @@ public class Room
         return this.name;
     }
 
+    public Entity[,] Map
+    {
+        get { return this.map; }
+    }
+    
+    public int getWidth()
+    {
+       return this.map.GetLength(0); 
+    }
+
+    public int getHeight()
+    {
+        return this.map.GetLength(1);
+    }
+
+    public Entity? tryGet(int x, int y)
+    {
+        if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight())
+        {
+            return map[x, y];
+        } 
+        return null;
+    }
 }

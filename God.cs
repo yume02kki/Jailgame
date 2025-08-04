@@ -5,6 +5,8 @@ namespace MazeGame;
 
 public class God
 {
+    private const int SIZE_W = 5;
+    private const int SIZE_H = 5;
     //singleton
     private static readonly Lazy<God> _instance = new Lazy<God>(() => new God());
     public static God Instance => _instance.Value;
@@ -12,14 +14,14 @@ public class God
 
     public readonly Dictionary<string, Room> rooms = new Dictionary<string, Room>
     {
-        ["C4"] = new Room("C4"),
-        ["B4"] = new Room("B4"),
-        ["B3"] = new Room("B3"),
-        ["B2"] = new Room("B2"),
-        ["C2"] = new Room("C2"),
-        ["C1"] = new Room("C1"),
-        ["B1"] = new Room("B1"),
-        ["A1"] = new Room("A1")
+        ["C4"] = new Room("C4",SIZE_W,SIZE_H),
+        ["B4"] = new Room("B4",SIZE_W,SIZE_H),
+        ["B3"] = new Room("B3",SIZE_W,SIZE_H),
+        ["B2"] = new Room("B2",SIZE_W,SIZE_H),
+        ["C2"] = new Room("C2",SIZE_W,SIZE_H),
+        ["C1"] = new Room("C1",SIZE_W,SIZE_H),
+        ["B1"] = new Room("B1",SIZE_W,SIZE_H),
+        ["A1"] = new Room("A1",SIZE_W,SIZE_H)
     };
 
     public readonly Player player;
@@ -34,10 +36,16 @@ public class God
         rooms["C2"].linkRoom(Direction.up, rooms["C1"]);
         rooms["C1"].linkRoom(Direction.left, rooms["B1"]);
         rooms["B1"].linkRoom(Direction.left, rooms["A1"]);
-        rooms["C4"].addEntity(new Bed("bed"));
-        player = new Player(rooms["C4"]);
+        rooms["C4"].addEntity(new Bed("bed","⊹",0,0));
+
+        Room spawnRoom = rooms["C4"];
+        player = new Player(spawnRoom,spawnRoom.getWidth()-1, spawnRoom.getHeight()-1);
     }
-    
+
+    public void move(Direction direction)
+    {
+        player.move(direction);
+    }
     public void examine(Entity ent)
     {
         if (ent is Iexamine)

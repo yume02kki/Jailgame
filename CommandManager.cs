@@ -37,9 +37,9 @@ public static class CommandManager
         commands.Add("use", (a) => strToFunc(a));
         commands.Add("save", (a) => strToFunc(a));
         commands.Add("load", (a) => strToFunc(a));
-        commands.Add("up", (a) => strToFunc(a));
-        commands.Add("down", (a) => strToFunc(a));
-        commands.Add("left", (a) => strToFunc(a));
-        commands.Add("right", (a) => strToFunc(a));
+        commands.Add("up", (a) => God.Instance.move(Direction.up));
+        commands.Add("right", (a) => God.Instance.move(Direction.right));
+        commands.Add("down", (a) => God.Instance.move(Direction.down));
+        commands.Add("left", (a) => God.Instance.move(Direction.left));
     }
 }

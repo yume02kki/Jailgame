@@ -1,4 +1,5 @@
-﻿using MazeGame.Entitys;
+﻿using System.Text;
+using MazeGame.Entitys;
 
 namespace MazeGame;
 
@@ -14,7 +15,6 @@ public static class TerminalManager
         String phrase = String.Format(INFO_PHRASE, player.currentRoom, entityNames);
         Console.WriteLine(phrase);
         
-        tui();
         commandFetch();
     }
 
@@ -38,17 +38,47 @@ public static class TerminalManager
         }
     }
 
-    public static void tui()
+    public static void tui(Player player)
     {
+            Room room =  player.currentRoom;
+            int width = room.getWidth();
+            int height = room.getHeight();
 
-                string top =    "┌────────────┐";
-                string middle = "│ Hello TUI! │";
-                string bottom = "└────────────┘";
-
-                Console.WriteLine(top);
-                Console.WriteLine(middle);
-                Console.WriteLine(bottom);
-
+            for (int y = 0; y <= height; y++)
+            {
+                for (int x = 0; x <= width; x++)
+                {
+                    if (y == 0 || y == height || x == 0 || x == width)
+                    {
+                        //nightmare
+                        if (y == 0 && x == 0)
+                            Console.Write("┌");
+                        else if (y == 0 && x == width)
+                            Console.Write("┐");
+                        else if (y == height && x == 0)
+                            Console.Write("└");
+                        else if (y == height && x == width)
+                            Console.Write("┘");
+                        else if (y == 0 || y == height)
+                            Console.Write("─");
+                        else if (x == 0 || x == width)
+                            Console.Write("│");
+                    }
+                    else if (player.x == x && player.y == y)
+                    {
+                        Console.Write(player.icon());
+                   }
+                    else if (room.tryGet(x, y) != null)
+                    {
+                        Console.Write(room.tryGet(x, y)!.icon());
+                    }
+                    else
+                    {
+                        Console.Write(" ");   
+                    }
+                }
+                Console.WriteLine();
+            }
     }
     
 }

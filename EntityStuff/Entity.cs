@@ -1,21 +1,42 @@
 ﻿namespace MazeGame.Entitys;
 
-public class Entity
+public abstract class Entity : Renderable
 {
     private string _name;
+    private int _x,_y;
 
-    public Entity(string name)
+    public Entity(string name, int x, int y)
     {
-        this._name = name;
+        _name = name;
+        _x = x;
+        _y = y;
     }
 
-    public String Name 
+    public String Name
     {
         get { return _name; }
         set { _name = value; }
     }
+    
+    public int x
+    {
+     get { return _x; }
+     set { _x = value; }
+    }
+
+    public int y
+    {
+        get { return _y; }
+        set { _y = value; }
+    }
+    
     public override string ToString()
     {
         return this._name;
+    }
+
+    public virtual string icon()
+    {
+        return "?";
     }
 }
