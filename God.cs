@@ -7,6 +7,7 @@ public class God
 {
     private const int SIZE_W = 5;
     private const int SIZE_H = 5;
+
     //singleton
     private static readonly Lazy<God> _instance = new Lazy<God>(() => new God());
     public static God Instance => _instance.Value;
@@ -14,20 +15,22 @@ public class God
 
     public readonly Dictionary<string, Room> rooms = new Dictionary<string, Room>
     {
-        ["C4"] = new Room("C4",SIZE_W,SIZE_H),
-        ["B4"] = new Room("B4",SIZE_W,SIZE_H),
-        ["B3"] = new Room("B3",SIZE_W,SIZE_H),
-        ["B2"] = new Room("B2",SIZE_W,SIZE_H),
-        ["C2"] = new Room("C2",SIZE_W,SIZE_H),
-        ["C1"] = new Room("C1",SIZE_W,SIZE_H),
-        ["B1"] = new Room("B1",SIZE_W,SIZE_H),
-        ["A1"] = new Room("A1",SIZE_W,SIZE_H)
+        ["C4"] = new Room("C4", SIZE_W, SIZE_H),
+        ["B4"] = new Room("B4", SIZE_W, SIZE_H),
+        ["B3"] = new Room("B3", SIZE_W, SIZE_H),
+        ["B2"] = new Room("B2", SIZE_W, SIZE_H),
+        ["C2"] = new Room("C2", SIZE_W, SIZE_H),
+        ["C1"] = new Room("C1", SIZE_W, SIZE_H),
+        ["B1"] = new Room("B1", SIZE_W, SIZE_H),
+        ["A1"] = new Room("A1", SIZE_W, SIZE_H)
     };
 
     public readonly Player player;
 
     private God()
     {
+        rooms["C4"].addEntity(new Bed("bed", 2, 3));
+        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,true));
         rooms["C4"].linkRoom(Direction.left, rooms["B4"]);
         rooms["B4"].linkRoom(Direction.up, rooms["B3"]);
         rooms["B3"].linkRoom(Direction.up, rooms["B2"]);
@@ -36,18 +39,15 @@ public class God
         rooms["C2"].linkRoom(Direction.up, rooms["C1"]);
         rooms["C1"].linkRoom(Direction.left, rooms["B1"]);
         rooms["B1"].linkRoom(Direction.left, rooms["A1"]);
-        rooms["C4"].addEntity(new Bed("bed",2,3));
-        rooms["C4"].addEntity(new Door("door",0,3));
-        rooms["B4"].addEntity(new Door("door",rooms["B4"].getWidth()-1,3)); //todo automatically add door on other side
-
         Room spawnRoom = rooms["C4"];
-        player = new Player(spawnRoom,spawnRoom.playAreaWidth()-1, spawnRoom.playAreaHeight()-1);
+        player = new Player(spawnRoom, spawnRoom.playAreaWidth() - 1, spawnRoom.playAreaHeight() - 1);
     }
 
     public void move(Direction direction)
     {
         player.move(direction);
     }
+
     public void examine(Entity ent)
     {
         if (ent is Iexamine)
@@ -63,9 +63,22 @@ public class God
             ((Iopen)ent).open();
         }
     }
-    
+
     public void inventory()
     {
         Console.WriteLine("You have: " + String.Join(", ", player.getInventory()));
+    }
+
+    public void use(Entity ent, string item)
+    {
+        if (ent is Iuse)
+        {
+            Iuse entUsable = (Iuse)ent;
+            if (entUsable.canItemBeUsed(item) && player.getInventory().Contains(item))
+            {
+                player.removeInventory(item);
+                entUsable.use();
+            }
+        }
     }
 }

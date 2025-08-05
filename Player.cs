@@ -10,7 +10,7 @@ public class Player : Renderable
     private int _x = 0;
     private int _y = 0;
     private string _icon = "☺";
-    
+
     public Player(Room room, int x, int y)
     {
         this._currentRoom = room;
@@ -30,6 +30,12 @@ public class Player : Renderable
         set => _y = value;
     }
 
+    public bool onBorder()
+    {
+        return (currentRoom.playAreaWidth() <= x || x == 0) || (currentRoom.playAreaHeight() <= y || y == 0);
+        ;
+    }
+
     public Room currentRoom
     {
         get => _currentRoom;
@@ -39,7 +45,8 @@ public class Player : Renderable
     public string icon()
     {
         return _icon;
-}
+    }
+
     public HashSet<String> getInventory()
     {
         return inventory;
@@ -57,8 +64,6 @@ public class Player : Renderable
 
     public void move(Direction direction)
     {
-        int oldX = x;
-        int oldY = y;
         int[] offset = { 0, 0 };
         switch (direction)
         {
@@ -75,24 +80,22 @@ public class Player : Renderable
                 offset[0]++;
                 break;
         }
-
         x += offset[0];
         y += offset[1];
-        Console.WriteLine(x + " " + y);
         
-        if (currentRoom.tryGet(x, y) is Door)
+        if (currentRoom.tryGet(x, y) is Door&&!currentRoom.tryGet(x, y)!.collide())
         {
             currentRoom = currentRoom.getRoom(direction)!;
-            if (x != oldX)
-            { //fix this lol :3
-                x = currentRoom.playAreaWidth();
-            }
-            else
-            {
-                y = currentRoom.playAreaHeight();
-            }
-
-            Console.WriteLine($"<{x},{y}>");
+            x = Misc.clamp(x,currentRoom.playAreaWidth());
+            y = Misc.clamp(y,currentRoom.playAreaHeight());
         }
+        else if (onBorder())
+        {
+            x -= offset[0];
+            y -= offset[1];
+        }
+
+        Console.WriteLine($"<{x}, {y}>");
+            
     }
 }

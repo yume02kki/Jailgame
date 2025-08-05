@@ -4,7 +4,7 @@ namespace MazeGame.Entitys;
 
 public class Bed : Entity , Iexamine
 {
-    private string contains = "Needle";
+    private string contains = "needle";
 
     public Bed(string name,int x,int y) : base(name,x,y)
     {
@@ -20,5 +20,10 @@ public class Bed : Entity , Iexamine
     public override string icon()
     {
         return "-";
+    }
+
+    public override bool collide()
+    {
+        return false;
     }
 }

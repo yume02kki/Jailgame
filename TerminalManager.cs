@@ -22,7 +22,7 @@ public static class TerminalManager
         Boolean validInput = false;
         while (!validInput)
         {
-            Console.WriteLine("Available commands: open, examine, use, <direction>, save, load.");
+            Console.WriteLine("Available commands: open, examine, use, inv, save, load");
             Console.Write("\n> ");
             Action? action = CommandManager.Get(Console.ReadLine() ?? "");
             if (action != null)
@@ -32,7 +32,7 @@ public static class TerminalManager
             }
             else
             {
-                Console.WriteLine("Invalid command, try again.");
+                Console.WriteLine("Invalid command, try again");
             }
         }
     }
@@ -46,7 +46,11 @@ public static class TerminalManager
         {
             for (int x = 0; x <= width; x++)
             {
-                if (room.tryGet(x, y) != null)
+                if (player.x == x && player.y == y)
+                {
+                    Console.Write(player.icon());
+                }
+                else if (room.tryGet(x, y) != null)
                 {
                     Console.Write(room.tryGet(x, y)!.icon());
                 }
@@ -64,10 +68,6 @@ public static class TerminalManager
                     else if (y == 0 || y == height)
                         Console.Write("─");
                     else if (x == 0 || x == width) Console.Write("│");
-                }
-                else if (player.x == x && player.y == y)
-                {
-                    Console.Write(player.icon());
                 }
                 else
                 {

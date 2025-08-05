@@ -29,10 +29,7 @@ public abstract class Entity : Renderable
         set { _y = value; }
     }
 
-    public bool collide()
-    {
-        return true;
-    }
+    public abstract bool collide();
     public override string ToString()
     {
         return this._name;

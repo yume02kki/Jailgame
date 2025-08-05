@@ -45,6 +45,14 @@ public class Room
             case Direction.right: this.rightRoom = otherRoom; otherRoom.leftRoom = this; break;
             case Direction.down: this.downRoom = otherRoom; otherRoom.upRoom = this; break;
             case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
+
+        }
+        List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
+        foreach (Door door in doors)
+        {
+            int otherX = Misc.clamp(door.x, otherRoom.playAreaWidth());
+            int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
+            otherRoom.addEntity(new Door("door",otherX, otherY,Misc.mirror(direction),false,true));
         }
     }
 
@@ -57,6 +65,7 @@ public class Room
 
 }
 
+    
     public Entity? getEntity(string name)
     {
         return entityDict.TryGetValue(name, out var entity) ? entity : null;
