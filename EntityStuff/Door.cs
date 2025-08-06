@@ -1,5 +1,4 @@
 ﻿using MazeGame.CommandInterfaces;
-using Terminal.Gui;
 
 namespace MazeGame.Entitys;
 
