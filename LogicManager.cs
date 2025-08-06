@@ -3,16 +3,18 @@ using MazeGame.Entitys;
 
 namespace MazeGame;
 
-public class God
+public class LogicManager
 {
     private const int SIZE_W = 5;
     private const int SIZE_H = 5;
 
     //singleton
-    private static readonly Lazy<God> _instance = new Lazy<God>(() => new God());
-    public static God Instance => _instance.Value;
+    private static readonly Lazy<LogicManager> _instance = new Lazy<LogicManager>(() => new LogicManager());
+    public static LogicManager Instance => _instance.Value;
     public readonly bool gameOver = false;
 
+    //TODO: move to init class
+    
     public readonly Dictionary<string, Room> rooms = new Dictionary<string, Room>
     {
         ["C4"] = new Room("C4", SIZE_W, SIZE_H),
@@ -27,10 +29,10 @@ public class God
 
     public readonly Player player;
 
-    private God()
+    private LogicManager() 
     {
         rooms["C4"].addEntity(new Bed("bed", 2, 3));
-        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,true));
+        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,false));
         rooms["C4"].linkRoom(Direction.left, rooms["B4"]);
         rooms["B4"].linkRoom(Direction.up, rooms["B3"]);
         rooms["B3"].linkRoom(Direction.up, rooms["B2"]);

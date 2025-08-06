@@ -94,8 +94,5 @@ public class Player : Renderable
             x -= offset[0];
             y -= offset[1];
         }
-
-        Console.WriteLine($"<{x}, {y}>");
-            
     }
 }

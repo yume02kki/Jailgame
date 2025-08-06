@@ -8,12 +8,11 @@ class GFG
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         
-        God god = God.Instance;
-        while (!god.gameOver)
+        LogicManager logicManager = LogicManager.Instance;
+        while (!logicManager.gameOver)
         {
-            TerminalManager.tui(god.player);
-            TerminalManager.render(god.player);
-            //Console.Clear();
+            TerminalManager.tui(logicManager.player);
+            TerminalManager.render(logicManager.player);
         }
     }
 }

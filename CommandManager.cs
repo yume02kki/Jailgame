@@ -26,28 +26,28 @@ public static class CommandManager
 
     private static Entity strToEntity(String a)
     {
-        return God.Instance.player.currentRoom.getEntity(a)!;
+        return LogicManager.Instance.player.currentRoom.getEntity(a)!;
     }
 
     static CommandManager()
     {
-        commands.Add("open", (a) => God.Instance.open(strToEntity(a[0])));
-        commands.Add("examine", (a) => God.Instance.examine(strToEntity(a[0])));
-        commands.Add("inv", (a) => God.Instance.inventory());
+        commands.Add("open", (a) => LogicManager.Instance.open(strToEntity(a[0])));
+        commands.Add("examine", (a) => LogicManager.Instance.examine(strToEntity(a[0])));
+        commands.Add("inv", (a) => LogicManager.Instance.inventory());
         commands.Add("use", (a) =>
         {
             if (a.Length == 3)
             {
                 a[1] = a[2];
             }
-            God.Instance.use(strToEntity(a[1]), a[0]);
+            LogicManager.Instance.use(strToEntity(a[1]), a[0]);
         });
 
         commands.Add("save", (a) => strToEntity(a[0]));
         commands.Add("load", (a) => strToEntity(a[0]));
-        commands.Add("up", (a) => God.Instance.move(Direction.up));
-        commands.Add("right", (a) => God.Instance.move(Direction.right));
-        commands.Add("down", (a) => God.Instance.move(Direction.down));
-        commands.Add("left", (a) => God.Instance.move(Direction.left));
+        commands.Add("up", (a) => LogicManager.Instance.move(Direction.up));
+        commands.Add("right", (a) => LogicManager.Instance.move(Direction.right));
+        commands.Add("down", (a) => LogicManager.Instance.move(Direction.down));
+        commands.Add("left", (a) => LogicManager.Instance.move(Direction.left));
     }
 }

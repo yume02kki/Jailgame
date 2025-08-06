@@ -54,6 +54,6 @@ public class Door : Entity, Iopen, Iuse
 
     public bool canItemBeUsed(string item)
     {
-        return item=="Needle";
+        return item=="needle";
     }
  }    
