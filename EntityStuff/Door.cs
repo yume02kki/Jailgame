@@ -6,7 +6,7 @@ namespace MazeGame.Entitys;
 public class Door : Entity, Iopen, Iuse
 {
     private bool _opened;
-    private bool _locked; 
+    private bool _locked;
     private Direction _direction;
     public Door(string name,int x,int y,Direction direction,bool locked,bool opened = false) : base(name,x,y)
     {

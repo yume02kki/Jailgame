@@ -30,7 +30,7 @@ public abstract class Entity : Renderable
     }
 
     public abstract bool collide();
-    public override string ToString()
+    public override string ToString()   
     {
         return this._name;
     }
