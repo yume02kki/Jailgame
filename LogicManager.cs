@@ -1,4 +1,6 @@
-﻿using MazeGame.CommandInterfaces;
+﻿using System.Runtime.InteropServices;
+using MazeGame.CommandInterfaces;
+using MazeGame.Commands;
 using MazeGame.Entitys;
 
 namespace MazeGame;
@@ -29,10 +31,10 @@ public class LogicManager
 
     public readonly Player player;
 
-    private LogicManager() 
+    private LogicManager()
     {
-        rooms["C4"].addEntity(new Bed("bed", 2, 3));
-        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,false));
+        rooms["C4"].addEntity(new Entity("door",0,3,new DoorCommands(Direction.left,false,true)));
+        
         rooms["C4"].linkRoom(Direction.left, rooms["B4"]);
         rooms["B4"].linkRoom(Direction.up, rooms["B3"]);
         rooms["B3"].linkRoom(Direction.up, rooms["B2"]);
@@ -43,6 +45,9 @@ public class LogicManager
         rooms["B1"].linkRoom(Direction.left, rooms["A1"]);
         Room spawnRoom = rooms["C4"];
         player = new Player(spawnRoom, spawnRoom.playAreaWidth() - 1, spawnRoom.playAreaHeight() - 1);
+        
+        rooms["C4"].addEntity(new Entity("bed",2,3,new BedCommands(player,"needle"),"_"));
+        
     }
 
     public void move(Direction direction)
@@ -50,37 +55,9 @@ public class LogicManager
         player.move(direction);
     }
 
-    public void examine(Entity ent)
-    {
-        if (ent is Iexamine)
-        {
-            player.setInventory(((Iexamine)ent).examine());
-        }
-    }
-
-    public void open(Entity ent)
-    {
-        if (ent is Iopen)
-        {
-            ((Iopen)ent).open();
-        }
-    }
-
     public void inventory()
     {
         Console.WriteLine("You have: " + String.Join(", ", player.getInventory()));
     }
 
-    public void use(Entity ent, string item)
-    {
-        if (ent is Iuse)
-        {
-            Iuse entUsable = (Iuse)ent;
-            if (entUsable.canItemBeUsed(item) && player.getInventory().Contains(item))
-            {
-                player.removeInventory(item);
-                entUsable.use();
-            }
-        }
-    }
 }

@@ -2,5 +2,5 @@
 
 public interface Iexamine 
 {
-    string examine();   
+    void examine();   
 }

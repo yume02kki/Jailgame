@@ -8,12 +8,12 @@ public enum Direction
     left
 }
 
-public enum Commands
+public enum CommandsName
 {
-   up,
-   right,
-   down,
-   left,
+    up,
+    right,
+    down,
+    left,
     inventory,
     examine,
     open,

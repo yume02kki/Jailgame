@@ -1,4 +1,5 @@
-﻿using MazeGame.Entitys;
+﻿using MazeGame.CommandInterfaces;
+using MazeGame.Entitys;
 
 namespace MazeGame;
 
@@ -31,8 +32,8 @@ public static class CommandManager
 
     static CommandManager()
     {
-        commands.Add("open", (a) => LogicManager.Instance.open(strToEntity(a[0])));
-        commands.Add("examine", (a) => LogicManager.Instance.examine(strToEntity(a[0])));
+        commands.Add("open", (a) => ((Iopen)strToEntity(a[0])).open());
+        commands.Add("examine", (a) => ((Iexamine)strToEntity(a[0]).Commands).examine());
         commands.Add("inv", (a) => LogicManager.Instance.inventory());
         commands.Add("use", (a) =>
         {
@@ -40,7 +41,8 @@ public static class CommandManager
             {
                 a[1] = a[2];
             }
-            LogicManager.Instance.use(strToEntity(a[1]), a[0]);
+
+            ((Iuse)strToEntity(a[1])).use(a[0]);
         });
 
         commands.Add("save", (a) => strToEntity(a[0]));

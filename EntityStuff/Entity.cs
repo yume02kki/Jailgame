@@ -1,16 +1,28 @@
-﻿namespace MazeGame.Entitys;
+﻿using MazeGame.CommandInterfaces;
 
-public abstract class Entity : Renderable
+namespace MazeGame.Entitys;
+
+public class Entity : Renderable
 {
     private string _name;
     private int _x,_y;
-    public Entity(string name, int x, int y)
+    private string _icon;
+    private Commands.Commands _commands;
+    
+    public Entity(string name,int x, int y,Commands.Commands commands, string icon="?")
     {
+        _icon = icon;
         _name = name;
         _x = x;
         _y = y;
+        _commands = commands;
     }
 
+    public Commands.Commands Commands
+    {
+        get { return _commands; }
+        set { _commands = value; }
+    }
     public String Name
     {
         get { return _name; }
@@ -29,14 +41,8 @@ public abstract class Entity : Renderable
         set { _y = value; }
     }
 
-    public abstract bool collide();
-    public override string ToString()   
-    {
-        return this._name;
-    }
-
-    public virtual string icon()
-    {
-        return "?";
-    }
+    public virtual bool collide() => _commands is Icollide ? ((Icollide)_commands).collide() : false;
+    public override string ToString() => this._name;
+    
+    public virtual string icon() => _commands is Renderable ? ((Renderable)_commands).icon() : _icon;
 }

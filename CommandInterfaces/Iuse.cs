@@ -2,7 +2,6 @@
 
 public interface Iuse
 {
-    void use();
+    void use(string Item);
 
-    bool canItemBeUsed(string item);
 }

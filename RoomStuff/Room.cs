@@ -1,4 +1,5 @@
-﻿using MazeGame.Entitys;
+﻿using MazeGame.Commands;
+using MazeGame.Entitys;
 
 namespace MazeGame;
 
@@ -47,12 +48,12 @@ public class Room
             case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
 
         }
-        List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
-        foreach (Door door in doors)
+        List<Entity> doors = (getEntityList().Where((ent) => ent.Name == "door")).ToList();
+        foreach (Entity door in doors)
         {
             int otherX = Misc.clamp(door.x, otherRoom.playAreaWidth());
             int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
-            otherRoom.addEntity(new Door("door",otherX, otherY,Misc.mirror(direction),false,true));
+            otherRoom.addEntity(new Entity("door",otherX,otherY,new DoorCommands(Misc.mirror(direction),true,false)));
         }
     }
 
@@ -68,7 +69,8 @@ public class Room
     
     public Entity? getEntity(string name)
     {
-        return entityDict.TryGetValue(name, out var entity) ? entity : null;
+        return entityDict.Values.ToList().Find((a) => a.Name == name);
+        // return entityDict.TryGetValue(name, out var entity) ? entity : null;
     }
     public String getName()
     {
