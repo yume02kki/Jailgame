@@ -48,12 +48,12 @@ public class Room
             case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
 
         }
-        List<Entity> doors = (getEntityList().Where((ent) => ent.Name == "door")).ToList();
-        foreach (Entity door in doors)
+        List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
+        foreach (Door door in doors)
         {
             int otherX = Misc.clamp(door.x, otherRoom.playAreaWidth());
             int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
-            otherRoom.addEntity(new Entity("door",otherX,otherY,new DoorCommands(Misc.mirror(direction),true,false)));
+            otherRoom.addEntity(new Door("door",otherX,otherY,new DoorCommands(Misc.mirror(direction)),new Open(true)));
         }
     }
 

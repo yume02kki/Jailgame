@@ -19,7 +19,6 @@ public class DoorCommands : Commands,Iopen,Iuse,Renderable,Icollide
     {
         if (!locked)
         {
-        Console.WriteLine("try open;");
             this.opened = true;
         }
     }

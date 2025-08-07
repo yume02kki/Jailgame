@@ -2,7 +2,7 @@
 
 namespace MazeGame.Entitys;
 
-public class Entity : Renderable
+public abstract class Entity : Renderable
 {
     private string _name;
     private int _x,_y;
@@ -41,8 +41,9 @@ public class Entity : Renderable
         set { _y = value; }
     }
 
-    public virtual bool collide() => _commands is Icollide ? ((Icollide)_commands).collide() : false;
     public override string ToString() => this._name;
     
     public virtual string icon() => _commands is Renderable ? ((Renderable)_commands).icon() : _icon;
+
+    public virtual bool collide() => false;
 }

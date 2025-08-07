@@ -83,7 +83,7 @@ public class Player : Renderable
         x += offset[0];
         y += offset[1];
         
-        if (currentRoom.tryGet(x, y)?.Name == "door"&&!currentRoom.tryGet(x, y)!.collide())
+        if (currentRoom.tryGet(x, y) is Door&&!currentRoom.tryGet(x, y)!.collide())
         {
             currentRoom = currentRoom.getRoom(direction)!;
             x = Misc.clamp(x,currentRoom.playAreaWidth());
