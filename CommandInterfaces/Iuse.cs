@@ -4,6 +4,6 @@ namespace MazeGame.CommandInterfaces;
 
 public interface Iuse
 {
-    void use(Entity entity);
+    void use();
 
 }

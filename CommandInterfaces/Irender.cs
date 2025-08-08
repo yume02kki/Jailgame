@@ -2,6 +2,6 @@
 
 public interface Irender
 {
-    string icon();
+    public string icon();
 
 }

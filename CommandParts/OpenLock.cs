@@ -10,7 +10,7 @@ public class OpenLock:Open
 {
     private bool isLocked;
 
-    public OpenLock(bool isOpen=true):base(isOpen)
+    public OpenLock():base(false)
     {
         isLocked = true;
     }
@@ -18,11 +18,11 @@ public class OpenLock:Open
     {
         this.isLocked = false;
     }
-    public override void open()
+    public override void execute()
     {
         if (!isLocked)
         {
-            base.open();
+            base.execute();
         }
     }
 }

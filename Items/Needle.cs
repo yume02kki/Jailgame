@@ -1,16 +1,15 @@
 ﻿using MazeGame.CommandInterfaces;
 using MazeGame.Entitys;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Items;
 
 public class Needle : Obj, Iuse
 {
-    private Use usePart;
 
-    public Needle(string name, Use usePart) : base(name)
+    public Needle(string name, PartsUsed parts) : base(name,parts)
     {
-        this.usePart = usePart;
     }
 
-    public void use(Entity ent) =>usePart.use(ent);
+    public void use() => parts.execute<Use>();
 }

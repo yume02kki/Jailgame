@@ -1,18 +1,16 @@
 ﻿using System.Reflection;
 using System.Text;
 using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
 public class Bed : Entity, Iexamine
 {
-    private Examine examinePart;
-
-    public Bed(string name, int x, int y, Examine examinePart) : base(name, x, y)
+    public Bed(string name, int x, int y, PartsUsed parts) : base(name, x, y,parts)
     {
-        this.examinePart = examinePart;
     }
 
-    public void examine() => this.examinePart.examine();
+    public void examine() => parts.execute<Examine>();
     public override string icon() => "_";
 }

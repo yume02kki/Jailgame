@@ -47,9 +47,10 @@ public class Player : Irender
         return _icon;
     }
 
-    public Obj getInv(string itemName)
+    public Obj? getInv(string itemName)
     {
-        return inventory[itemName];
+        
+        return inventory.ContainsKey(itemName)?inventory[itemName]:null;
     }
 
     public void addInv(Obj item)

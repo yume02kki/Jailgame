@@ -2,7 +2,7 @@
 
 namespace MazeGame.Entitys;
 
-public class Examine:Iexamine
+public class Examine:Part
 {
     private Obj _item;
     private Action<Obj> _action;
@@ -12,7 +12,8 @@ public class Examine:Iexamine
         _item = item;
         _action = action;
     }
-    public void examine()
+
+    public override void execute()
     {
         _action(_item);
     }

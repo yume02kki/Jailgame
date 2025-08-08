@@ -2,14 +2,19 @@
 
 namespace MazeGame.Entitys;
 
-public class Use : Iuse
+public class Use : Part
 {
+    private Iused? _target;
 
-    public void use(Entity entity)
+    public Iused target
     {
-        if (entity is Iused)
-        {
-            ((Iused)entity).used();
-        }
+        get { return _target; }
+        set { _target = value;execute(); }
+    }
+
+    public override void execute()
+    {
+        target?.used();
+        _target = null;
     }
 }

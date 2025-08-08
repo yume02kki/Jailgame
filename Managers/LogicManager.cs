@@ -2,6 +2,7 @@
 using MazeGame.CommandInterfaces;
 using MazeGame.Entitys;
 using MazeGame.Items;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame;
 
@@ -33,9 +34,8 @@ public class LogicManager
 
     private LogicManager()
     {
-        OpenLock doorLock = new OpenLock(false);
-        //TODO: pass arguments optionally
-        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,doorLock,doorLock.unlock));
+        OpenLock doorLock = new OpenLock();
+        rooms["C4"].addEntity((new Door( "door",0, 3, Direction.left,new PartsUsed(doorLock))));
         rooms["C4"].linkRoom(Direction.left, rooms["B4"]);
         rooms["B4"].linkRoom(Direction.up, rooms["B3"]);
         rooms["B3"].linkRoom(Direction.up, rooms["B2"]);
@@ -47,8 +47,8 @@ public class LogicManager
         Room spawnRoom = rooms["C4"];
         player = new Player(spawnRoom, spawnRoom.playAreaWidth() - 1, spawnRoom.playAreaHeight() - 1);
 
-        Needle needle = new Needle("needle",new Use());
-        rooms["C4"].addEntity(new Bed("bed", 2, 3,new Examine(needle,player.addInv)));
+        Needle needle = new Needle("needle",new PartsUsed(new Use()));
+        rooms["C4"].addEntity(new Bed("bed", 2, 3,new PartsUsed(new Examine(needle,player.addInv))));
     }
 
     public void move(Direction direction)

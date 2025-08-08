@@ -19,18 +19,13 @@ public static class TerminalManager
 
     public static void commandFetch()
     {
-        Boolean validInput = false;
+        bool validInput = false;
         while (!validInput)
         {
             Console.WriteLine("Available commands: open, examine, use, inv, save, load");
             Console.Write("\n> ");
-            Action? action = CommandManager.Get(Console.ReadLine() ?? "");
-            if (action != null)
-            {
-                action();
-                validInput = true;
-            }
-            else
+            validInput = CommandManager.get(Console.ReadLine() ?? "");
+            if (!validInput)
             {
                 Console.WriteLine("Invalid command, try again");
             }

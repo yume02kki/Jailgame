@@ -1,4 +1,5 @@
 ﻿using MazeGame.Entitys;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame;
 
@@ -52,7 +53,7 @@ public class Room
         {
             int otherX = Misc.clamp(door.x, otherRoom.playAreaWidth());
             int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
-            otherRoom.addEntity(new Door("door",otherX,otherY,Misc.mirror(direction),new Open(true)));
+            otherRoom.addEntity(new Door("door",otherX,otherY,Misc.mirror(direction),new PartsUsed(new Open(true))));
         }
     }
 

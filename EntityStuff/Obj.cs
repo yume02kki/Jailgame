@@ -1,14 +1,22 @@
 ﻿using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
 public abstract class Obj
 {
     private string _name;
+    private PartsUsed _parts;
     
-    public Obj(string name)
+    public Obj(string name,PartsUsed parts)
     {
+        _parts =  parts; 
         _name = name;
+    }
+    public PartsUsed parts
+    {
+        get { return _parts; }
+        set { _parts = value; }
     }
     public String Name
     {

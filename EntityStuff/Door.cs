@@ -1,24 +1,19 @@
 ﻿using System.Reflection;
 using System.Text;
 using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
-public class Door : Entity, Icollide, Iopen,Iused, Irender
+public class Door : Entity, Icollide, Iopen,Iused, Irender,Ilocked
 {
-    private OpenLock _openLockPart;
-    // private Open openPart;
-    private Open openPart;
-    private Action usedAction;
-    private bool isUsed = false;
-public Door(string name, int x, int y, Direction direction,Open open,Action used=null) : base(name, x, y)
+public Door(string name, int x, int y, Direction direction,PartsUsed parts) : base(name, x, y,parts)
 {
-    this.openPart = open;
-    this.usedAction = used;
 }
 
-public override string icon() =>  this.openPart.isOpen ? "☐" : "▥";
-public void open() => this.openPart.open();
-public void used() => this.usedAction();
-public override bool collide() => !openPart.isOpen;
+public override string icon() => (parts.get<Open>()?.isOpen??false) ? "☐" : "▥";
+public void open() => parts.execute<Open>();
+public void unlock() => parts.get<OpenLock>()?.unlock();
+public void used() => unlock();
+public override bool collide() => !parts.get<Open>()?.isOpen??false;
 }
