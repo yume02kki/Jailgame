@@ -33,7 +33,7 @@ public static class CommandManager
     static CommandManager()
     {
         commands.Add("open", (a) => ((Iopen)strToEntity(a[0])).open());
-        commands.Add("examine", (a) => ((Iexamine)strToEntity(a[0]).Commands).examine());
+        commands.Add("examine", (a) => ((Iexamine)strToEntity(a[0])).examine());
         commands.Add("inv", (a) => LogicManager.Instance.inventory());
         commands.Add("use", (a) =>
         {

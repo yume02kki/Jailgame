@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using MazeGame.CommandInterfaces;
-using MazeGame.Commands;
 
 namespace MazeGame.Entitys;
 

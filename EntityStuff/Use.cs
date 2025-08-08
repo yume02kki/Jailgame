@@ -2,21 +2,21 @@
 
 namespace MazeGame.Entitys;
 
-public class Use : ExecutableArgs
+public class Use : Executable
 {
     private string itemRequired;
-    private Action action;
+    private Action actionTarget;
     public Use(string itemRequired,Action action)
     {
         this.itemRequired = itemRequired;
-        this.action = action;
+        this.actionTarget = action;
     }
 
-    public void execute(string item)
+    public void execute()
     {
-        if (item == itemRequired)
-        {
-            action();
-        }
+        // if (itemRequired)
+        // {
+            // actionTarget();
+        // }
     }
 }
