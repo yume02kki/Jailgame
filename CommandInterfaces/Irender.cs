@@ -1,6 +1,6 @@
 ﻿namespace MazeGame.Entitys;
 
-public interface Renderable
+public interface Irender
 {
     string icon();
 

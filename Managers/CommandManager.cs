@@ -25,6 +25,11 @@ public static class CommandManager
         }
     }
 
+    private static Obj strToObj(string str)
+    {
+        return LogicManager.Instance.player.getInv(str);
+    }
+
     private static Entity strToEntity(String a)
     {
         return LogicManager.Instance.player.currentRoom.getEntity(a)!;
@@ -35,16 +40,7 @@ public static class CommandManager
         commands.Add("open", (a) => ((Iopen)strToEntity(a[0])).open());
         commands.Add("examine", (a) => ((Iexamine)strToEntity(a[0])).examine());
         commands.Add("inv", (a) => LogicManager.Instance.inventory());
-        commands.Add("use", (a) =>
-        {
-            if (a.Length == 3)
-            {
-                a[1] = a[2];
-            }
-
-            ((Iuse)strToEntity(a[1])).use(a[0]);
-        });
-
+        commands.Add("use", (a) => ((Iuse)strToObj(a[0])).use(strToEntity(a[1])));
         commands.Add("save", (a) => strToEntity(a[0]));
         commands.Add("load", (a) => strToEntity(a[0]));
         commands.Add("up", (a) => LogicManager.Instance.move(Direction.up));

@@ -13,6 +13,6 @@ public class Bed : Entity, Iexamine
         this.examinePart = examinePart;
     }
 
-    public void examine() => this.examinePart.execute();
+    public void examine() => this.examinePart.examine();
     public override string icon() => "_";
 }

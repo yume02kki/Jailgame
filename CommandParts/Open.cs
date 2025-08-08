@@ -2,7 +2,7 @@
 
 namespace MazeGame.Entitys;
 
-public class Open:Executable 
+public class Open:Iopen
 {
     private bool _isOpen;
     
@@ -10,7 +10,7 @@ public class Open:Executable
     {
         this._isOpen = isOpen;
     }
-    public virtual void execute()
+    public virtual void open()
     {
         _isOpen = true;
     }

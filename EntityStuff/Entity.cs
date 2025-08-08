@@ -2,24 +2,16 @@
 
 namespace MazeGame.Entitys;
 
-public abstract class Entity : Renderable
+public abstract class Entity : Obj,Irender
 {
-    private string _name;
     private int _x,_y;
     private string _icon;
     
-    public Entity(string name,int x, int y, string icon="?")
+    public Entity(string name,int x, int y, string icon="?") : base(name)
     {
         _icon = icon;
-        _name = name;
         _x = x;
         _y = y;
-    }
-
-    public String Name
-    {
-        get { return _name; }
-        set { _name = value; }
     }
     
     public int x
@@ -33,8 +25,6 @@ public abstract class Entity : Renderable
         get { return _y; }
         set { _y = value; }
     }
-
-    public override string ToString() => this._name;
     
     public virtual string icon() => _icon;
 

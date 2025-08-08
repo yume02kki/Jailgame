@@ -18,11 +18,11 @@ public class OpenLock:Open
     {
         this.isLocked = false;
     }
-    public override void execute()
+    public override void open()
     {
         if (!isLocked)
         {
-            base.execute();
+            base.open();
         }
     }
 }

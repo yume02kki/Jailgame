@@ -3,9 +3,9 @@ using MazeGame.Entitys;
 
 namespace MazeGame;
 
-public class Player : Renderable
+public class Player : Irender
 {
-    private HashSet<String> inventory = new HashSet<string>();
+    private Dictionary<string,Obj> inventory = new Dictionary<string,Obj>();
     private Room _currentRoom;
     private int _x = 0;
     private int _y = 0;
@@ -47,19 +47,24 @@ public class Player : Renderable
         return _icon;
     }
 
-    public HashSet<String> getInventory()
+    public Obj getInv(string itemName)
     {
-        return inventory;
+        return inventory[itemName];
     }
 
-    public void setInventory(String item)
+    public void addInv(Obj item)
     {
-        inventory.Add(item);
+        inventory.TryAdd(item.Name, item);
     }
 
-    public void removeInventory(String item)
+    public void removeInventory(string itemName)
     {
-        inventory.Remove(item);
+        inventory.Remove(itemName);
+    }
+
+    public string invString()
+    {
+        return inventory.Values.Aggregate("",(current, item) => current + $"{item.Name}, ");
     }
 
     public void move(Direction direction)

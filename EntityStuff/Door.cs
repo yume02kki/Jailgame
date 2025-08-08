@@ -4,21 +4,21 @@ using MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Door : Entity, Icollide, Iopen, Renderable
+public class Door : Entity, Icollide, Iopen,Iused, Irender
 {
     private OpenLock _openLockPart;
     // private Open openPart;
     private Open openPart;
-    private Use usePart;
+    private Action usedAction;
     private bool isUsed = false;
-public Door(string name, int x, int y, Direction direction,Open open,Use use=null) : base(name, x, y)
+public Door(string name, int x, int y, Direction direction,Open open,Action used=null) : base(name, x, y)
 {
     this.openPart = open;
-    this.usePart = use;
+    this.usedAction = used;
 }
 
 public override string icon() =>  this.openPart.isOpen ? "☐" : "▥";
-public void open() => this.openPart.execute();
-public void use(string item) => this.usePart.execute();
+public void open() => this.openPart.open();
+public void used() => this.usedAction();
 public override bool collide() => !openPart.isOpen;
 }

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using MazeGame.CommandInterfaces;
 using MazeGame.Entitys;
+using MazeGame.Items;
 
 namespace MazeGame;
 
@@ -32,9 +33,9 @@ public class LogicManager
 
     private LogicManager()
     {
-        OpenLock lockedOpenPart = new OpenLock(false);
-        Use usePart = new Use("needle", lockedOpenPart.unlock);
-        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,lockedOpenPart, usePart));
+        OpenLock doorLock = new OpenLock(false);
+        //TODO: pass arguments optionally
+        rooms["C4"].addEntity(new Door("door", 0, 3, Direction.left,doorLock,doorLock.unlock));
         rooms["C4"].linkRoom(Direction.left, rooms["B4"]);
         rooms["B4"].linkRoom(Direction.up, rooms["B3"]);
         rooms["B3"].linkRoom(Direction.up, rooms["B2"]);
@@ -45,7 +46,9 @@ public class LogicManager
         rooms["B1"].linkRoom(Direction.left, rooms["A1"]);
         Room spawnRoom = rooms["C4"];
         player = new Player(spawnRoom, spawnRoom.playAreaWidth() - 1, spawnRoom.playAreaHeight() - 1);
-        rooms["C4"].addEntity(new Bed("bed", 2, 3,new Examine("needle",player.setInventory)));
+
+        Needle needle = new Needle("needle",new Use());
+        rooms["C4"].addEntity(new Bed("bed", 2, 3,new Examine(needle,player.addInv)));
     }
 
     public void move(Direction direction)
@@ -55,6 +58,6 @@ public class LogicManager
 
     public void inventory()
     {
-        Console.WriteLine("You have: " + String.Join(", ", player.getInventory()));
+        Console.WriteLine("You have: " + player.invString());
     }
 }
