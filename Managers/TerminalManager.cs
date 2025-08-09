@@ -17,6 +17,11 @@ public static class TerminalManager
         commandFetch();
     }
 
+    public static void invPrint(List<Obj> inventory)
+    {
+        Console.WriteLine("You have: "+Misc.commaList(inventory.Select(a => a.Name).ToList()));
+    }
+
     public static void commandFetch()
     {
         bool validInput = false;
@@ -43,11 +48,11 @@ public static class TerminalManager
             {
                 if (player.x == x && player.y == y)
                 {
-                    Console.Write(player.icon());
+                    Misc.write(player.getRender());
                 }
                 else if (room.tryGet(x, y) != null)
                 {
-                    Console.Write(room.tryGet(x, y)!.icon());
+                    Misc.write(room.tryGet(x, y)!.getRender());
                 }
                 else if (y == 0 || y == height || x == 0 || x == width)
                 {

@@ -12,7 +12,8 @@ public class Room
     private String name;
     Entity[,] map;
     private Dictionary<string, Entity> entityDict = new Dictionary<string, Entity>();
-    public Room(String name,int width, int height)
+
+    public Room(String name, int width, int height)
     {
         map = new Entity[width, height];
         this.upRoom = null;
@@ -38,16 +39,29 @@ public class Room
     {
         return entityDict.Values.ToList();
     }
+
     public void linkRoom(Direction direction, Room otherRoom)
     {
         switch (direction)
         {
-            case Direction.up: this.upRoom = otherRoom; otherRoom.downRoom = this; break;
-            case Direction.right: this.rightRoom = otherRoom; otherRoom.leftRoom = this; break;
-            case Direction.down: this.downRoom = otherRoom; otherRoom.upRoom = this; break;
-            case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
-            
+            case Direction.up:
+                this.upRoom = otherRoom;
+                otherRoom.downRoom = this;
+                break;
+            case Direction.right:
+                this.rightRoom = otherRoom;
+                otherRoom.leftRoom = this;
+                break;
+            case Direction.down:
+                this.downRoom = otherRoom;
+                otherRoom.upRoom = this;
+                break;
+            case Direction.left:
+                this.leftRoom = otherRoom;
+                otherRoom.rightRoom = this;
+                break;
         }
+
         /*
         List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
         foreach (Door door in doors)
@@ -59,25 +73,23 @@ public class Room
         */
     }
 
-    public void addEntity(Entity entity)
+    public void setEntity(Entity entity)
     {
-        if (entityDict.TryAdd(entity.Name, entity))
-        {
-            map[entity.x, entity.y] = entity;
-        }
+        entityDict[entity.Name] = entity;
+        map[entity.x, entity.y] = entity;
+    }
 
-}
-
-    
     public Entity? getEntity(string name)
     {
         return entityDict.Values.ToList().Find((a) => a.Name == name);
         // return entityDict.TryGetValue(name, out var entity) ? entity : null;
     }
+
     public String getName()
     {
         return this.name;
     }
+
     public override string ToString()
     {
         return this.name;
@@ -87,20 +99,22 @@ public class Room
     {
         get { return this.map; }
     }
-    
+
     public int getWidth()
     {
-       return this.map.GetLength(0); 
+        return this.map.GetLength(0);
     }
 
     public int playAreaWidth()
     {
         return getWidth() - 1;
     }
+
     public int playAreaHeight()
     {
         return getHeight() - 1;
     }
+
     public int getHeight()
     {
         return this.map.GetLength(1);
@@ -111,7 +125,8 @@ public class Room
         if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight())
         {
             return map[x, y];
-        } 
+        }
+
         return null;
     }
 }

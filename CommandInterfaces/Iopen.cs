@@ -2,5 +2,5 @@
 
 public interface Iopen
 {
-    public void open();   
+    public void open();
 }

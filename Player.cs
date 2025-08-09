@@ -10,7 +10,7 @@ public class Player : Irender
     private Room _currentRoom;
     private int _x = 0;
     private int _y = 0;
-    private string _icon = "☺";
+    public Render _render = new Render("☺");
 
     public Player(Room room, int x, int y)
     {
@@ -38,17 +38,19 @@ public class Player : Irender
         get => _currentRoom;
         set => _currentRoom = value;
     }
-
-    public string icon()
-    {
-        return _icon;
-    }
-
+    
+    public Render getRender() => this._render; 
     public Obj? getInv(string itemName)
     {
         
         return inventory.ContainsKey(itemName)?inventory[itemName]:null;
     }
+
+    public List<Obj> getInvList()
+    {
+        return inventory.Values.ToList();
+    }
+    
 
     public void addInv(Obj item)
     {
@@ -60,10 +62,7 @@ public class Player : Irender
         inventory.Remove(itemName);
     }
 
-    public string invString()
-    {
-        return inventory.Values.Aggregate("",(current, item) => current + $"{item.Name}, ");
-    }
+
 
     public void move(Direction direction)
     {

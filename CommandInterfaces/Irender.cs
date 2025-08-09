@@ -2,6 +2,5 @@
 
 public interface Irender
 {
-    public string icon();
-
+    public Render getRender();
 }

@@ -3,22 +3,29 @@ using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
-public abstract class Entity : Obj,Irender
+public abstract class Entity : Obj, Irender
 {
-    private int _x,_y;
-    private string _icon;
-    public Entity(string name,int x, int y,PartsUsed parts,string icon="?") : base(name,parts)
+    private int _x, _y;
+    private Render _render;
+
+    public Entity(string name, int x, int y, PartsUsed parts, Render render) : base(name, parts)
     {
-        _icon = icon;
+        this._render = render;
         _x = x;
         _y = y;
     }
 
+    public Entity(string name, int x, int y, PartsUsed parts) : base(name, parts)
+    {
+        _render = new Render("?");
+        _x = x;
+        _y = y;
+    }
 
     public int x
     {
-     get { return _x; }
-     set { _x = value; }
+        get { return _x; }
+        set { _x = value; }
     }
 
     public int y
@@ -26,8 +33,7 @@ public abstract class Entity : Obj,Irender
         get { return _y; }
         set { _y = value; }
     }
-    
-    public virtual string icon() => _icon;
 
+    public virtual Render getRender() => _render;
     public virtual bool collide() => false;
 }
