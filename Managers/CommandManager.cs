@@ -28,12 +28,12 @@ public static class CommandManager
     {
         commands.Add("open", obj => exec<Open>(obj));
         commands.Add("examine", obj => exec<Examine>(obj));
-        commands.Add("inv", obj => TerminalManager.invPrint(LogicManager.Instance.player.getInvList()));
+        commands.Add("inv", obj => TerminalManager.invPrint());
         commands.Add("use", obj => obj.First().parts.get<Use>().target = ((Iused)obj.Last()));
-        commands.Add("up", obj => LogicManager.Instance.move(Direction.up));
-        commands.Add("right", obj => LogicManager.Instance.move(Direction.right));
-        commands.Add("down", obj => LogicManager.Instance.move(Direction.down));
-        commands.Add("left", obj => LogicManager.Instance.move(Direction.left));
+        commands.Add("up", obj => LogicManager.Instance.player.move(Direction.up));
+        commands.Add("right", obj => LogicManager.Instance.player.move(Direction.right));
+        commands.Add("down", obj => LogicManager.Instance.player.move(Direction.down));
+        commands.Add("left", obj => LogicManager.Instance.player.move(Direction.left));
         //shortcuts
         commands.Add("u", obj => commands["up"](obj));
         commands.Add("d", obj => commands["down"](obj));
@@ -49,7 +49,12 @@ public static class CommandManager
         {
             if (commands.ContainsKey(operatorStr))
             {
-                commands[operatorStr](getOperands(parsedString.Skip(1).ToArray()));
+                string[] cleanedStr = parsedString.Skip(1).ToArray();
+                if (cleanedStr.Length > 1)
+                {
+                    cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
+                }
+                commands[operatorStr](getOperands(cleanedStr));
                 return true;
             }
         }
@@ -65,22 +70,44 @@ public static class CommandManager
 
     private static string autocomplete(string str, params List<string>[] lists)
     {
+        if (str == "")
+        {
+            return "";
+        }
         List<string> list = lists.SelectMany((a) => a).ToList();
         List<string> filter = list.FindAll((a) => a.StartsWith(str));
         switch (filter.Count)
         {
             case 0:
-                Console.WriteLine($"#| element \"{str}\" not found");
+                Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue,selective:true,newLine:true);
                 return str;
             case 1:
-                Console.WriteLine($"#| AutoCompleted \"{str}\" => {filter[0]}");
+                if (str != filter[0])
+                {
+                    Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str,filter[0])}", ConsoleColor.DarkBlue,selective:true,newLine:true);
+                }
+
                 return filter[0];
             default:
-                Console.WriteLine($"#| Element \"{str}\" too ambiguous <{Misc.commaList(filter)}>");
+                Color.write($"# Element \"{str}\" too ambiguous <{Misc.commaList(highlight(str,filter))}>",ConsoleColor.DarkBlue,selective:true,newLine:true);
                 return str;
         }
     }
 
+    private static string highlight(string term, string filter)
+    {
+        List<string> fakeList = new();
+        fakeList.Add(filter);
+        return highlight(term, fakeList)[0];
+    }
+    private static List<string> highlight(string term, List<string> filtered)
+    {
+        filtered = filtered.Select(a => a.Insert(a.IndexOf(term),"[")).ToList();
+        filtered = filtered.Select(a => a.Insert(a.IndexOf(term)+term.Length,"]")).ToList();
+
+        return filtered;
+    }
+    
     private static List<Obj> getOperands(string[] names)
     {
         List<Obj> result = new List<Obj>();

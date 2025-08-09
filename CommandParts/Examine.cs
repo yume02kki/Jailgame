@@ -16,5 +16,6 @@ public class Examine:Part
     public override void execute()
     {
         _action(_item);
+        TerminalManager.invPrint();
     }
 }

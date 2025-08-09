@@ -5,7 +5,7 @@ namespace MazeGame;
 
 public static class TerminalManager
 {
-    const String INFO_PHRASE = "You are in room {0}, These are the things you see: {1}";
+    const String INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
 
     public static void render(Player player)
     {
@@ -17,9 +17,10 @@ public static class TerminalManager
         commandFetch();
     }
 
-    public static void invPrint(List<Obj> inventory)
+    public static void invPrint()
     {
-        Console.WriteLine("You have: "+Misc.commaList(inventory.Select(a => a.Name).ToList()));
+        List<Obj> inventory =  LogicManager.Instance.player.getInvList();
+        Console.WriteLine("[Inventory]: "+Misc.commaList(inventory.Select(a => a.Name).ToList()));
     }
 
     public static void commandFetch()
@@ -27,12 +28,12 @@ public static class TerminalManager
         bool validInput = false;
         while (!validInput)
         {
-            Console.WriteLine("Available commands: open, examine, use, inv, save, load");
+            Color.write("open | examine | use | inv | move | save | load",ConsoleColor.DarkMagenta,newLine:true);
             Console.Write("\n> ");
             validInput = CommandManager.get(Console.ReadLine() ?? "");
             if (!validInput)
             {
-                Console.WriteLine("Invalid command, try again");
+                Color.write("Invalid command, try again", ConsoleColor.Red,newLine:true);
             }
         }
     }
@@ -48,15 +49,14 @@ public static class TerminalManager
             {
                 if (player.x == x && player.y == y)
                 {
-                    Misc.write(player.getRender());
+                    Color.write(player.getRender());
                 }
                 else if (room.tryGet(x, y) != null)
                 {
-                    Misc.write(room.tryGet(x, y)!.getRender());
+                    Color.write(room.tryGet(x, y)!.getRender());
                 }
                 else if (y == 0 || y == height || x == 0 || x == width)
                 {
-                    //nightmare
                     if (y == 0 && x == 0)
                         Console.Write("┌");
                     else if (y == 0 && x == width)

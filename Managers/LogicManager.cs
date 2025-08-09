@@ -26,20 +26,15 @@ public class LogicManager
         init = new GameInit(SIZE_W, SIZE_H);
         Room spawnRoom = init.roomGen("LUURULL");
         player = new Player(spawnRoom, spawnRoom.playAreaWidth() - 1, spawnRoom.playAreaHeight() - 1);
-        
-        
+
+
         Door firstDoor = (Door)spawnRoom.getEntityList().Find((ent) => ent is Door)!;
         OpenLock doorLock = new OpenLock();
-        init.addEntity((0,0),(new Door( "door", firstDoor.x,firstDoor.y, Direction.left,new PartsUsed(doorLock))));
-        
+        init.addEntity((0, 0),
+            (new Door(firstDoor.Name, firstDoor.x, firstDoor.y, Direction.left, new PartsUsed(doorLock))));
 
-        Needle needle = new Needle("needle",new PartsUsed(new Use()));
+
+        Needle needle = new Needle("needle", new PartsUsed(new Use()));
         init.addEntity((0, 0), new Bed("bed", 2, 1, new PartsUsed(new Examine(needle, player.addInv))));
-            
-    }
-
-    public void move(Direction direction)
-    {
-        player.move(direction);
     }
 }
