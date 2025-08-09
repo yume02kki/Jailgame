@@ -46,8 +46,9 @@ public class Room
             case Direction.right: this.rightRoom = otherRoom; otherRoom.leftRoom = this; break;
             case Direction.down: this.downRoom = otherRoom; otherRoom.upRoom = this; break;
             case Direction.left: this.leftRoom = otherRoom; otherRoom.rightRoom = this; break;
-
+            
         }
+        /*
         List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
         foreach (Door door in doors)
         {
@@ -55,6 +56,7 @@ public class Room
             int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
             otherRoom.addEntity(new Door("door",otherX,otherY,Misc.mirror(direction),new PartsUsed(new Open(true))));
         }
+        */
     }
 
     public void addEntity(Entity entity)

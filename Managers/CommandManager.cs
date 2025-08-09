@@ -8,15 +8,16 @@ public static class CommandManager
 {
     private static Dictionary<string, Action<List<Obj>>> commands = new();
 
-    private static void exec<T>(List<Obj> obj) where T:Part
+    private static void exec<T>(List<Obj> obj) where T : Part
     {
         obj.First().parts.execute<T>();
     }
+
     static CommandManager()
     {
         commands.Add("open", obj => exec<Open>(obj));
         commands.Add("examine", obj => exec<Examine>(obj));
-        commands.Add("inv", obj => Console.WriteLine("you have: "+LogicManager.Instance.player.invString()));
+        commands.Add("inv", obj => Console.WriteLine("you have: " + LogicManager.Instance.player.invString()));
         commands.Add("use", obj => obj.First().parts.get<Use>().target = ((Iused)obj.Last()));
         commands.Add("up", obj => LogicManager.Instance.move(Direction.up));
         commands.Add("right", obj => LogicManager.Instance.move(Direction.right));
@@ -28,16 +29,28 @@ public static class CommandManager
     {
         string[] parsedString = str.Split(' ');
         string operatorStr = parsedString.First();
-        
-        
-        commands[operatorStr](getOperands(parsedString.Skip(1).ToArray()));
-        return commands.ContainsKey(operatorStr);
+        try
+        {
+            if (commands.ContainsKey(operatorStr))
+            {
+                commands[operatorStr](getOperands(parsedString.Skip(1).ToArray()));
+                return true;
+            }
+        }
+        catch (InvalidCastException ex)
+        {
+        }
+        catch (NullReferenceException ex)
+        {
+            
+        }
+
+        return false;
     }
 
     private static List<Obj> getOperands(string[] names)
     {
         List<Obj> result = new List<Obj>();
-
         foreach (string name in names)
         {
             Obj? a = (LogicManager.Instance.player.getInv(name));
@@ -53,6 +66,6 @@ public static class CommandManager
             }
         }
 
-        return result; 
+        return result;
     }
 }

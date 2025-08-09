@@ -6,6 +6,7 @@ namespace MazeGame;
 public class Player : Irender
 {
     private Dictionary<string,Obj> inventory = new Dictionary<string,Obj>();
+    private movementEnforcer movementEnforcer;
     private Room _currentRoom;
     private int _x = 0;
     private int _y = 0;
@@ -16,6 +17,7 @@ public class Player : Irender
         this._currentRoom = room;
         this._x = x;
         this._y = y;
+        this.movementEnforcer = new movementEnforcer(this);
     }
 
     public int x
@@ -29,12 +31,7 @@ public class Player : Irender
         get => _y;
         set => _y = value;
     }
-
-    public bool onBorder()
-    {
-        return (currentRoom.playAreaWidth() <= x || x == 0) || (currentRoom.playAreaHeight() <= y || y == 0);
-        ;
-    }
+    
 
     public Room currentRoom
     {
@@ -70,35 +67,36 @@ public class Player : Irender
 
     public void move(Direction direction)
     {
-        int[] offset = { 0, 0 };
+        int x_offset = 0;
+        int y_offset = 0;
         switch (direction)
         {
             case Direction.up:
-                offset[1]--;
+                y_offset--;
                 break;
             case Direction.down:
-                offset[1]++;
+                y_offset++;
                 break;
             case Direction.left:
-                offset[0]--;
+                x_offset--;
                 break;
             case Direction.right:
-                offset[0]++;
+                x_offset++;
                 break;
         }
-        x += offset[0];
-        y += offset[1];
-        
-        if (currentRoom.tryGet(x, y) is Door&&!currentRoom.tryGet(x, y)!.collide())
+
+        movementEnforcer.setOffset(x_offset, y_offset);
+        if (movementEnforcer.isPortal())
         {
             currentRoom = currentRoom.getRoom(direction)!;
-            x = Misc.clamp(x,currentRoom.playAreaWidth());
-            y = Misc.clamp(y,currentRoom.playAreaHeight());
+            x = movementEnforcer.xClamp(x_offset);
+            y = movementEnforcer.yClamp(y_offset);
         }
-        else if (onBorder())
+
+        else if (!movementEnforcer.isClipping())
         {
-            x -= offset[0];
-            y -= offset[1];
+            x+=x_offset;
+            y+=y_offset;
         }
     }
 }
