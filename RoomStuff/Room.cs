@@ -62,15 +62,6 @@ public class Room
                 break;
         }
 
-        /*
-        List<Door> doors = (getEntityList().Where((ent) => ent is Door)).Cast<Door>().ToList();
-        foreach (Door door in doors)
-        {
-            int otherX = Misc.clamp(door.x, otherRoom.playAreaWidth());
-            int otherY = Misc.clamp(door.y, otherRoom.playAreaHeight());
-            otherRoom.addEntity(new Door("door",otherX,otherY,Misc.mirror(direction),new PartsUsed(new Open(true))));
-        }
-        */
     }
 
     public void setEntity(Entity entity)
@@ -82,7 +73,6 @@ public class Room
     public Entity? getEntity(string name)
     {
         return entityDict.Values.ToList().Find((a) => a.Name == name);
-        // return entityDict.TryGetValue(name, out var entity) ? entity : null;
     }
 
     public String getName()

@@ -81,8 +81,8 @@ public class GameInit
             mirrorY = ty;
         }
 
-        thisRoom.setEntity(new Door($"door_{direction}", normalX, normalY, direction, open));
-        otherRoom.setEntity(new Door($"door_{mirror}", mirrorX, mirrorY, mirror, open));
+        thisRoom.setEntity(new Door($"door_{direction}", normalX, normalY, open));
+        otherRoom.setEntity(new Door($"door_{mirror}", mirrorX, mirrorY,  open));
     }
 
     private (int x, int y) doorPos(Direction direction, int x, int y)

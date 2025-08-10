@@ -31,7 +31,7 @@ public class LogicManager
         Door firstDoor = (Door)spawnRoom.getEntityList().Find((ent) => ent is Door)!;
         OpenLock doorLock = new OpenLock();
         init.addEntity((0, 0),
-            (new Door(firstDoor.Name, firstDoor.x, firstDoor.y, Direction.left, new PartsUsed(doorLock))));
+            (new Door(firstDoor.Name, firstDoor.x, firstDoor.y,  new PartsUsed(doorLock))));
 
 
         Needle needle = new Needle("needle", new PartsUsed(new Use()));
