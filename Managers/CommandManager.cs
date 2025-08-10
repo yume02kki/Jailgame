@@ -1,5 +1,6 @@
 ﻿using MazeGame.CommandInterfaces;
 using MazeGame.Entitys;
+using MazeGame.MazeGame.CommandInterfaces;
 using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame;
@@ -8,7 +9,7 @@ public static class CommandManager
 {
     private static Dictionary<string, Action<List<Obj>>> commands = new();
 
-    private static void exec<T>(List<Obj> obj) where T : Part
+    private static void exec<T>(List<Obj> obj) where T : class,Iexecute
     {
         if (obj.Count == 0)
         {
@@ -29,7 +30,7 @@ public static class CommandManager
         commands.Add("open", obj => exec<Open>(obj));
         commands.Add("examine", obj => exec<Examine>(obj));
         commands.Add("inv", obj => TerminalManager.invPrint());
-        commands.Add("use", obj => obj.First().parts.get<Use>().target = ((Iused)obj.Last()));
+        commands.Add("use", obj => obj.First().parts.get<Use>().set((Iused)obj.Last()));
         commands.Add("up", obj => LogicManager.Instance.player.move(Direction.up));
         commands.Add("right", obj => LogicManager.Instance.player.move(Direction.right));
         commands.Add("down", obj => LogicManager.Instance.player.move(Direction.down));

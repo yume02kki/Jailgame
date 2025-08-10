@@ -18,19 +18,18 @@ public class GameInit
         this.height = height;
     }
 
-    public void addEntity((int,int) roomPos,Entity entity)
+    public Room? tryGetRoom(int x, int y)
     {
-        if (roomPositions.TryGetValue(roomPos,out Room room))
-        {
-            room.setEntity(entity);
-        }
-    }
-
-    public Room? getRoom((int x, int y) roomPos)
-    {
-        roomPositions.TryGetValue(roomPos, out Room? room);
+        roomPositions.TryGetValue((x, y), out Room? room);
         return room;
     }
+
+    public void addEntity((int, int) roomPos, Entity entity)
+    {
+        Room? room = tryGetRoom(roomPos.Item1, roomPos.Item2);
+        room?.setEntity(entity);
+    }
+
     public Room roomGen(string sequence)
     {
         int count = 1;
@@ -41,8 +40,14 @@ public class GameInit
         {
             (int, int) lastPos = roomPositions.Last().Key;
             Direction dir = strDir(letter);
-            Room tempRoom = new Room("" + count, width, height);
-            roomPositions.TryAdd(Misc.addTuples(lastPos, Misc.dirToPos(dir)), tempRoom);
+            (int, int) tempRoomPos = Misc.addTuples(lastPos, Misc.dirToPos(dir));
+            roomPositions.TryGetValue(tempRoomPos, out Room? tempRoom);
+            if (tempRoom == null)
+            {
+                tempRoom = new Room("" + count, width, height);
+                roomPositions.TryAdd(tempRoomPos, tempRoom);
+            }
+
             neighborLink(travRoom, lastPos, roomPositions);
             travRoom = tempRoom;
             count++;
@@ -56,7 +61,7 @@ public class GameInit
         foreach (Direction dir in Enum.GetValues<Direction>())
         {
             (int, int) tup = Misc.addTuples(Misc.dirToPos(dir), pos);
-            if (roomPositions.ContainsKey(tup))
+            if (roomPositions.ContainsKey(tup)&& roomPositions[tup] != room)
             {
                 doorLink(room, roomPositions[tup], dir);
             }
@@ -82,7 +87,7 @@ public class GameInit
         }
 
         thisRoom.setEntity(new Door($"door_{direction}", normalX, normalY, open));
-        otherRoom.setEntity(new Door($"door_{mirror}", mirrorX, mirrorY,  open));
+        otherRoom.setEntity(new Door($"door_{mirror}", mirrorX, mirrorY, open));
     }
 
     private (int x, int y) doorPos(Direction direction, int x, int y)

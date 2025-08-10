@@ -16,7 +16,11 @@ public class movementEnforcer
         new_x = player.x + offset_x;
         new_y = player.y + offset_y;
     }
-    
+
+    public bool collide()
+    {
+        return player.currentRoom.tryGet(new_x, new_y)?.collide()??false;
+    }
     public bool isPortal()
     {
         return (player.currentRoom.tryGet(new_x, new_y) is Door && !player.currentRoom.tryGet(new_x, new_y)!.collide());

@@ -85,17 +85,21 @@ public class Player : Irender
         }
 
         movementEnforcer.setOffset(x_offset, y_offset);
-        if (movementEnforcer.isPortal())
-        {
-            currentRoom = currentRoom.getRoom(direction)!;
-            x = movementEnforcer.xClamp(x_offset);
-            y = movementEnforcer.yClamp(y_offset);
-        }
 
-        else if (!movementEnforcer.isClipping())
+        if(!movementEnforcer.collide())
         {
-            x+=x_offset;
-            y+=y_offset;
+            if (movementEnforcer.isPortal())
+            {
+                currentRoom = currentRoom.getRoom(direction)!;
+                x = movementEnforcer.xClamp(x_offset);
+                y = movementEnforcer.yClamp(y_offset);
+            }
+
+            else if (!movementEnforcer.isClipping())
+            {
+                x += x_offset;
+                y += y_offset;
+            }
         }
     }
 }

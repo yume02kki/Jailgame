@@ -1,20 +1,25 @@
 ﻿using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Use : Part
+public class Use : Iexecute
 {
+    private Obj _whoami;
     private Iused? _target;
-
-    public Iused target
+    public Use(Obj whoami)
     {
-        get { return _target; }
-        set { _target = value;execute(); }
+        _whoami = whoami;
     }
-
-    public override void execute()
+    public Obj get() => _whoami;
+    public void set(Iused? target)
     {
-        target?.used();
+        _target = target;
+        execute();
+    }
+    public void execute()
+    {
+        _target?.used(_whoami);
         _target = null;
     }
 }

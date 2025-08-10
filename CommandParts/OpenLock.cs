@@ -18,7 +18,7 @@ public class OpenLock:Open
     {
         this.isLocked = false;
     }
-    public override void execute()
+    public void execute()
     {
         if (!isLocked)
         {

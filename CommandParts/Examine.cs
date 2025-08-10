@@ -1,8 +1,9 @@
 ﻿using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Examine:Part
+public class Examine:Iexecute
 {
     private Obj _item;
     private Action<Obj> _action;
@@ -13,7 +14,7 @@ public class Examine:Part
         _action = action;
     }
 
-    public override void execute()
+    public void execute()
     {
         _action(_item);
         TerminalManager.invPrint();

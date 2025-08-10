@@ -2,26 +2,30 @@
 using System.Reflection;
 using System.Text;
 using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandInterfaces;
 using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
-public class Dog : Entity, Icollide, Iused, Irender, Ilocked
+public class Dog : Entity, Icollide, Iused, Irender
 {
-    Render _renderOpen =  new Render("☖",ConsoleColor.Yellow);
-    Render _renderClosed =  new Render("☗",ConsoleColor.Red);
-    
+    private bool hungry = true;
+    Render _renderOpen = new Render("☖", ConsoleColor.Yellow);
+    Render _renderClosed = new Render("☗",ConsoleColor.Yellow);
+
     public Dog(string name, int x, int y, PartsUsed parts) : base(name, x, y, parts)
     {
     }
 
-    public override Render getRender() => (parts.get<Open>()?.isOpen ?? false) ? _renderOpen: _renderClosed;
-    public void unlock() => parts.get<OpenLock>()?.unlock();
-    public void used()
+    public override Render getRender() => hungry ?_renderClosed:_renderOpen;
+    public void used(Obj user)
     {
-        unlock();
-        parts.execute<Open>();
+        if (user == parts.get<Used>().get())
+        {
+            hungry = false;
+        }
     }
 
-    public override bool collide() => !parts.get<Open>()?.isOpen ?? false;
+    
+    public override bool collide() => hungry;
 }

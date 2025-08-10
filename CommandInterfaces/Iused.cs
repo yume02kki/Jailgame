@@ -1,9 +1,8 @@
 ﻿using MazeGame.Entitys;
 
-namespace MazeGame.CommandInterfaces;
+namespace MazeGame.MazeGame.CommandInterfaces;
 
 public interface Iused
 {
-    void used();
-
+    public void used(Obj user);
 }

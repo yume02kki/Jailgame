@@ -1,8 +1,9 @@
 ﻿using MazeGame.CommandInterfaces;
+using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Open:Part
+public class Open:Iexecute
 {
     private bool _isOpen;
     
@@ -10,7 +11,7 @@ public class Open:Part
     {
         this._isOpen = isOpen;
     }
-    public override void execute()
+    public void execute()
     {
         _isOpen = true;
     }

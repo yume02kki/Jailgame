@@ -3,14 +3,19 @@ using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
-public abstract class Obj
+public class Obj
 {
     private string _name;
     private PartsUsed _parts;
     
     public Obj(string name,PartsUsed parts)
     {
-        _parts =  parts; 
+        _parts =  parts;
+        _name = name;
+    }
+    public Obj(string name)
+    {
+        _parts =  new PartsUsed();
         _name = name;
     }
     public PartsUsed parts

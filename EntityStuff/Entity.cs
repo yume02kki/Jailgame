@@ -3,12 +3,12 @@ using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
 
-public abstract class Entity : Obj, Irender
+public class Entity : Obj, Irender
 {
     private int _x, _y;
     private Render _render;
 
-    public Entity(string name, int x, int y, PartsUsed parts, Render render) : base(name, parts)
+    public Entity(string name, int x, int y, Render render, PartsUsed parts) : base(name, parts)
     {
         this._render = render;
         _x = x;
