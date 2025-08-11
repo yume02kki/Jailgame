@@ -1,25 +1,28 @@
-﻿using MazeGame.CommandInterfaces;
-using MazeGame.MazeGame.CommandInterfaces;
+﻿using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Open:Iexecute
+public class Open:Part
 {
     private bool _isOpen;
+    private bool _locked;
     
-    public Open(bool isOpen=true)
+    public Open(bool isOpen=true,bool locked=false):base(_ => {})
     {
-        this._isOpen = isOpen;
-    }
-    public void execute()
-    {
-        _isOpen = true;
+        _locked = locked;
+        this._isOpen = isOpen&&!_locked;
     }
 
+    public void unlock()
+    {
+        _locked = false;
+    }
+    public override void execute()
+    {
+        _isOpen = !_locked;
+    }
     public bool isOpen
     {
         get => _isOpen;
-        set => _isOpen = value;
     }
-    
 }

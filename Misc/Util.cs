@@ -1,8 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿namespace MazeGame;
 
-namespace MazeGame;
-
-public static class Misc
+public static class Util
 {
     public static int clamp(int num,int border)
     {

@@ -1,5 +1,4 @@
 ﻿using MazeGame.Entitys;
-using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame;
 

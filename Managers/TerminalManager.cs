@@ -1,5 +1,4 @@
-﻿using System.Text;
-using MazeGame.Entitys;
+﻿using MazeGame.Entitys;
 
 namespace MazeGame;
 
@@ -20,7 +19,7 @@ public static class TerminalManager
     public static void invPrint()
     {
         List<Obj> inventory =  LogicManager.Instance.player.getInvList();
-        Console.WriteLine("[Inventory]: "+Misc.commaList(inventory.Select(a => a.Name).ToList()));
+        Console.WriteLine("[Inventory]: "+Util.commaList(inventory.Select(a => a.Name).ToList()));
     }
 
     public static void commandFetch()

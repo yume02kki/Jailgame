@@ -1,9 +1,8 @@
-﻿using System.Security.Cryptography;
-using MazeGame.Entitys;
+﻿using MazeGame.Entitys;
 
 namespace MazeGame;
 
-public class Player : Irender
+public class Player
 {
     private Dictionary<string,Obj> inventory = new Dictionary<string,Obj>();
     private movementEnforcer movementEnforcer;

@@ -1,20 +1,16 @@
-﻿using MazeGame.CommandInterfaces;
-using MazeGame.MazeGame.CommandInterfaces;
+﻿using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Used : Iexecute
+public class Used : Part
 {
-    private Obj _user;
-    public Used(Obj user)
+    public Used(Obj expected, Action action) : base((sender) =>
     {
-        _user = user;
-    }
-    
-    public Obj get() => _user;
-    
-    //TODO: fix interface segregation 
-    public void execute()
+        if (sender == expected)
+        {
+            action();
+        }
+    })
     {
     }
 }

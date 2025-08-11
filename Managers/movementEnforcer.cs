@@ -28,11 +28,11 @@ public class movementEnforcer
 
     public int xClamp(int x_offset)
     {
-            return Misc.clamp(player.x+x_offset, player.currentRoom.playAreaWidth());
+            return Util.clamp(player.x+x_offset, player.currentRoom.playAreaWidth());
     }
     public int yClamp(int y_offset)
     {
-            return Misc.clamp(player.y+y_offset, player.currentRoom.playAreaHeight());
+            return Util.clamp(player.y+y_offset, player.currentRoom.playAreaHeight());
     }
 
     public bool isClipping()

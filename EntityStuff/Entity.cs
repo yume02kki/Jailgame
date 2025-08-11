@@ -1,21 +1,21 @@
-﻿using MazeGame.CommandInterfaces;
-using MazeGame.MazeGame.CommandParts;
+﻿using MazeGame.MazeGame.CommandInterfaces;
 
 namespace MazeGame.Entitys;
 
-public class Entity : Obj, Irender
+public class Entity : Obj
 {
     private int _x, _y;
     private Render _render;
 
-    public Entity(string name, int x, int y, Render render, PartsUsed parts) : base(name, parts)
+    
+    public Entity(string name, int x, int y, Render render, params List<Part> parts) : base(name, parts)
     {
         this._render = render;
         _x = x;
         _y = y;
     }
 
-    public Entity(string name, int x, int y, PartsUsed parts) : base(name, parts)
+    public Entity(string name, int x, int y,params List<Part> parts) : base(name, parts)
     {
         _render = new Render("?");
         _x = x;

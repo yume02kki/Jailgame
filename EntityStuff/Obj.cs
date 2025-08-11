@@ -1,4 +1,4 @@
-﻿using MazeGame.CommandInterfaces;
+﻿using MazeGame.MazeGame.CommandInterfaces;
 using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame.Entitys;
@@ -8,9 +8,9 @@ public class Obj
     private string _name;
     private PartsUsed _parts;
     
-    public Obj(string name,PartsUsed parts)
+    public Obj(string name,params List<Part> parts)
     {
-        _parts =  parts;
+        _parts = new PartsUsed(parts);
         _name = name;
     }
     public Obj(string name)

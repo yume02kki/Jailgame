@@ -1,6 +1,4 @@
-﻿using MazeGame.Entitys;
-
-namespace MazeGame;
+﻿namespace MazeGame;
 
 public struct Render
 {
