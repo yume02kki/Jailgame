@@ -17,6 +17,10 @@ public class movementEnforcer
         new_y = player.y + offset_y;
     }
 
+    public void onLoad()
+    {
+        player.currentRoom.getEntityList().ForEach(ent => ent.parts.execute<OnLoad>());
+    }
     public bool collide()
     {
         return player.currentRoom.tryGet(new_x, new_y)?.collide()??false;

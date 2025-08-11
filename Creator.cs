@@ -2,19 +2,19 @@
 
 namespace MazeGame;
 
-public class LogicManager
+public class Creator
 {
     private const int SIZE_W = 6;
     private const int SIZE_H = 4;
     private const string SEQUENCE = "LUURULUDL";
 
     //singleton
-    private static readonly Lazy<LogicManager> _instance = new Lazy<LogicManager>(() => new LogicManager());
-    public static LogicManager Instance => _instance.Value;
+    private static readonly Lazy<Creator> _instance = new Lazy<Creator>(() => new Creator());
+    public static Creator Instance => _instance.Value;
     public bool gameOver = false;
     public Player player;
 
-    private LogicManager()
+    private Creator()
     {
         GameProfile profile = new GameProfile(SIZE_W, SIZE_H, SEQUENCE);
         GameInit init = profile.init;
@@ -56,6 +56,16 @@ public class LogicManager
             Render render = new Render("◡", ConsoleColor.Yellow);
             Examine examine = new Examine(dogFood, player.addInv);
             init.addEntity((0, 3), new Entity("bowl", 4, 1, render, examine));
+        }
+        
+        //Guard
+        {
+            Render render = new Render("¶", ConsoleColor.Blue);
+            OnLoad kill = new OnLoad(() =>
+            {
+                gameOver = true;
+            });
+            init.addEntity((-2, 3), new Entity("guard", 2, 2, render,kill));
         }
     }
 }

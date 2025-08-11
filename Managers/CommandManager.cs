@@ -35,10 +35,10 @@ public static class CommandManager
             Debugger.Break();
             obj.Last().parts.execute<Used>(obj.First());
         });
-        commands.Add("up", obj => LogicManager.Instance.player.move(Direction.up));
-        commands.Add("right", obj => LogicManager.Instance.player.move(Direction.right));
-        commands.Add("down", obj => LogicManager.Instance.player.move(Direction.down));
-        commands.Add("left", obj => LogicManager.Instance.player.move(Direction.left));
+        commands.Add("up", obj => Creator.Instance.player.move(Direction.up));
+        commands.Add("right", obj => Creator.Instance.player.move(Direction.right));
+        commands.Add("down", obj => Creator.Instance.player.move(Direction.down));
+        commands.Add("left", obj => Creator.Instance.player.move(Direction.left));
         //shortcuts
         commands.Add("u", obj => commands["up"](obj));
         commands.Add("d", obj => commands["down"](obj));
@@ -116,7 +116,7 @@ public static class CommandManager
     private static List<Obj> getOperands(string[] names)
     {
         List<Obj> result = new List<Obj>();
-        Player player = LogicManager.Instance.player;
+        Player player = Creator.Instance.player;
         foreach (string name in names)
         {
             string nameFound = autocomplete(name, player.getInvList().Select(obj => obj.Name).ToList(),

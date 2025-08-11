@@ -6,11 +6,14 @@ class GFG
     public static void Main(String[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
-        LogicManager logicManager = LogicManager.Instance;
-        while (!logicManager.gameOver)
+        Creator creator = Creator.Instance;
+        while (!creator.gameOver)
         {
-            TerminalManager.tui(logicManager.player);
-            TerminalManager.render(logicManager.player);
+            TerminalManager.tui(creator.player);
+            TerminalManager.render(creator.player);
         }
+
+        Console.WriteLine("\n=== YOU LOSE ===\n");
+        TerminalManager.tui(creator.player);
     }
 }

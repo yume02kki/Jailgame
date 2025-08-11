@@ -33,23 +33,28 @@ public class GameInit
         Room spawnRoom = new Room("spawn", width, height);
         roomPositions.Add((0, 0), spawnRoom);
         Room travRoom = spawnRoom;
+        (int, int) lastPos = roomPositions.Last().Key;
         foreach (char letter in sequence)
         {
-            (int, int) lastPos = roomPositions.Last().Key;
             Direction dir = strDir(letter);
             (int, int) tempRoomPos = Util.addTuples(lastPos, Util.dirToPos(dir));
             roomPositions.TryGetValue(tempRoomPos, out Room? tempRoom);
             if (tempRoom == null)
             {
                 tempRoom = new Room("" + count, width, height);
-                roomPositions.TryAdd(tempRoomPos, tempRoom);
+                roomPositions.Add(tempRoomPos, tempRoom);
+            }
+            else
+            {
+                lastPos = tempRoomPos;
             }
 
             neighborLink(travRoom, lastPos, roomPositions);
             travRoom = tempRoom;
+            lastPos = tempRoomPos;
             count++;
         }
-
+        
         return spawnRoom;
     }
 

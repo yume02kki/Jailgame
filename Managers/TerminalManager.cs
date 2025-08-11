@@ -18,7 +18,7 @@ public static class TerminalManager
 
     public static void invPrint()
     {
-        List<Obj> inventory =  LogicManager.Instance.player.getInvList();
+        List<Obj> inventory =  Creator.Instance.player.getInvList();
         Console.WriteLine("[Inventory]: "+Util.commaList(inventory.Select(a => a.Name).ToList()));
     }
 

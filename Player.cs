@@ -92,6 +92,9 @@ public class Player
                 currentRoom = currentRoom.getRoom(direction)!;
                 x = movementEnforcer.xClamp(x_offset);
                 y = movementEnforcer.yClamp(y_offset);
+                
+                //run onLoad parts for room
+                movementEnforcer.onLoad();
             }
 
             else if (!movementEnforcer.isClipping())
