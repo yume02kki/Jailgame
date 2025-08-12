@@ -1,19 +1,21 @@
-﻿namespace MazeGame.MazeGame.CommandInterfaces;
+﻿using MazeGame.MazeGame.Module;
 
-public abstract class Part
+namespace MazeGame.MazeGame.CommandInterfaces;
+
+public abstract class Writer : Part
 {
     Action<Object> _action;
 
-    public Part()
+    public Writer()
     {
     }
 
-    public Part(Action<Object> action)
+    public Writer(Action<Object> action)
     {
         _action = action;
     }
 
-    public Part(Action action)
+    public Writer(Action action)
     {
         _action = _ => action();
     }

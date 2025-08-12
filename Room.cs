@@ -60,7 +60,6 @@ public class Room
                 otherRoom.rightRoom = this;
                 break;
         }
-
     }
 
     public void setEntity(Entity entity)
@@ -71,7 +70,7 @@ public class Room
 
     public Entity? getEntity(string name)
     {
-        return entityDict.Values.ToList().Find((a) => a.Name == name);
+        return entityDict.Values.ToList().Find(a => a.Name == name);
     }
 
     public String getName()

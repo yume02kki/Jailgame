@@ -2,7 +2,7 @@
 
 namespace MazeGame.Entitys;
 
-public class OnLoad : Part
+public class OnLoad : Writer
 {
     public OnLoad(Action action) : base(_ => action())
     {

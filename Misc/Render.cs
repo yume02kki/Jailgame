@@ -4,11 +4,13 @@ public struct Render
 {
     private string _icon;
     private ConsoleColor? _color;
+
     public Render(string icon)
     {
         _icon = icon;
         _color = null;
     }
+
     public Render(string icon, ConsoleColor? color)
     {
         _icon = icon;
@@ -24,5 +26,4 @@ public struct Render
     {
         return this._color;
     }
-    
 }

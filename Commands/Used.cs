@@ -2,7 +2,7 @@
 
 namespace MazeGame.Entitys;
 
-public class Used : Part
+public class Used : Writer
 {
     public Used(Obj expected, Action action) : base((sender) =>
     {

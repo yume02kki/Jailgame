@@ -4,7 +4,7 @@ namespace MazeGame;
 
 public class Player
 {
-    private Dictionary<string,Obj> inventory = new Dictionary<string,Obj>();
+    private Dictionary<string, Obj> inventory = new Dictionary<string, Obj>();
     private movementEnforcer movementEnforcer;
     private Room _currentRoom;
     private int _x = 0;
@@ -30,26 +30,24 @@ public class Player
         get => _y;
         set => _y = value;
     }
-    
 
     public Room currentRoom
     {
         get => _currentRoom;
         set => _currentRoom = value;
     }
-    
-    public Render getRender() => this._render; 
+
+    public Render getRender() => this._render;
+
     public Obj? getInv(string itemName)
     {
-        
-        return inventory.ContainsKey(itemName)?inventory[itemName]:null;
+        return inventory.ContainsKey(itemName) ? inventory[itemName] : null;
     }
 
     public List<Obj> getInvList()
     {
         return inventory.Values.ToList();
     }
-    
 
     public void addInv(Obj item)
     {
@@ -60,8 +58,6 @@ public class Player
     {
         inventory.Remove(itemName);
     }
-
-
 
     public void move(Direction direction)
     {
@@ -84,19 +80,17 @@ public class Player
         }
 
         movementEnforcer.setOffset(x_offset, y_offset);
-
-        if(!movementEnforcer.collide())
+        if (!movementEnforcer.collide())
         {
             if (movementEnforcer.isPortal())
             {
                 currentRoom = currentRoom.getRoom(direction)!;
                 x = movementEnforcer.xClamp(x_offset);
                 y = movementEnforcer.yClamp(y_offset);
-                
+
                 //run onLoad parts for room
                 movementEnforcer.onLoad();
             }
-
             else if (!movementEnforcer.isClipping())
             {
                 x += x_offset;

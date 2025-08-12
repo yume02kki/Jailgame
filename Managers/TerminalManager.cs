@@ -1,4 +1,5 @@
 ﻿using MazeGame.Entitys;
+using MazeGame.MazeGame.CommandParts;
 
 namespace MazeGame;
 
@@ -18,8 +19,8 @@ public static class TerminalManager
 
     public static void invPrint()
     {
-        List<Obj> inventory =  Creator.Instance.player.getInvList();
-        Console.WriteLine("[Inventory]: "+Util.commaList(inventory.Select(a => a.Name).ToList()));
+        List<Obj> inventory = Creator.Instance.player.getInvList();
+        Console.WriteLine("[Inventory]: " + Util.commaList(inventory.Select(a => a.Name).ToList()));
     }
 
     public static void commandFetch()
@@ -27,12 +28,12 @@ public static class TerminalManager
         bool validInput = false;
         while (!validInput)
         {
-            Color.write("open | examine | use | inv | move | save | load",ConsoleColor.DarkMagenta,newLine:true);
+            Color.write("open | examine | use | inv | move | save | load", ConsoleColor.DarkMagenta, newLine: true);
             Console.Write("\n> ");
             validInput = CommandManager.get(Console.ReadLine() ?? "");
             if (!validInput)
             {
-                Color.write("Invalid command, try again", ConsoleColor.Red,newLine:true);
+                Color.write("Invalid command, try again", ConsoleColor.Red, newLine: true);
             }
         }
     }
@@ -52,7 +53,7 @@ public static class TerminalManager
                 }
                 else if (room.tryGet(x, y) != null)
                 {
-                    Color.write(room.tryGet(x, y)!.getRender());
+                    Color.write(room.tryGet(x, y)!.parts.read<Render, Renders>());
                 }
                 else if (y == 0 || y == height || x == 0 || x == width)
                 {

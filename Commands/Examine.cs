@@ -2,12 +2,12 @@
 
 namespace MazeGame.Entitys;
 
-public class Examine : Part
+public class Examine : Writer
 {
     private Obj _item;
     private Action<Obj> _action;
 
-    public Examine(Obj item, Action<Obj> action) 
+    public Examine(Obj item, Action<Obj> action)
     {
         _item = item;
         _action = action;

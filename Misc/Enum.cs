@@ -8,6 +8,13 @@ public enum Direction
     left
 }
 
+public enum GameStatus
+{
+    ongoing = 0,
+    win = 1,
+    lose = 2
+}
+
 public enum CommandsName
 {
     up,

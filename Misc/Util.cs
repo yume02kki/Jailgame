@@ -2,19 +2,21 @@
 
 public static class Util
 {
-    public static int clamp(int num,int border)
+    public static int clamp(int num, int border)
     {
-        return (num >= border) ? 0 : (num <= 0 ? border: num);
+        return (num >= border) ? 0 : (num <= 0 ? border : num);
     }
 
     public static string commaList(List<string> list)
     {
         return string.Join(", ", list);
     }
+
     public static (int, int) addTuples((int a, int b) pa, (int a, int b) pb)
     {
-        return (pa.a+pb.a,pa.b+pb.b);
+        return (pa.a + pb.a, pa.b + pb.b);
     }
+
     public static (int, int) dirToPos(Direction dir)
     {
         int x = 0;
@@ -34,8 +36,10 @@ public static class Util
                 x++;
                 break;
         }
-        return (x,y);
+
+        return (x, y);
     }
+
     public static Direction mirror(Direction direction)
     {
         switch (direction)

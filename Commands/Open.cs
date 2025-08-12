@@ -2,25 +2,27 @@
 
 namespace MazeGame.Entitys;
 
-public class Open:Part
+public class Open : Writer
 {
     private bool _isOpen;
     private bool _locked;
-    
-    public Open(bool isOpen=true,bool locked=false):base(_ => {})
+
+    public Open(bool isOpen = true, bool locked = false)
     {
-        _locked = locked;
-        this._isOpen = isOpen&&!_locked;
+        this._isOpen = !locked && isOpen;
+        this._locked = locked;
     }
 
     public void unlock()
     {
         _locked = false;
     }
+
     public override void execute()
     {
         _isOpen = !_locked;
     }
+
     public bool isOpen
     {
         get => _isOpen;
