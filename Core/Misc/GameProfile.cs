@@ -10,7 +10,7 @@ public class GameProfile
     {
         init = new GameInit(width, height);
         rooms = new();
-        rooms["spawn"] = init.roomGen(RoomSequence);
+        rooms["spawn"] = init.generateRooms(RoomSequence);
         rooms["exit"] = init.tryGetRoom(-1, 4)!;
         rooms["dog"] = init.tryGetRoom(-1, 3)!;
         rooms["guard"] = init.tryGetRoom(-2, 3)!;

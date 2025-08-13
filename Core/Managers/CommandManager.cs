@@ -62,7 +62,7 @@ public static class CommandManager
                 return true;
             }
         }
-        catch (Exception ex) when (ex is InvalidCastException || ex is NullReferenceException)
+        catch (Exception exception) when (exception is InvalidCastException || exception is NullReferenceException)
         {
         }
 
@@ -76,8 +76,8 @@ public static class CommandManager
             return "";
         }
 
-        List<string> list = lists.SelectMany((a) => a).ToList();
-        List<string> filter = list.FindAll((a) => a.StartsWith(str));
+        List<string> list = lists.SelectMany(listTemp => listTemp).ToList();
+        List<string> filter = list.FindAll(word => word.StartsWith(str));
         switch (filter.Count)
         {
             case 0:
@@ -119,17 +119,17 @@ public static class CommandManager
         foreach (string name in names)
         {
             string nameFound = autocomplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
-                player.currentRoom.getEntityList().Select(ent => ent.name).ToList());
-            GameObject? a = player.getFromInventory(nameFound);
-            GameObject? b = player.currentRoom.getEntity(nameFound);
-            if (a != null)
+                player.currentRoom.getEntityList().Select(entity => entity.name).ToList());
+            GameObject? inventoryOperand = player.getFromInventory(nameFound);
+            GameObject? roomOperand = player.currentRoom.getEntity(nameFound);
+            if (inventoryOperand != null)
             {
-                result.Add(a);
+                result.Add(inventoryOperand);
             }
 
-            if (b != null)
+            if (roomOperand != null)
             {
-                result.Add(b);
+                result.Add(roomOperand);
             }
         }
 

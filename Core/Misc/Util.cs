@@ -12,16 +12,16 @@ public static class Util
         return string.Join(", ", list);
     }
 
-    public static (int, int) addTuples((int a, int b) pa, (int a, int b) pb)
+    public static (int, int) addTuples((int a, int b) aPair, (int a, int b) bPair)
     {
-        return (pa.a + pb.a, pa.b + pb.b);
+        return (aPair.a + bPair.a, aPair.b + bPair.b);
     }
 
-    public static (int, int) directionToPosition(Direction dir)
+    public static (int, int) directionToPosition(Direction direction)
     {
         int x = 0;
         int y = 0;
-        switch (dir)
+        switch (direction)
         {
             case Direction.up:
                 y++;

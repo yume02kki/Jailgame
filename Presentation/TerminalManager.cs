@@ -14,7 +14,7 @@ public static class TerminalManager
     public static void renderFrame(Player player)
     {
         string entityNames = player.currentRoom.getEntityList().Count > 0
-            ? player.currentRoom.getEntityList().Select(e => e.ToString()).Aggregate((acc, next) => acc + ", " + next)
+            ? player.currentRoom.getEntityList().Select(entity => entity.ToString()).Aggregate((acc, next) => acc + ", " + next)
             : "";
         String phrase = String.Format(INFO_PHRASE, player.currentRoom, entityNames);
         Console.WriteLine(phrase);
@@ -24,7 +24,7 @@ public static class TerminalManager
     public static void printInventory()
     {
         List<GameObject> inventory = GameCreator.Instance.player.getInventoryList();
-        Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(a => a.name).ToList()));
+        Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(gameObject => gameObject.name).ToList()));
     }
 
     public static void commandFetch()

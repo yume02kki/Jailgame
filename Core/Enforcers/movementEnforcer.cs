@@ -22,7 +22,7 @@ public class movementEnforcer
 
     public void onLoad()
     {
-        player.currentRoom.getEntityList().ForEach(ent => ent.comps.execute<OnLoad>());
+        player.currentRoom.getEntityList().ForEach(entity => entity.comps.execute<OnLoad>());
     }
 
     public bool collide()
