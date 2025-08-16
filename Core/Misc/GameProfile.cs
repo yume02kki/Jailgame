@@ -11,10 +11,10 @@ public class GameProfile
         init = new GameInit(width, height);
         rooms = new();
         rooms["spawn"] = init.generateRooms(RoomSequence);
-        rooms["exit"] = init.tryGetRoom(-1, 4)!;
-        rooms["dog"] = init.tryGetRoom(-1, 3)!;
-        rooms["guard"] = init.tryGetRoom(-2, 3)!;
-        rooms["dogfood"] = init.tryGetRoom(0, 3)!;
-        player = new Player(rooms["spawn"], rooms["spawn"].playAreaWidth() - 1, rooms["spawn"].playAreaHeight() - 1);
+        rooms["exit"] = init.tryGetRoom(new IntVector2(-1, 4))!;
+        rooms["dog"] = init.tryGetRoom(new IntVector2(-1, 3))!;
+        rooms["guard"] = init.tryGetRoom( new IntVector2(-2, 3))!;
+        rooms["dogfood"] = init.tryGetRoom(new IntVector2(0, 3))!;
+        player = new Player(rooms["spawn"], new IntVector2(rooms["spawn"].playAreaWidth() - 1, rooms["spawn"].playAreaHeight() - 1));
     }
 }

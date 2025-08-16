@@ -1,4 +1,5 @@
-﻿using MazeGame.MazeGame.Core.Interactables;
+﻿using System.Numerics;
+using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Misc;
 
 namespace MazeGame.MazeGame.Core;
@@ -66,7 +67,7 @@ public class Room
     public void setEntity(Entity entity)
     {
         entityDict[entity.name] = entity;
-        map[entity.x, entity.y] = entity;
+        map[entity.pos.X,entity.pos.Y] = entity;
     }
 
     public Entity? getEntity(string name)
@@ -109,11 +110,11 @@ public class Room
         return this.map.GetLength(1);
     }
 
-    public Entity? tryGet(int x, int y)
+    public Entity? tryGet(IntVector2 pos)
     {
-        if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight())
+        if (pos.X >= 0 && pos.Y < getWidth() && pos.X >= 0 && pos.Y < getHeight())
         {
-            return map[x, y];
+            return map[pos.X, pos.Y];
         }
 
         return null;

@@ -14,7 +14,8 @@ public static class TerminalManager
     public static void renderFrame(Player player)
     {
         string entityNames = player.currentRoom.getEntityList().Count > 0
-            ? player.currentRoom.getEntityList().Select(entity => entity.ToString()).Aggregate((acc, next) => acc + ", " + next)
+            ? player.currentRoom.getEntityList().Select(entity => entity.ToString())
+                .Aggregate((acc, next) => acc + ", " + next)
             : "";
         String phrase = String.Format(INFO_PHRASE, player.currentRoom, entityNames);
         Console.WriteLine(phrase);
@@ -24,7 +25,8 @@ public static class TerminalManager
     public static void printInventory()
     {
         List<GameObject> inventory = GameCreator.Instance.player.getInventoryList();
-        Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(gameObject => gameObject.name).ToList()));
+        Console.WriteLine("[Inventory]: " +
+                          Util.listToString(inventory.Select(gameObject => gameObject.name).ToList()));
     }
 
     public static void commandFetch()
@@ -47,17 +49,20 @@ public static class TerminalManager
         Room room = player.currentRoom;
         int width = room.playAreaWidth();
         int height = room.playAreaHeight();
-        for (int y = 0; y <= height; y++)
+        IntVector2 scanIterator = new IntVector2(0, 0);
+        for (scanIterator.Y = 0; scanIterator.Y <= height; scanIterator.Y++)
         {
-            for (int x = 0; x <= width; x++)
+            for (scanIterator.X = 0; scanIterator.X <= width; scanIterator.X++)
             {
-                if (player.x == x && player.y == y)
+                int x = scanIterator.X;
+                int y = scanIterator.Y;
+                if (scanIterator == player.pos)
                 {
                     Color.write(player.render);
                 }
-                else if (room.tryGet(x, y) != null)
+                else if (room.tryGet(scanIterator) != null)
                 {
-                    Color.write(room.tryGet(x, y)!.comps.read<Render, Renders>());
+                    Color.write(room.tryGet(scanIterator)!.components.read<Render, Renders>());
                 }
                 else if (y == 0 || y == height || x == 0 || x == width)
                 {
@@ -77,6 +82,7 @@ public static class TerminalManager
                 {
                     Console.Write(" ");
                 }
+
             }
 
             Console.WriteLine();

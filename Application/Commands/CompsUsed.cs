@@ -4,13 +4,13 @@ namespace MazeGame.MazeGame.Application.Commands;
 
 public class CompsUsed
 {
-    private List<Component> comps;
-    public CompsUsed(params List<Component> components) => this.comps = new List<Component>(components);
-    public CompsUsed() => this.comps = new List<Component>();
-    public Writer? get<TComponent>() where TComponent : Writer => comps.Find(comp => comp is TComponent) as TComponent;
+    private List<Component> components;
+    public CompsUsed(params List<Component> components) => this.components = new List<Component>(components);
+    public CompsUsed() => this.components = new List<Component>();
+    public Writer? get<TComponent>() where TComponent : Writer => components.Find(component => component is TComponent) as TComponent;
 
     public Reader<GRead>? get<GRead, TComponent>() where TComponent : Reader<GRead> =>
-        comps.Find(comp => comp is Reader<GRead>) as Reader<GRead>;
+        components.Find(component => component is Reader<GRead>) as Reader<GRead>;
 
     public void execute<TComponent>() where TComponent : Writer => (get<TComponent>())?.execute();
 
@@ -20,5 +20,5 @@ public class CompsUsed
         return reader is Reader<GRead> ? ((Reader<GRead>)reader).read() : default;
     }
 
-    public void add(Writer writer) => comps.Add(writer);
+    public void add(Writer writer) => components.Add(writer);
 }

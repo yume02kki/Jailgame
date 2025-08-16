@@ -8,7 +8,7 @@ public class GameInit
 {
     private int width;
     private int height;
-    private Dictionary<(int x, int y), Room> roomPositions;
+    private Dictionary<IntVector2, Room> roomPositions;
 
     public GameInit(int width, int height)
     {
@@ -17,15 +17,15 @@ public class GameInit
         this.height = height;
     }
 
-    public Room? tryGetRoom(int x, int y)
+    public Room? tryGetRoom(IntVector2 pos)
     {
-        roomPositions.TryGetValue((x, y), out Room? room);
+        roomPositions.TryGetValue(pos, out Room? room);
         return room;
     }
 
-    public void addEntity((int, int) roomPosition, Entity entity)
+    public void addEntity(IntVector2 roomPosition, Entity entity)
     {
-        Room? room = tryGetRoom(roomPosition.Item1, roomPosition.Item2);
+        Room? room = tryGetRoom(new IntVector2(roomPosition.X, roomPosition.Y));
         room?.setEntity(entity);
     }
 
@@ -33,13 +33,13 @@ public class GameInit
     {
         int count = 1;
         Room spawnRoom = new Room("spawn", width, height);
-        roomPositions.Add((0, 0), spawnRoom);
+        roomPositions.Add(new IntVector2(0,0), spawnRoom);
         Room traverseRoom = spawnRoom;
-        (int, int) lastPosition = roomPositions.Last().Key;
+        IntVector2 lastPosition = roomPositions.Last().Key;
         foreach (char letter in sequence)
         {
             Direction direction = charToDirection(letter);
-            (int, int) tempRoomPosition = Util.addTuples(lastPosition, Util.directionToPosition(direction));
+            IntVector2 tempRoomPosition =lastPosition + Util.directionToPosition(direction);
             roomPositions.TryGetValue(tempRoomPosition, out Room? tempRoom);
             if (tempRoom == null)
             {
@@ -61,11 +61,11 @@ public class GameInit
         return spawnRoom;
     }
 
-    private void neighborLink(Room room, (int, int) position, Dictionary<(int x, int y), Room> roomPositions)
+    private void neighborLink(Room room, IntVector2 position, Dictionary<IntVector2, Room> roomPositions)
     {
         foreach (Direction direction in Enum.GetValues<Direction>())
         {
-            (int, int) addedPosition = Util.addTuples(Util.directionToPosition(direction), position);
+            IntVector2 addedPosition = Util.directionToPosition(direction) + position;
             if (roomPositions.ContainsKey(addedPosition))
             {
                 doorLink(room, roomPositions[addedPosition], direction);
@@ -76,23 +76,24 @@ public class GameInit
     private void doorLink(Room thisRoom, Room otherRoom, Direction direction)
     {
         thisRoom.linkRoom(direction, otherRoom);
-        int normalX, normalY;
-        (normalX, normalY) = getDoorPosition(direction, thisRoom.playAreaWidth(), thisRoom.playAreaHeight());
-        int mirrorX = Util.clamp(normalX, otherRoom.playAreaWidth());
-        int mirrorY = Util.clamp(normalY, otherRoom.playAreaHeight());
+        IntVector2 normalPos = getDoorPosition(direction, new IntVector2(thisRoom.playAreaWidth(), thisRoom.playAreaHeight()));
+        IntVector2 mirrorPos = new IntVector2
+        {
+            X = Util.clamp(normalPos.X, otherRoom.playAreaWidth()),
+            Y = Util.clamp(normalPos.Y, otherRoom.playAreaHeight())
+        };
+        
         Direction mirror = Util.mirrorDirection(direction);
         if (direction == Direction.right || direction == Direction.down)
         {
-            int tempX = normalX, tempY = normalY;
-            normalX = mirrorX;
-            normalY = mirrorY;
-            mirrorX = tempX;
-            mirrorY = tempY;
+            IntVector2 tempPos = new(normalPos);
+            normalPos = mirrorPos;
+            mirrorPos = tempPos;
         }
 
-        thisRoom.setEntity(new Entity($"door_{direction}", normalX, normalY, new Open(),
+        thisRoom.setEntity(new Entity($"door_{direction}", normalPos, new Open(),
             new Renders(new Render("☐", ConsoleColor.Green))));
-        otherRoom.setEntity(new Entity($"door_{mirror}", mirrorX, mirrorY, new Open(),
+        otherRoom.setEntity(new Entity($"door_{mirror}", mirrorPos, new Open(),
             new Renders(new Render("☐", ConsoleColor.Green))));
     }
 
@@ -102,7 +103,7 @@ public class GameInit
         return direction == null ? doors.First() : doors.Find(door => door.name.Contains(direction.ToString()));
     }
 
-    private (int x, int y) getDoorPosition(Direction direction, int x, int y)
+    private IntVector2 getDoorPosition(Direction direction, IntVector2 pos)
     {
         double multX = 1;
         double multY = 1;
@@ -117,7 +118,7 @@ public class GameInit
             multY = 0.5;
         }
 
-        return ((int)Math.Ceiling(x * multX), (int)Math.Ceiling(y * multY));
+        return new IntVector2((int)Math.Ceiling(pos.X * multX), (int)Math.Ceiling(pos.Y * multY));
     }
 
     private Direction charToDirection(char letter)

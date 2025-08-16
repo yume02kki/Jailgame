@@ -1,0 +1,51 @@
+﻿using System.Numerics;
+using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Core.Misc;
+
+namespace MazeGame.MazeGame.Core.Enforcers;
+
+public class MovementEnforcer
+{
+    private Player player;
+    private IntVector2 offsetPos;
+    
+    public MovementEnforcer(Player player,IntVector2 offsetPos)
+    {
+        this.offsetPos = offsetPos;
+        this.player = player;
+    }
+    
+    public void onLoad()
+    {
+        player.currentRoom.getEntityList().ForEach(entity => entity.components.execute<OnLoad>());
+    }
+
+    public bool collide()
+    {
+        return player.currentRoom.tryGet(
+            player.pos+offsetPos)?.components.read<bool, Collide>() ?? false;
+    }
+
+    public bool isPortal()
+    {
+        return ((player.currentRoom.tryGet(player.pos+offsetPos))?.name?.Contains("door") ?? false) &&
+               !(player.currentRoom.tryGet(player.pos+offsetPos)?.components.read<bool, Collide>() ?? false);
+    }
+
+    public IntVector2 clamp()
+    {
+        IntVector2 result = new()
+        {
+            X = Util.clamp(player.pos.X + offsetPos.X, player.currentRoom.playAreaWidth()),
+            Y = Util.clamp(player.pos.Y + offsetPos.Y, player.currentRoom.playAreaHeight())
+        };
+        return result;
+    }
+
+    public bool isClipping()
+    {
+        IntVector2 newPos = new IntVector2(offsetPos + player.pos);
+        return (player.currentRoom.playAreaWidth() <= newPos.X || newPos.X == 0) ||
+               (player.currentRoom.playAreaHeight() <= newPos.Y || newPos.Y == 0);
+    }
+}

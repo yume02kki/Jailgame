@@ -18,13 +18,13 @@ public static class CommandManager
             return;
         }
 
-        CompsUsed? parts = obj[0]?.comps;
+        CompsUsed? parts = obj[0]?.components;
         if (parts == null)
         {
             return;
         }
 
-        obj.First().comps.execute<T>();
+        obj.First().components.execute<T>();
     }
 
     static CommandManager()
@@ -32,7 +32,7 @@ public static class CommandManager
         commands.Add("open", obj => exec<Open>(obj));
         commands.Add("examine", obj => exec<Examine>(obj));
         commands.Add("inv", obj => TerminalManager.printInventory());
-        commands.Add("use", obj => obj.Last().comps.get<Used>().execute(obj.First()));
+        commands.Add("use", obj => obj.Last().components.get<Used>().execute(obj.First()));
         commands.Add("up", obj => GameCreator.Instance.player.move(Direction.up));
         commands.Add("right", obj => GameCreator.Instance.player.move(Direction.right));
         commands.Add("down", obj => GameCreator.Instance.player.move(Direction.down));

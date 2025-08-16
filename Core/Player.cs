@@ -1,4 +1,5 @@
-﻿using MazeGame.MazeGame.Core.Enforcers;
+﻿using System.Numerics;
+using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Misc;
 using MazeGame.MazeGame.Presentation;
@@ -7,19 +8,16 @@ namespace MazeGame.MazeGame.Core;
 
 public class Player
 {
-    private Dictionary<string, GameObject> inventory = new Dictionary<string, GameObject>();
-    private movementEnforcer movementEnforcer;
+    private Dictionary<string, GameObject> inventory;
     public Room currentRoom { get; set; }
-    public int x { get; set; }
-    public int y { get; set; }
+    public IntVector2 pos { get; set; } = new(0, 0);
     public Render render { get; } = new Render("☺");
 
-    public Player(Room room, int x, int y)
+    public Player(Room room, IntVector2 pos, Dictionary<string, GameObject>? inventory = null)
     {
+        this.inventory = inventory ?? new Dictionary<string, GameObject>();
         this.currentRoom = room;
-        this.x = x;
-        this.y = y;
-        this.movementEnforcer = new movementEnforcer(this);
+        this.pos = pos;
     }
 
     public GameObject? getFromInventory(string itemName)
@@ -39,40 +37,37 @@ public class Player
 
     public void move(Direction direction)
     {
-        int x_offset = 0;
-        int y_offset = 0;
+        IntVector2 posOffset = new(0, 0);
         switch (direction)
         {
             case Direction.up:
-                y_offset--;
+                posOffset.Y--;
                 break;
             case Direction.down:
-                y_offset++;
+                posOffset.Y++;
                 break;
             case Direction.left:
-                x_offset--;
+                posOffset.X--;
                 break;
             case Direction.right:
-                x_offset++;
+                posOffset.X++;
                 break;
         }
+        MovementEnforcer movementEnforcer = new(this, posOffset);
 
-        movementEnforcer.setOffset(x_offset, y_offset);
         if (!movementEnforcer.collide())
         {
             if (movementEnforcer.isPortal())
             {
                 currentRoom = currentRoom.getRoom(direction)!;
-                x = movementEnforcer.xClamp(x_offset);
-                y = movementEnforcer.yClamp(y_offset);
+                pos = movementEnforcer.clamp();
 
                 //run onLoad parts for room
                 movementEnforcer.onLoad();
             }
             else if (!movementEnforcer.isClipping())
             {
-                x += x_offset;
-                y += y_offset;
+                pos += posOffset;
             }
         }
     }

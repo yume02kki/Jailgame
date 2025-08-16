@@ -1,4 +1,6 @@
-﻿namespace MazeGame.MazeGame.Core.Misc;
+﻿using System.Numerics;
+
+namespace MazeGame.MazeGame.Core.Misc;
 
 public static class Util
 {
@@ -12,32 +14,26 @@ public static class Util
         return string.Join(", ", list);
     }
 
-    public static (int, int) addTuples((int a, int b) aPair, (int a, int b) bPair)
+    public static IntVector2 directionToPosition(Direction direction)
     {
-        return (aPair.a + bPair.a, aPair.b + bPair.b);
-    }
-
-    public static (int, int) directionToPosition(Direction direction)
-    {
-        int x = 0;
-        int y = 0;
+        IntVector2 pos = new IntVector2(0,0);
         switch (direction)
         {
             case Direction.up:
-                y++;
+                pos.Y++;
                 break;
             case Direction.down:
-                y--;
+                pos.Y--;
                 break;
             case Direction.left:
-                x--;
+                pos.X--;
                 break;
             case Direction.right:
-                x++;
+                pos.X++;
                 break;
         }
 
-        return (x, y);
+        return pos;
     }
 
     public static Direction mirrorDirection(Direction direction)

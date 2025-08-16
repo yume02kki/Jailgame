@@ -6,17 +6,17 @@ namespace MazeGame.MazeGame.Core.Interactables;
 public class GameObject
 {
     public string name { get; set; }
-    public CompsUsed comps { get; set; }
+    public CompsUsed components { get; set; }
 
-    public GameObject(string name, params List<Component> comps)
+    public GameObject(string name, params List<Component> components)
     {
-        this.comps = new CompsUsed(comps);
+        this.components = new CompsUsed(components);
         this.name = name;
     }
 
     public GameObject(string name)
     {
-        comps = new CompsUsed();
+        components = new CompsUsed();
         this.name = name;
     }
 
