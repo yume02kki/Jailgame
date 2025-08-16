@@ -33,9 +33,10 @@ public class Player
         inventory.TryAdd(item.name, item);
     }
 
-    public void move(Direction direction)
+    public void move(Directions directions)
     {
-        IntVector2 posOffset = new IntVector2(Util.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
+        IntVector2 posOffset =
+            new IntVector2(Util.directionVector[directions]) * new IntVector2(1, -1); //Y to Column
 
         MovementEnforcer movementEnforcer = new(this, posOffset);
 
@@ -43,7 +44,7 @@ public class Player
         {
             if (movementEnforcer.isPortal())
             {
-                currentRoom = currentRoom.getRoom(direction)!;
+                currentRoom = currentRoom.getRoom(directions)!;
                 pos = movementEnforcer.clamp();
 
                 //run onLoad parts for room

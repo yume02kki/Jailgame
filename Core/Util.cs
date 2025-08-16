@@ -4,21 +4,23 @@ namespace MazeGame.MazeGame.Core;
 
 public static class Util
 {
-    public static Dictionary<Direction, IntVector2> directionVector { get; } = new Dictionary<Direction, IntVector2>
-    {
-        { Direction.UP, new IntVector2(0, 1) },
-        { Direction.DOWN, new IntVector2(0, -1) },
-        { Direction.LEFT, new IntVector2(-1, 0) },
-        { Direction.RIGHT, new IntVector2(1, 0) }
-    };
+    public static Dictionary<Directions, IntVector2> directionVector { get; } =
+        new Dictionary<Directions, IntVector2>
+        {
+            { Directions.UP, new IntVector2(0, 1) },
+            { Directions.DOWN, new IntVector2(0, -1) },
+            { Directions.LEFT, new IntVector2(-1, 0) },
+            { Directions.RIGHT, new IntVector2(1, 0) }
+        };
 
-    public static Dictionary<Direction, Direction> mirrorDirection { get; } = new Dictionary<Direction, Direction>
-    {
-        { Direction.UP, Direction.DOWN },
-        { Direction.DOWN, Direction.UP },
-        { Direction.LEFT, Direction.RIGHT },
-        { Direction.RIGHT, Direction.LEFT }
-    };
+    public static Dictionary<Directions, Directions> mirrorDirection { get; } =
+        new Dictionary<Directions, Directions>
+        {
+            { Directions.UP, Directions.DOWN },
+            { Directions.DOWN, Directions.UP },
+            { Directions.LEFT, Directions.RIGHT },
+            { Directions.RIGHT, Directions.LEFT }
+        };
 
     public static int clamp(int num, int border)
     {

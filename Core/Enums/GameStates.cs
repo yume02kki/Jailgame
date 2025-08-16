@@ -1,6 +1,6 @@
 ﻿namespace MazeGame.MazeGame.Core.Enums;
 
-public enum GameStatus
+public enum GameStates
 {
     ONGOING = 0,
     WIN = 1,

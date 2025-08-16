@@ -16,6 +16,9 @@ public class CompsUsed
 
     public void execute<TComponent>() where TComponent : executor => (get<TComponent>())?.execute();
 
+    public void execute<TComponent>(dynamic argument) where TComponent : executor =>
+        (get<TComponent>())?.execute(argument);
+
     public GRead? read<GRead, TComponent>() where TComponent : fetcher<GRead>
     {
         Component? reader = get<GRead, TComponent>();

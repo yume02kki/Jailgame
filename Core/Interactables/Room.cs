@@ -22,14 +22,14 @@ public class Room
         this.name = name;
     }
 
-    public Room? getRoom(Direction direction)
+    public Room? getRoom(Directions directions)
     {
-        return direction switch
+        return directions switch
         {
-            Direction.UP => upRoom,
-            Direction.RIGHT => rightRoom,
-            Direction.DOWN => downRoom,
-            Direction.LEFT => leftRoom,
+            Directions.UP => upRoom,
+            Directions.RIGHT => rightRoom,
+            Directions.DOWN => downRoom,
+            Directions.LEFT => leftRoom,
             _ => null
         };
     }
@@ -39,23 +39,23 @@ public class Room
         return entityDict.Values.ToList();
     }
 
-    public void linkRoom(Direction direction, Room otherRoom)
+    public void linkRoom(Directions directions, Room otherRoom)
     {
-        switch (direction)
+        switch (directions)
         {
-            case Direction.UP:
+            case Directions.UP:
                 this.upRoom = otherRoom;
                 otherRoom.downRoom = this;
                 break;
-            case Direction.RIGHT:
+            case Directions.RIGHT:
                 this.rightRoom = otherRoom;
                 otherRoom.leftRoom = this;
                 break;
-            case Direction.DOWN:
+            case Directions.DOWN:
                 this.downRoom = otherRoom;
                 otherRoom.upRoom = this;
                 break;
-            case Direction.LEFT:
+            case Directions.LEFT:
                 this.leftRoom = otherRoom;
                 otherRoom.rightRoom = this;
                 break;

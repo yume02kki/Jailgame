@@ -1,5 +1,6 @@
 ﻿using MazeGame.MazeGame.Application;
 using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Managers;
@@ -32,7 +33,8 @@ public static class Terminal
         var validInput = false;
         while (!validInput)
         {
-            Color.write("open | examine | use | inv | move | save | load", ConsoleColor.DarkMagenta, true);
+            string commandsString = string.Join(" | ", Enum.GetNames(typeof(Commands)).ToList());
+            Color.write(commandsString, ConsoleColor.DarkMagenta, true);
             Console.Write("\n> ");
             validInput = CommandManager.get(Console.ReadLine() ?? "");
             if (!validInput) Color.write("Invalid command, try again", ConsoleColor.Red, true);
@@ -51,7 +53,6 @@ public static class Terminal
     }
 
     public static bool isBorder(int x, int y, int width, int height) => y == 0 || y == height || x == 0 || x == width;
-
 
     public static void terminalUI(Player player)
     {

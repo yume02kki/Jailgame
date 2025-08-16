@@ -1,5 +1,6 @@
 ﻿using MazeGame.MazeGame.Application;
 using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
@@ -9,33 +10,39 @@ namespace MazeGame.MazeGame.Core.Managers;
 
 public static class CommandManager
 {
-    private static readonly Dictionary<string, Action<List<Entity>>> commands = new();
+    private static Dictionary<string, Action<List<Entity>?>> commander = new();
+    private static Player player = GameCreator.Instance.player;
 
     static CommandManager()
     {
-        commands.Add("open", obj => exec<Open>(obj));
-        commands.Add("examine", obj => exec<Examine>(obj));
-        commands.Add("inv", obj => Terminal.printInventory());
-        commands.Add("use", obj => obj.Last().components.get<Used>().execute(obj.First()));
-        commands.Add("up", obj => GameCreator.Instance.player.move(Direction.UP));
-        commands.Add("right", obj => GameCreator.Instance.player.move(Direction.RIGHT));
-        commands.Add("down", obj => GameCreator.Instance.player.move(Direction.DOWN));
-        commands.Add("left", obj => GameCreator.Instance.player.move(Direction.LEFT));
+        void add(dynamic command, Action<List<Entity>> action) => commander.Add(command.ToString(), action);
+
+        add(Commands.open, operands => execute<Open>(operands));
+        add(Commands.use, operands => execute<Used>(operands.Last(), operands.First()));
+        add(Commands.examine, operands => execute<Examine>(operands));
+        add(Commands.inventory, _ => Terminal.printInventory());
+        add(Commands.up, _ => player.move(Directions.UP));
+        add(Commands.right, _ => player.move(Directions.RIGHT));
+        add(Commands.down, _ => player.move(Directions.DOWN));
+        add(Commands.left, _ => player.move(Directions.LEFT));
+
         //shortcuts
-        commands.Add("u", obj => commands["up"](obj));
-        commands.Add("d", obj => commands["down"](obj));
-        commands.Add("r", obj => commands["right"](obj));
-        commands.Add("l", obj => commands["left"](obj));
+        add("u", commander[nameof(Commands.up)]);
+        add("d", commander[nameof(Commands.down)]);
+        add("r", commander[nameof(Commands.right)]);
+        add("l", commander[nameof(Commands.left)]);
     }
 
-    private static void exec<T>(List<Entity> obj) where T : executor
+    private static void execute<T>(params List<Entity> operands) where T : executor
     {
-        if (obj.Count == 0) return;
-
-        var parts = obj[0]?.components;
-        if (parts == null) return;
-
-        obj.First().components.execute<T>();
+        if (operands.Count == 1)
+        {
+            operands.First().components.execute<T>();
+        }
+        else
+        {
+            operands.First().components.execute<T>(operands.Last());
+        }
     }
 
     public static bool get(string str)
@@ -44,12 +51,12 @@ public static class CommandManager
         var operatorStr = parsedString.First();
         try
         {
-            if (commands.ContainsKey(operatorStr))
+            if (commander.ContainsKey(operatorStr))
             {
                 var cleanedStr = parsedString.Skip(1).ToArray();
                 if (cleanedStr.Length > 1) cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
 
-                commands[operatorStr](getOperands(cleanedStr));
+                commander[operatorStr](getOperands(cleanedStr));
                 return true;
             }
         }
@@ -101,10 +108,9 @@ public static class CommandManager
     private static List<Entity> getOperands(string[] names)
     {
         var result = new List<Entity>();
-        var player = GameCreator.Instance.player;
         foreach (var name in names)
         {
-            var nameFound = autoComplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
+            var nameFound = autoComplete(name, player.getInventoryList().Select(entity => entity.name).ToList(),
                 player.currentRoom.getEntityList().Select(entity => entity.name).ToList());
             var inventoryOperand = player.getFromInventory(nameFound);
             var roomOperand = player.currentRoom.getEntity(nameFound);

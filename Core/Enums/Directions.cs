@@ -1,6 +1,6 @@
 ﻿namespace MazeGame.MazeGame.Core.Enums;
 
-public enum Direction
+public enum Directions
 {
     UP,
     RIGHT,

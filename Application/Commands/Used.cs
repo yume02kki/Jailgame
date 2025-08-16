@@ -5,12 +5,9 @@ namespace MazeGame.MazeGame.Application.Commands;
 
 public class Used : executor
 {
-    public Used(Entity expected, Action action) : base((sender) =>
+    public Used(Entity expected, Action action) : base(sender =>
     {
-        if (sender == expected)
-        {
-            action();
-        }
+        if (sender == expected) action();
     })
     {
     }
