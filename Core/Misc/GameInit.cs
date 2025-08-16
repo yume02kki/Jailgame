@@ -39,7 +39,7 @@ public class GameInit
         foreach (char letter in sequence)
         {
             Direction direction = charToDirection(letter);
-            IntVector2 tempRoomPosition =lastPosition + Util.directionToPosition(direction);
+            IntVector2 tempRoomPosition =lastPosition + Util.directionVector[direction];
             roomPositions.TryGetValue(tempRoomPosition, out Room? tempRoom);
             if (tempRoom == null)
             {
@@ -65,7 +65,7 @@ public class GameInit
     {
         foreach (Direction direction in Enum.GetValues<Direction>())
         {
-            IntVector2 addedPosition = Util.directionToPosition(direction) + position;
+            IntVector2 addedPosition = Util.directionVector[direction] + position;
             if (roomPositions.ContainsKey(addedPosition))
             {
                 doorLink(room, roomPositions[addedPosition], direction);
@@ -83,7 +83,7 @@ public class GameInit
             Y = Util.clamp(normalPos.Y, otherRoom.playAreaHeight())
         };
         
-        Direction mirror = Util.mirrorDirection(direction);
+        Direction mirror = Util.mirrorDirection[direction];
         if (direction == Direction.right || direction == Direction.down)
         {
             IntVector2 tempPos = new(normalPos);

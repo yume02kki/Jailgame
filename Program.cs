@@ -4,7 +4,7 @@ using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Application;
 
-class GFG
+class Program
 {
     public static void Main(String[] args)
     {

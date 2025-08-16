@@ -37,22 +37,8 @@ public class Player
 
     public void move(Direction direction)
     {
-        IntVector2 posOffset = new(0, 0);
-        switch (direction)
-        {
-            case Direction.up:
-                posOffset.Y--;
-                break;
-            case Direction.down:
-                posOffset.Y++;
-                break;
-            case Direction.left:
-                posOffset.X--;
-                break;
-            case Direction.right:
-                posOffset.X++;
-                break;
-        }
+        IntVector2 posOffset = new IntVector2(Util.directionVector[direction]);
+
         MovementEnforcer movementEnforcer = new(this, posOffset);
 
         if (!movementEnforcer.collide())
