@@ -23,7 +23,7 @@ public class GameCreator
     private GameCreator()
     {
         GameProfile profile = new GameProfile(SIZE_W, SIZE_H, SEQUENCE);
-        GameInit init = profile.init;
+        RoomGeneration init = profile.roomGenerator;
         player = profile.player;
         Dictionary<string, Room> rooms = profile.rooms;
 

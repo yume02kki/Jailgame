@@ -5,13 +5,13 @@ using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core.LoadScene;
 
-public class GameInit
+public class RoomGeneration
 {
     private int width;
     private int height;
     private Dictionary<IntVector2, Room> roomPositions;
 
-    public GameInit(int width, int height)
+    public RoomGeneration(int width, int height)
     {
         roomPositions = new();
         this.width = width;
