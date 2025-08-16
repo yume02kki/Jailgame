@@ -6,29 +6,29 @@ namespace MazeGame.MazeGame.Core.Interactables;
 
 public class Player
 {
-    private Dictionary<string, GameObject> inventory;
+    private Dictionary<string, Entity> inventory;
     public Room currentRoom { get; set; }
     public IntVector2 pos { get; set; } = new(0, 0);
     public Render render { get; } = new Render("☺");
 
-    public Player(Room room, IntVector2 pos, Dictionary<string, GameObject>? inventory = null)
+    public Player(Room room, IntVector2 pos, Dictionary<string, Entity>? inventory = null)
     {
-        this.inventory = inventory ?? new Dictionary<string, GameObject>();
+        this.inventory = inventory ?? new Dictionary<string, Entity>();
         this.currentRoom = room;
         this.pos = pos;
     }
 
-    public GameObject? getFromInventory(string itemName)
+    public Entity? getFromInventory(string itemName)
     {
         return inventory.ContainsKey(itemName) ? inventory[itemName] : null;
     }
 
-    public List<GameObject> getInventoryList()
+    public List<Entity> getInventoryList()
     {
         return inventory.Values.ToList();
     }
 
-    public void addToInventory(GameObject item)
+    public void addToInventory(Entity item)
     {
         inventory.TryAdd(item.name, item);
     }

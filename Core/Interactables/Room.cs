@@ -65,7 +65,10 @@ public class Room
     public void setEntity(Entity entity)
     {
         entityDict[entity.name] = entity;
-        map[entity.pos.X,entity.pos.Y] = entity;
+        if (entity.pos.HasValue)
+        {
+            map[entity.pos.Value.X, entity.pos.Value.Y] = entity;
+        }
     }
 
     public Entity? getEntity(string name)

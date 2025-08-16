@@ -9,9 +9,9 @@ namespace MazeGame.MazeGame.Core.Managers;
 
 public static class CommandManager
 {
-    private static Dictionary<string, Action<List<GameObject>>> commands = new();
+    private static Dictionary<string, Action<List<Entity>>> commands = new();
 
-    private static void exec<T>(List<GameObject> obj) where T : executer
+    private static void exec<T>(List<Entity> obj) where T : executor
     {
         if (obj.Count == 0)
         {
@@ -69,7 +69,7 @@ public static class CommandManager
         return false;
     }
 
-    private static string autocomplete(string str, params List<string>[] lists)
+    private static string autoComplete(string str, params List<string>[] lists)
     {
         if (str == "")
         {
@@ -112,16 +112,16 @@ public static class CommandManager
         return filtered;
     }
 
-    private static List<GameObject> getOperands(string[] names)
+    private static List<Entity> getOperands(string[] names)
     {
-        List<GameObject> result = new List<GameObject>();
+        List<Entity> result = new List<Entity>();
         Player player = GameCreator.Instance.player;
         foreach (string name in names)
         {
-            string nameFound = autocomplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
+            string nameFound = autoComplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
                 player.currentRoom.getEntityList().Select(entity => entity.name).ToList());
-            GameObject? inventoryOperand = player.getFromInventory(nameFound);
-            GameObject? roomOperand = player.currentRoom.getEntity(nameFound);
+            Entity? inventoryOperand = player.getFromInventory(nameFound);
+            Entity? roomOperand = player.currentRoom.getEntity(nameFound);
             if (inventoryOperand != null)
             {
                 result.Add(inventoryOperand);

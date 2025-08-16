@@ -23,9 +23,9 @@ public static class Terminal
 
     public static void printInventory()
     {
-        List<GameObject> inventory = GameCreator.Instance.player.getInventoryList();
+        List<Entity> inventory = GameCreator.Instance.player.getInventoryList();
         Console.WriteLine("[Inventory]: " +
-                          Util.listToString(inventory.Select(gameObject => gameObject.name).ToList()));
+                          Util.listToString(inventory.Select(entity => entity.name).ToList()));
     }
 
     public static void commandFetch()

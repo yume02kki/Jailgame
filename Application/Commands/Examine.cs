@@ -3,12 +3,12 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Examine : executer
+public class Examine : executor
 {
-    private GameObject _item;
-    private Action<GameObject> _action;
+    private Entity _item;
+    private Action<Entity> _action;
 
-    public Examine(GameObject item, Action<GameObject> action)
+    public Examine(Entity item, Action<Entity> action)
     {
         _item = item;
         _action = action;

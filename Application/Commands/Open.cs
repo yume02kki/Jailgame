@@ -3,7 +3,7 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Open : executer
+public class Open : executor
 {
     public bool isOpen { get; set; }
     private LockEnforcer? lockEnforcer;

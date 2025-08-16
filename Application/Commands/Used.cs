@@ -3,9 +3,9 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Used : executer
+public class Used : executor
 {
-    public Used(GameObject expected, Action action) : base((sender) =>
+    public Used(Entity expected, Action action) : base((sender) =>
     {
         if (sender == expected)
         {

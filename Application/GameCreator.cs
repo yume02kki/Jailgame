@@ -28,10 +28,10 @@ public class GameCreator
         Dictionary<string, Room> rooms = profile.rooms;
 
         //Needle
-        GameObject needle = new GameObject("needle");
+        Entity needle = new Entity("needle");
 
         //Dog Food
-        GameObject dogFood = new GameObject("bonzo");
+        Entity dogFood = new Entity("bonzo");
 
         //Door
         {
