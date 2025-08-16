@@ -11,7 +11,7 @@ public class Entity
     public IntVector2? pos { get; set; }
     public HashSet<Tags> tags { get; set; }
 
-    public Entity(string name, IntVector2? pos = null, HashSet<Tags>? tags = null, List<Component>? components = null)
+    public Entity(string name, IntVector2? pos = null, List<Component>? components = null, HashSet<Tags>? tags = null)
     {
         this.name = name;
         this.pos = pos;

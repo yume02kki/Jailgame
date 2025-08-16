@@ -33,15 +33,15 @@ public static class CommandManager
         add("l", commander[nameof(Commands.left)]);
     }
 
-    private static void execute<T>(params List<Entity> operands) where T : executor
+    private static void execute<TExecutor>(params List<Entity> operands) where TExecutor : executor
     {
         if (operands.Count == 1)
         {
-            operands.First().components.execute<T>();
+            operands.First().components.execute<TExecutor>();
         }
         else
         {
-            operands.First().components.execute<T>(operands.Last());
+            operands.First().components.execute<TExecutor>(operands.Last());
         }
     }
 
@@ -79,11 +79,12 @@ public static class CommandManager
                 Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, selective: true, newLine: true);
                 return str;
             case 1:
-                if (str != filter[0])
-                    Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter[0])}", ConsoleColor.DarkBlue,
+                if (str != filter.First())
+                    Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}",
+                        ConsoleColor.DarkBlue,
                         selective: true, newLine: true);
 
-                return filter[0];
+                return filter.First();
             default:
                 Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>",
                     ConsoleColor.DarkBlue, selective: true, newLine: true);
@@ -95,7 +96,7 @@ public static class CommandManager
     {
         List<string> fakeList = new();
         fakeList.Add(filter);
-        return highlight(term, fakeList)[0];
+        return highlight(term, fakeList).First();
     }
 
     private static List<string> highlight(string term, List<string> filtered)
