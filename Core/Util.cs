@@ -22,7 +22,7 @@ public static class Util
             { Directions.RIGHT, Directions.LEFT }
         };
 
-    public static int clamp(int num, int border)
+    public static int wrapAround(int num, int border)
     {
         return (num >= border) ? 0 : (num <= 0 ? border : num);
     }

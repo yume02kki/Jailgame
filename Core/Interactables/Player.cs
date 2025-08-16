@@ -45,7 +45,7 @@ public class Player
             if (movementEnforcer.isPortal())
             {
                 currentRoom = currentRoom.getRoom(directions)!;
-                pos = movementEnforcer.clamp();
+                pos = movementEnforcer.wrapPosAround();
 
                 //run onLoad parts for room
                 movementEnforcer.onLoad();

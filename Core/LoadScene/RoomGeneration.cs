@@ -81,8 +81,8 @@ public class RoomGeneration
             getDoorPosition(directions, new IntVector2(thisRoom.playAreaWidth(), thisRoom.playAreaHeight()));
         IntVector2 mirrorPos = new IntVector2
         {
-            X = Util.clamp(normalPos.X, otherRoom.playAreaWidth()),
-            Y = Util.clamp(normalPos.Y, otherRoom.playAreaHeight())
+            X = Util.wrapAround(normalPos.X, otherRoom.playAreaWidth()),
+            Y = Util.wrapAround(normalPos.Y, otherRoom.playAreaHeight())
         };
 
         Directions mirror = Util.mirrorDirection[directions];

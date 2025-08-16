@@ -31,12 +31,12 @@ public class MovementEnforcer
                !(player.currentRoom.tryGet(player.pos + offsetPos)?.components.read<bool, Collide>() ?? false);
     }
 
-    public IntVector2 clamp()
+    public IntVector2 wrapPosAround()
     {
         IntVector2 result = new()
         {
-            X = Util.clamp(player.pos.X + offsetPos.X, player.currentRoom.playAreaWidth()),
-            Y = Util.clamp(player.pos.Y + offsetPos.Y, player.currentRoom.playAreaHeight())
+            X = Util.wrapAround(player.pos.X + offsetPos.X, player.currentRoom.playAreaWidth()),
+            Y = Util.wrapAround(player.pos.Y + offsetPos.Y, player.currentRoom.playAreaHeight())
         };
         return result;
     }
