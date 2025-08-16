@@ -3,7 +3,7 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Examine : Writer
+public class Examine : executer
 {
     private GameObject _item;
     private Action<GameObject> _action;

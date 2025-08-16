@@ -1,7 +1,7 @@
 ﻿using MazeGame.MazeGame.Application;
 using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
-using MazeGame.MazeGame.Core.Misc;
 using MazeGame.MazeGame.Core.Module;
 using MazeGame.MazeGame.Presentation;
 
@@ -11,7 +11,7 @@ public static class CommandManager
 {
     private static Dictionary<string, Action<List<GameObject>>> commands = new();
 
-    private static void exec<T>(List<GameObject> obj) where T : Writer
+    private static void exec<T>(List<GameObject> obj) where T : executer
     {
         if (obj.Count == 0)
         {
@@ -31,12 +31,12 @@ public static class CommandManager
     {
         commands.Add("open", obj => exec<Open>(obj));
         commands.Add("examine", obj => exec<Examine>(obj));
-        commands.Add("inv", obj => TerminalManager.printInventory());
+        commands.Add("inv", obj => Terminal.printInventory());
         commands.Add("use", obj => obj.Last().components.get<Used>().execute(obj.First()));
-        commands.Add("up", obj => GameCreator.Instance.player.move(Direction.up));
-        commands.Add("right", obj => GameCreator.Instance.player.move(Direction.right));
-        commands.Add("down", obj => GameCreator.Instance.player.move(Direction.down));
-        commands.Add("left", obj => GameCreator.Instance.player.move(Direction.left));
+        commands.Add("up", obj => GameCreator.Instance.player.move(Direction.UP));
+        commands.Add("right", obj => GameCreator.Instance.player.move(Direction.RIGHT));
+        commands.Add("down", obj => GameCreator.Instance.player.move(Direction.DOWN));
+        commands.Add("left", obj => GameCreator.Instance.player.move(Direction.LEFT));
         //shortcuts
         commands.Add("u", obj => commands["up"](obj));
         commands.Add("d", obj => commands["down"](obj));

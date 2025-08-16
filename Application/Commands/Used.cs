@@ -3,7 +3,7 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Used : Writer
+public class Used : executer
 {
     public Used(GameObject expected, Action action) : base((sender) =>
     {

@@ -1,8 +1,6 @@
-﻿using System.Numerics;
-using MazeGame.MazeGame.Core.Interactables;
-using MazeGame.MazeGame.Core.Misc;
+﻿using MazeGame.MazeGame.Core.Enums;
 
-namespace MazeGame.MazeGame.Core;
+namespace MazeGame.MazeGame.Core.Interactables;
 
 public class Room
 {
@@ -28,10 +26,10 @@ public class Room
     {
         return direction switch
         {
-            Direction.up => upRoom,
-            Direction.right => rightRoom,
-            Direction.down => downRoom,
-            Direction.left => leftRoom,
+            Direction.UP => upRoom,
+            Direction.RIGHT => rightRoom,
+            Direction.DOWN => downRoom,
+            Direction.LEFT => leftRoom,
             _ => null
         };
     }
@@ -45,19 +43,19 @@ public class Room
     {
         switch (direction)
         {
-            case Direction.up:
+            case Direction.UP:
                 this.upRoom = otherRoom;
                 otherRoom.downRoom = this;
                 break;
-            case Direction.right:
+            case Direction.RIGHT:
                 this.rightRoom = otherRoom;
                 otherRoom.leftRoom = this;
                 break;
-            case Direction.down:
+            case Direction.DOWN:
                 this.downRoom = otherRoom;
                 otherRoom.upRoom = this;
                 break;
-            case Direction.left:
+            case Direction.LEFT:
                 this.leftRoom = otherRoom;
                 otherRoom.rightRoom = this;
                 break;

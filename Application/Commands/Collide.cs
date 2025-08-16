@@ -2,7 +2,7 @@
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Collide : Reader<bool>
+public class Collide : fetcher<bool>
 {
     private Func<bool> _hook;
 

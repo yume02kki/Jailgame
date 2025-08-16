@@ -3,7 +3,7 @@ using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Renders : Reader<Render>
+public class Renders : fetcher<Render>
 {
     private Queue<Render> _renders;
     private Func<bool> _hook;

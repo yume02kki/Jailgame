@@ -1,5 +1,5 @@
 ﻿namespace MazeGame.MazeGame.Core.Module;
 
-public abstract class Component
+public interface Component
 {
 }

@@ -1,6 +1,5 @@
-﻿using System.Numerics;
-using MazeGame.MazeGame.Application.Commands;
-using MazeGame.MazeGame.Core.Misc;
+﻿using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Core.Interactables;
 
 namespace MazeGame.MazeGame.Core.Enforcers;
 

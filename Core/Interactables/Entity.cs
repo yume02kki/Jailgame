@@ -1,5 +1,4 @@
-﻿using MazeGame.MazeGame.Core.Misc;
-using MazeGame.MazeGame.Core.Module;
+﻿using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Core.Interactables;
 

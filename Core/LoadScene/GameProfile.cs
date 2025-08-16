@@ -1,4 +1,6 @@
-﻿namespace MazeGame.MazeGame.Core.Misc;
+﻿using MazeGame.MazeGame.Core.Interactables;
+
+namespace MazeGame.MazeGame.Core.LoadScene;
 
 public class GameProfile
 {

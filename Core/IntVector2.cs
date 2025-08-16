@@ -1,4 +1,4 @@
-﻿namespace MazeGame.MazeGame.Core.Misc;
+﻿namespace MazeGame.MazeGame.Core;
 public struct IntVector2
 {
     public int X { get; set; }
@@ -18,6 +18,8 @@ public struct IntVector2
     
     public static IntVector2 operator +(IntVector2 a, IntVector2 b) => new IntVector2(a.X + b.X, a.Y + b.Y);
     public static IntVector2 operator -(IntVector2 a, IntVector2 b) => new IntVector2(a.X + b.X, a.Y - b.Y);
+    public static IntVector2 operator *(IntVector2 a, IntVector2 b) => new IntVector2(a.X * b.X, a.Y * b.Y);
+    public static IntVector2 operator /(IntVector2 a, IntVector2 b) => new IntVector2(a.X / b.X, a.Y / b.Y);
     public static IntVector2 operator *(IntVector2 a, int b) => new IntVector2(a.X * b, a.Y * b);
     public static IntVector2 operator /(IntVector2 a, int b) => new IntVector2(a.X / b, a.Y / b);
     public static bool operator ==(IntVector2 a, IntVector2 b) => a.X == b.X && a.Y == b.Y;

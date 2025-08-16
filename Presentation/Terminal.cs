@@ -3,11 +3,10 @@ using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Core;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Managers;
-using MazeGame.MazeGame.Core.Misc;
 
 namespace MazeGame.MazeGame.Presentation;
 
-public static class TerminalManager
+public static class Terminal
 {
     const String INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
 

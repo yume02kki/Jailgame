@@ -1,19 +1,19 @@
 ﻿namespace MazeGame.MazeGame.Core.Module;
 
-public abstract class Writer : Component
+public abstract class executer : Component
 {
     Action<Object> _action;
 
-    public Writer()
+    public executer()
     {
     }
 
-    public Writer(Action<Object> action)
+    public executer(Action<Object> action)
     {
         _action = action;
     }
 
-    public Writer(Action action)
+    public executer(Action action)
     {
         _action = _ => action();
     }
