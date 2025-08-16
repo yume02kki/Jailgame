@@ -1,4 +1,5 @@
 ﻿using MazeGame.MazeGame.Application.Commands;
+using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 
 namespace MazeGame.MazeGame.Core.Enforcers;
@@ -27,7 +28,7 @@ public class MovementEnforcer
 
     public bool isPortal()
     {
-        return ((player.currentRoom.tryGet(player.pos + offsetPos))?.name?.Contains("door") ?? false) &&
+        return ((player.currentRoom.tryGet(player.pos + offsetPos))?.tags.Contains(Tags.Doorway) ?? false) &&
                !(player.currentRoom.tryGet(player.pos + offsetPos)?.components.read<bool, Collide>() ?? false);
     }
 

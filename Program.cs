@@ -11,13 +11,13 @@ class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
         GameCreator gameCreator = GameCreator.Instance;
-        while (gameCreator.GameStates == GameStates.ONGOING)
+        while (gameCreator.GameState == GameStates.ONGOING)
         {
             Terminal.terminalUI(gameCreator.player);
             Terminal.renderFrame(gameCreator.player);
         }
 
-        switch (gameCreator.GameStates)
+        switch (gameCreator.GameState)
         {
             case GameStates.WIN:
                 Console.WriteLine("\n=== YOU WIN: ESCAPED THE JAIL ===\n");
