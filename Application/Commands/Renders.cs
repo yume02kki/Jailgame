@@ -5,7 +5,6 @@ namespace MazeGame.MazeGame.Application.Commands;
 
 public class Renders : fetcher<Render>
 {
-    private Queue<Render> _renders;
     private Func<bool> _hook;
     private Render _renderDefault;
     private Render? _renderChanged;

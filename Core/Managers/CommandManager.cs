@@ -9,23 +9,7 @@ namespace MazeGame.MazeGame.Core.Managers;
 
 public static class CommandManager
 {
-    private static Dictionary<string, Action<List<Entity>>> commands = new();
-
-    private static void exec<T>(List<Entity> obj) where T : executor
-    {
-        if (obj.Count == 0)
-        {
-            return;
-        }
-
-        CompsUsed? parts = obj[0]?.components;
-        if (parts == null)
-        {
-            return;
-        }
-
-        obj.First().components.execute<T>();
-    }
+    private static readonly Dictionary<string, Action<List<Entity>>> commands = new();
 
     static CommandManager()
     {
@@ -44,19 +28,26 @@ public static class CommandManager
         commands.Add("l", obj => commands["left"](obj));
     }
 
+    private static void exec<T>(List<Entity> obj) where T : executor
+    {
+        if (obj.Count == 0) return;
+
+        var parts = obj[0]?.components;
+        if (parts == null) return;
+
+        obj.First().components.execute<T>();
+    }
+
     public static bool get(string str)
     {
-        string[] parsedString = str.Split(' ');
-        string operatorStr = parsedString.First();
+        var parsedString = str.Split(' ');
+        var operatorStr = parsedString.First();
         try
         {
             if (commands.ContainsKey(operatorStr))
             {
-                string[] cleanedStr = parsedString.Skip(1).ToArray();
-                if (cleanedStr.Length > 1)
-                {
-                    cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
-                }
+                var cleanedStr = parsedString.Skip(1).ToArray();
+                if (cleanedStr.Length > 1) cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
 
                 commands[operatorStr](getOperands(cleanedStr));
                 return true;
@@ -71,13 +62,10 @@ public static class CommandManager
 
     private static string autoComplete(string str, params List<string>[] lists)
     {
-        if (str == "")
-        {
-            return "";
-        }
+        if (str == "") return "";
 
-        List<string> list = lists.SelectMany(listTemp => listTemp).ToList();
-        List<string> filter = list.FindAll(word => word.StartsWith(str));
+        var list = lists.SelectMany(listTemp => listTemp).ToList();
+        var filter = list.FindAll(word => word.StartsWith(str));
         switch (filter.Count)
         {
             case 0:
@@ -85,10 +73,8 @@ public static class CommandManager
                 return str;
             case 1:
                 if (str != filter[0])
-                {
                     Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter[0])}", ConsoleColor.DarkBlue,
                         selective: true, newLine: true);
-                }
 
                 return filter[0];
             default:
@@ -114,23 +100,17 @@ public static class CommandManager
 
     private static List<Entity> getOperands(string[] names)
     {
-        List<Entity> result = new List<Entity>();
-        Player player = GameCreator.Instance.player;
-        foreach (string name in names)
+        var result = new List<Entity>();
+        var player = GameCreator.Instance.player;
+        foreach (var name in names)
         {
-            string nameFound = autoComplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
+            var nameFound = autoComplete(name, player.getInventoryList().Select(obj => obj.name).ToList(),
                 player.currentRoom.getEntityList().Select(entity => entity.name).ToList());
-            Entity? inventoryOperand = player.getFromInventory(nameFound);
-            Entity? roomOperand = player.currentRoom.getEntity(nameFound);
-            if (inventoryOperand != null)
-            {
-                result.Add(inventoryOperand);
-            }
+            var inventoryOperand = player.getFromInventory(nameFound);
+            var roomOperand = player.currentRoom.getEntity(nameFound);
+            if (inventoryOperand != null) result.Add(inventoryOperand);
 
-            if (roomOperand != null)
-            {
-                result.Add(roomOperand);
-            }
+            if (roomOperand != null) result.Add(roomOperand);
         }
 
         return result;

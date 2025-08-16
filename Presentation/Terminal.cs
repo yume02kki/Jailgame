@@ -8,80 +8,65 @@ namespace MazeGame.MazeGame.Presentation;
 
 public static class Terminal
 {
-    const String INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
+    private const string INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
 
     public static void renderFrame(Player player)
     {
-        string entityNames = player.currentRoom.getEntityList().Count > 0
+        var entityNames = player.currentRoom.getEntityList().Count > 0
             ? player.currentRoom.getEntityList().Select(entity => entity.ToString())
                 .Aggregate((acc, next) => acc + ", " + next)
             : "";
-        String phrase = String.Format(INFO_PHRASE, player.currentRoom, entityNames);
+        var phrase = string.Format(INFO_PHRASE, player.currentRoom, entityNames);
         Console.WriteLine(phrase);
         commandFetch();
     }
 
     public static void printInventory()
     {
-        List<Entity> inventory = GameCreator.Instance.player.getInventoryList();
-        Console.WriteLine("[Inventory]: " +
-                          Util.listToString(inventory.Select(entity => entity.name).ToList()));
+        var inventory = GameCreator.Instance.player.getInventoryList();
+        Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(entity => entity.name).ToList()));
     }
 
     public static void commandFetch()
     {
-        bool validInput = false;
+        var validInput = false;
         while (!validInput)
         {
-            Color.write("open | examine | use | inv | move | save | load", ConsoleColor.DarkMagenta, newLine: true);
+            Color.write("open | examine | use | inv | move | save | load", ConsoleColor.DarkMagenta, true);
             Console.Write("\n> ");
             validInput = CommandManager.get(Console.ReadLine() ?? "");
-            if (!validInput)
-            {
-                Color.write("Invalid command, try again", ConsoleColor.Red, newLine: true);
-            }
+            if (!validInput) Color.write("Invalid command, try again", ConsoleColor.Red, true);
         }
     }
 
-    public static void terminalUi(Player player)
+    private static char backgroundIcon(int x, int y, int width, int height)
     {
-        Room room = player.currentRoom;
-        int width = room.playAreaWidth();
-        int height = room.playAreaHeight();
-        IntVector2 scanIterator = new IntVector2(0, 0);
-        for (scanIterator.Y = 0; scanIterator.Y <= height; scanIterator.Y++)
-        {
-            for (scanIterator.X = 0; scanIterator.X <= width; scanIterator.X++)
-            {
-                int x = scanIterator.X;
-                int y = scanIterator.Y;
-                if (scanIterator == player.pos)
-                {
-                    Color.write(player.render);
-                }
-                else if (room.tryGet(scanIterator) != null)
-                {
-                    Color.write(room.tryGet(scanIterator)!.components.read<Render, Renders>());
-                }
-                else if (y == 0 || y == height || x == 0 || x == width)
-                {
-                    if (y == 0 && x == 0)
-                        Console.Write("┌");
-                    else if (y == 0 && x == width)
-                        Console.Write("┐");
-                    else if (y == height && x == 0)
-                        Console.Write("└");
-                    else if (y == height && x == width)
-                        Console.Write("┘");
-                    else if (y == 0 || y == height)
-                        Console.Write("─");
-                    else if (x == 0 || x == width) Console.Write("│");
-                }
-                else
-                {
-                    Console.Write(" ");
-                }
+        if (x == 0 && y == 0) return '╔';
+        if (x == width && y == 0) return '╗';
+        if (x == 0 && y == height) return '╚';
+        if (x == width && y == height) return '╝';
+        if (y == 0 || y == height) return '═';
+        if (x == 0 || x == width) return '║';
+        return ' ';
+    }
 
+    public static bool isBorder(int x, int y, int width, int height) => y == 0 || y == height || x == 0 || x == width;
+
+
+    public static void terminalUI(Player player)
+    {
+        var width = player.currentRoom.playAreaWidth();
+        var height = player.currentRoom.playAreaHeight();
+        for (var y = 0; y <= height; y++)
+        {
+            for (var x = 0; x <= width; x++)
+            {
+                var cursorPos = new IntVector2(x, y);
+                var cursorEntity = player.currentRoom.tryGet(cursorPos);
+
+                if (cursorPos == player.pos) Color.write(player.render);
+                else if (cursorEntity != null) Color.write(cursorEntity.components.read<Render, Renders>());
+                else Console.Write(backgroundIcon(x, y, width, height));
             }
 
             Console.WriteLine();

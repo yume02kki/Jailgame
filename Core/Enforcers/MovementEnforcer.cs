@@ -7,13 +7,13 @@ public class MovementEnforcer
 {
     private Player player;
     private IntVector2 offsetPos;
-    
-    public MovementEnforcer(Player player,IntVector2 offsetPos)
+
+    public MovementEnforcer(Player player, IntVector2 offsetPos)
     {
         this.offsetPos = offsetPos;
         this.player = player;
     }
-    
+
     public void onLoad()
     {
         player.currentRoom.getEntityList().ForEach(entity => entity.components.execute<OnLoad>());
@@ -22,13 +22,13 @@ public class MovementEnforcer
     public bool collide()
     {
         return player.currentRoom.tryGet(
-            player.pos+offsetPos)?.components.read<bool, Collide>() ?? false;
+            player.pos + offsetPos)?.components.read<bool, Collide>() ?? false;
     }
 
     public bool isPortal()
     {
-        return ((player.currentRoom.tryGet(player.pos+offsetPos))?.name?.Contains("door") ?? false) &&
-               !(player.currentRoom.tryGet(player.pos+offsetPos)?.components.read<bool, Collide>() ?? false);
+        return ((player.currentRoom.tryGet(player.pos + offsetPos))?.name?.Contains("door") ?? false) &&
+               !(player.currentRoom.tryGet(player.pos + offsetPos)?.components.read<bool, Collide>() ?? false);
     }
 
     public IntVector2 clamp()

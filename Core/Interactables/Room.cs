@@ -113,7 +113,7 @@ public class Room
 
     public Entity? tryGet(IntVector2 pos)
     {
-        if (pos.X >= 0 && pos.Y < getWidth() && pos.X >= 0 && pos.Y < getHeight())
+        if (pos.X >= 0 && pos.X < getWidth() && pos.Y >= 0 && pos.Y < getHeight())
         {
             return map[pos.X, pos.Y];
         }

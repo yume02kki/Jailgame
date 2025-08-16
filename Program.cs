@@ -13,7 +13,7 @@ class Program
         GameCreator gameCreator = GameCreator.Instance;
         while (gameCreator.gameStatus == GameStatus.ONGOING)
         {
-            Terminal.terminalUi(gameCreator.player);
+            Terminal.terminalUI(gameCreator.player);
             Terminal.renderFrame(gameCreator.player);
         }
 
@@ -27,6 +27,6 @@ class Program
                 break;
         }
 
-        Terminal.terminalUi(gameCreator.player);
+        Terminal.terminalUI(gameCreator.player);
     }
 }

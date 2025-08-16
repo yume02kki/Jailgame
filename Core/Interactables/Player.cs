@@ -35,7 +35,7 @@ public class Player
 
     public void move(Direction direction)
     {
-        IntVector2 posOffset = new IntVector2(Util.directionVector[direction]) * new IntVector2(1, -1);//Y to Column
+        IntVector2 posOffset = new IntVector2(Util.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
 
         MovementEnforcer movementEnforcer = new(this, posOffset);
 

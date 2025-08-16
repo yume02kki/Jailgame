@@ -4,9 +4,9 @@ namespace MazeGame.MazeGame.Core;
 
 public static class Util
 {
-    public static Dictionary<Direction,IntVector2> directionVector { get; } = new Dictionary<Direction,IntVector2>
+    public static Dictionary<Direction, IntVector2> directionVector { get; } = new Dictionary<Direction, IntVector2>
     {
-        { Direction.UP, new IntVector2(0,1) },
+        { Direction.UP, new IntVector2(0, 1) },
         { Direction.DOWN, new IntVector2(0, -1) },
         { Direction.LEFT, new IntVector2(-1, 0) },
         { Direction.RIGHT, new IntVector2(1, 0) }
@@ -19,7 +19,7 @@ public static class Util
         { Direction.LEFT, Direction.RIGHT },
         { Direction.RIGHT, Direction.LEFT }
     };
-    
+
     public static int clamp(int num, int border)
     {
         return (num >= border) ? 0 : (num <= 0 ? border : num);
@@ -29,7 +29,7 @@ public static class Util
     {
         return string.Join(", ", list);
     }
-    
+
     public static string enumToString(Enum value)
     {
         return value.ToString().ToLower();
