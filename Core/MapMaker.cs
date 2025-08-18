@@ -9,95 +9,86 @@ namespace MazeGame.MazeGame.Core.LoadScene;
 
 public class MapMaker
 {
+    private Dictionary<IntVector2, Node> nodeTable;
     private int width;
     private int height;
-    private Dictionary<IntVector2, Room> roomPositions;
 
     public MapMaker(int width, int height)
     {
-        roomPositions = new();
+        nodeTable = new Dictionary<IntVector2, Node>();
         this.width = width;
         this.height = height;
     }
 
-    public Room? tryGetRoom(IntVector2 pos)
-    {
-        roomPositions.TryGetValue(pos, out Room? room);
-        return room;
-    }
+    public Node? getNode(IntVector2 pos) => nodeTable.GetValueOrDefault(pos);
+    public Room? getRoom(IntVector2 pos) => getNode(pos)?.room;
 
-    public void addEntity(IntVector2 roomPosition, Entity entity)
-    {
-        Room? room = tryGetRoom(new IntVector2(roomPosition.X, roomPosition.Y));
-        room?.setEntity(entity);
-    }
-
-    public Room generateRooms(string sequence)
+    public Node generateMap(string sequence)
     {
         int count = 1;
-        Room spawnRoom = new Room("spawn", width, height);
-        roomPositions.Add(new IntVector2(0, 0), spawnRoom);
-        Room traverseRoom = spawnRoom;
-        IntVector2 lastPosition = roomPositions.Last().Key;
+        Node spawn = new Node(new Room("spawn", width, height));
+        nodeTable[new IntVector2(0, 0)] = spawn;
+        Node traverse = spawn;
+        IntVector2 lastPosition = nodeTable.Last().Key;
         foreach (char letter in sequence)
         {
             Directions directions = charToDirection(letter);
             IntVector2 tempRoomPosition = lastPosition + Util.directionVector[directions];
-            roomPositions.TryGetValue(tempRoomPosition, out Room? tempRoom);
-            if (tempRoom == null)
+            nodeTable.TryGetValue(tempRoomPosition, out Node? temp);
+            if (temp == null)
             {
-                tempRoom = new Room("" + count, width, height);
-                roomPositions.Add(tempRoomPosition, tempRoom);
+                temp = new Node(new Room("" + count, width, height));
+                nodeTable[tempRoomPosition] = temp;
             }
             else
             {
                 lastPosition = tempRoomPosition;
-                traverseRoom = tempRoom;
+                traverse = temp;
             }
 
-            neighborLink(traverseRoom, lastPosition, roomPositions);
-            traverseRoom = tempRoom;
+            neighborLink(traverse, lastPosition);
+            traverse = temp;
             lastPosition = tempRoomPosition;
             count++;
         }
 
-        return spawnRoom;
+        return spawn;
     }
 
-    private void neighborLink(Room room, IntVector2 position, Dictionary<IntVector2, Room> roomPositions)
+    private void neighborLink(Node node, IntVector2 position)
     {
         foreach (Directions direction in Enum.GetValues<Directions>())
         {
             IntVector2 addedPosition = Util.directionVector[direction] + position;
-            if (roomPositions.ContainsKey(addedPosition))
+            if (nodeTable.ContainsKey(addedPosition))
             {
-                doorLink(room, roomPositions[addedPosition], direction);
+                doorLink(node, nodeTable[addedPosition], direction);
             }
         }
     }
 
-    private void doorLink(Room thisRoom, Room otherRoom, Directions directions)
+    private void doorLink(Node self, Node target, Directions direction)
     {
-        thisRoom.linkRoom(directions, otherRoom);
-        IntVector2 normalPos = getDoorPosition(directions, new IntVector2(thisRoom.playAreaWidth(), thisRoom.playAreaHeight()));
+        self.link(direction, target);
+        IntVector2 normalPos = getDoorPosition(direction, new IntVector2(self.room.getPlayareaWidth(), self.room.getPlayareaHeight()));
         IntVector2 mirrorPos = new IntVector2
         {
-            X = Util.wrapAround(normalPos.X, otherRoom.playAreaWidth()),
-            Y = Util.wrapAround(normalPos.Y, otherRoom.playAreaHeight())
+            X = Util.wrapAround(normalPos.X, target.room.getPlayareaWidth()),
+            Y = Util.wrapAround(normalPos.Y, target.room.getPlayareaHeight())
         };
 
-        Directions mirror = Util.mirrorDirection[directions];
-        if (directions == Directions.RIGHT || directions == Directions.DOWN)
+        Directions mirror = Util.mirrorDirection[direction];
+        if (direction == Directions.RIGHT || direction == Directions.DOWN)
         {
             IntVector2 tempPos = new(normalPos);
             normalPos = mirrorPos;
             mirrorPos = tempPos;
         }
 
-        thisRoom.setEntity(new Entity($"door {Util.enumToString(directions)}", normalPos,
+        self.room.setEntity(new Entity($"door {Util.enumToString(direction)}", normalPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
 
-        otherRoom.setEntity(new Entity($"door {Util.enumToString(mirror)}", mirrorPos,
+        target.room.setEntity(new Entity($"door {Util.enumToString(mirror)}", mirrorPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
     }
 

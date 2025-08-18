@@ -15,6 +15,7 @@ class Program
         {
             Terminal.terminalUI(gameCreator.player);
             Terminal.renderFrame(gameCreator.player);
+            Terminal.loadNewFrame();
         }
 
         switch (gameCreator.GameState)

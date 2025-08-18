@@ -29,13 +29,14 @@ public class GameCreator
         //game setup
         {
             init = new MapMaker(SIZE_W, SIZE_H);
-            rooms = new();
-            rooms["spawn"] = init.generateRooms(SEQUENCE);
-            rooms["exit"] = init.tryGetRoom(new IntVector2(-1, 4))!;
-            rooms["dog"] = init.tryGetRoom(new IntVector2(-1, 3))!;
-            rooms["guard"] = init.tryGetRoom(new IntVector2(-2, 3))!;
-            rooms["dogfood"] = init.tryGetRoom(new IntVector2(0, 3))!;
-            player = new Player(rooms["spawn"], new IntVector2(4, 2));
+            rooms = new Dictionary<string, Room>();
+            Node spawnNode = init.generateMap(SEQUENCE);
+            rooms["spawn"] = init.getRoom(new IntVector2(0, 0))!;
+            rooms["exit"] = init.getRoom(new IntVector2(-1, 4))!;
+            rooms["dog"] = init.getRoom(new IntVector2(-1, 3))!;
+            rooms["guard"] = init.getRoom(new IntVector2(-2, 3))!;
+            rooms["dogfood"] = init.getRoom(new IntVector2(0, 3))!;
+            player = new Player(spawnNode, new IntVector2(4, 2));
         }
 
         //Needle
@@ -56,7 +57,7 @@ public class GameCreator
                 new Renders(() => open.isOpen, new Render("☐", ConsoleColor.Green), new Render("▥", ConsoleColor.Red)),
                 new Collide(() => !open.isOpen),
             };
-            init.addEntity(new IntVector2(0, 0), new Entity(defaultDoor.name, defaultDoor.pos, components, [Tags.Doorway]));
+            rooms["spawn"].setEntity(new Entity(defaultDoor.name, defaultDoor.pos, components, [Tags.Doorway]));
         }
 
         //Bed
@@ -65,7 +66,7 @@ public class GameCreator
             {
                 new Renders(new Render("_", ConsoleColor.Blue)), new Examine(needle, player.addToInventory),
             };
-            init.addEntity(new IntVector2(0, 0), new Entity("bed", new IntVector2(2, 1), components));
+            rooms["spawn"].setEntity(new Entity("bed", new IntVector2(2, 1), components));
         }
 
         // Dog
@@ -78,24 +79,24 @@ public class GameCreator
                 new Collide(() => dogHungry),
                 new Used(dogFood, () => dogHungry = false),
             };
-            init.addEntity(new IntVector2(-1, 3), new Entity("dog", dogDoor.pos + new IntVector2(0, 1), components));
+            rooms["dog"].setEntity(new Entity("dog", dogDoor.pos + new IntVector2(0, 1), components));
         }
         // Bowl
         {
             var components = new List<Component> { new Renders(new Render("◡", ConsoleColor.Yellow)), new Examine(dogFood, player.addToInventory), };
-            init.addEntity(new IntVector2(0, 3), new Entity("bowl", new IntVector2(4, 1), components: components));
+            rooms["dogfood"].setEntity(new Entity("bowl", new IntVector2(4, 1), components: components));
         }
 
         // Guard
         {
             var components = new List<Component> { new Renders(new Render("¶", ConsoleColor.Blue)), new OnLoad(() => GameState = GameStates.LOSE), };
-            init.addEntity(new IntVector2(-2, 3), new Entity("guard", new IntVector2(2, 2), components: components));
+            rooms["guard"].setEntity(new Entity("guard", new IntVector2(2, 2), components: components));
         }
 
         // Escape
         {
             var components = new List<Component> { new Renders(new Render("♕", ConsoleColor.Yellow)), new OnLoad(() => GameState = GameStates.WIN), };
-            init.addEntity(new IntVector2(-1, 4), new Entity("win", new IntVector2(2, 2), components: components));
+            rooms["exit"].setEntity(new Entity("win", new IntVector2(2, 2), components: components));
         }
     }
 }

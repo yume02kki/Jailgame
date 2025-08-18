@@ -18,7 +18,7 @@ public static class CommandManager
         void add(dynamic command, Action<List<Entity>> action) => commander.Add(command.ToString(), action);
 
         add(Commands.open, operands => execute<Open>(operands));
-        add(Commands.use, operands => execute<Used>(operands.Last(), operands.First()));
+        add(Commands.use, operands => execute<Used>(operands.LastOrDefault(), operands.FirstOrDefault()));
         add(Commands.examine, operands => execute<Examine>(operands));
         add(Commands.inventory, _ => Terminal.printInventory());
         add(Commands.up, _ => player.move(Directions.UP));
@@ -27,6 +27,7 @@ public static class CommandManager
         add(Commands.left, _ => player.move(Directions.LEFT));
 
         //shortcuts
+        add("inv", commander[nameof(Commands.inventory)]);
         add("u", commander[nameof(Commands.up)]);
         add("d", commander[nameof(Commands.down)]);
         add("r", commander[nameof(Commands.right)]);
@@ -35,6 +36,7 @@ public static class CommandManager
 
     private static void execute<TExecutor>(params List<Entity> operands) where TExecutor : executor
     {
+        if (operands.Count == 0) return;
         if (operands.Count == 1)
         {
             operands.First().components.execute<TExecutor>();
@@ -76,18 +78,19 @@ public static class CommandManager
         switch (filter.Count)
         {
             case 0:
-                Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, selective: true, newLine: true);
+                Terminal.printBuffer.Enqueue(() =>
+                    Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, selective: true, newLine: true));
                 return str;
             case 1:
                 if (str != filter.First())
-                    Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}",
+                    Terminal.printBuffer.Enqueue(() => Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}",
                         ConsoleColor.DarkBlue,
-                        selective: true, newLine: true);
+                        selective: true, newLine: true));
 
                 return filter.First();
             default:
-                Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>",
-                    ConsoleColor.DarkBlue, selective: true, newLine: true);
+                Terminal.printBuffer.Enqueue(() => Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>",
+                    ConsoleColor.DarkBlue, selective: true, newLine: true));
                 return str;
         }
     }
@@ -112,9 +115,9 @@ public static class CommandManager
         foreach (var name in names)
         {
             var nameFound = autoComplete(name, player.getInventoryList().Select(entity => entity.name).ToList(),
-                player.currentRoom.getEntityList().Select(entity => entity.name).ToList());
+                player.currentNode.room.getEntityList().Select(entity => entity.name).ToList());
             var inventoryOperand = player.getFromInventory(nameFound);
-            var roomOperand = player.currentRoom.getEntity(nameFound);
+            var roomOperand = player.currentNode.room.getEntity(nameFound);
             if (inventoryOperand != null) result.Add(inventoryOperand);
 
             if (roomOperand != null) result.Add(roomOperand);

@@ -1,6 +1,6 @@
 ﻿namespace MazeGame.MazeGame.Core;
 
-public struct IntVector2
+public struct IntVector2 : IEquatable<IntVector2>
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -26,4 +26,6 @@ public struct IntVector2
     public static bool operator ==(IntVector2 a, IntVector2 b) => a.X == b.X && a.Y == b.Y;
     public static bool operator !=(IntVector2 a, IntVector2 b) => !(a == b);
     public override string ToString() => $"({X}, {Y})";
+
+    public bool Equals(IntVector2 other) => X == other.X && Y == other.Y;
 }

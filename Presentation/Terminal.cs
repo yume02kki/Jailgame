@@ -10,14 +10,15 @@ namespace MazeGame.MazeGame.Presentation;
 public static class Terminal
 {
     private const string INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
+    public static Queue<Action> printBuffer = new Queue<Action>();
 
     public static void renderFrame(Player player)
     {
-        var entityNames = player.currentRoom.getEntityList().Count > 0
-            ? player.currentRoom.getEntityList().Select(entity => entity.ToString())
+        var entityNames = player.currentNode.room.getEntityList().Count > 0
+            ? player.currentNode.room.getEntityList().Select(entity => entity.ToString())
                 .Aggregate((acc, next) => acc + ", " + next)
             : "";
-        var phrase = string.Format(INFO_PHRASE, player.currentRoom, entityNames);
+        var phrase = string.Format(INFO_PHRASE, player.currentNode.room, entityNames);
         Console.WriteLine(phrase);
         commandFetch();
     }
@@ -25,19 +26,19 @@ public static class Terminal
     public static void printInventory()
     {
         var inventory = GameCreator.Instance.player.getInventoryList();
-        Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(entity => entity.name).ToList()));
+        printBuffer.Enqueue(() => Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(entity => entity.name).ToList())));
     }
 
     public static void commandFetch()
     {
         var validInput = false;
+        string commandsString = string.Join(" | ", Enum.GetNames(typeof(Commands)).ToList());
+        Color.write(commandsString, ConsoleColor.DarkMagenta, true);
         while (!validInput)
         {
-            string commandsString = string.Join(" | ", Enum.GetNames(typeof(Commands)).ToList());
-            Color.write(commandsString, ConsoleColor.DarkMagenta, true);
             Console.Write("\n> ");
             validInput = CommandManager.get(Console.ReadLine() ?? "");
-            if (!validInput) Color.write("Invalid command, try again", ConsoleColor.Red, true);
+            if (!validInput) Color.write("Invalid command, try again", ConsoleColor.Red);
         }
     }
 
@@ -56,21 +57,28 @@ public static class Terminal
 
     public static void terminalUI(Player player)
     {
-        var width = player.currentRoom.playAreaWidth();
-        var height = player.currentRoom.playAreaHeight();
+        var width = player.currentNode.room.getPlayareaWidth();
+        var height = player.currentNode.room.getPlayareaHeight();
         for (var y = 0; y <= height; y++)
         {
             for (var x = 0; x <= width; x++)
             {
                 var cursorPos = new IntVector2(x, y);
-                var cursorEntity = player.currentRoom.tryGet(cursorPos);
+                var cursorEntity = player.currentNode.room.tryGet(cursorPos);
 
                 if (cursorPos == player.pos) Color.write(player.render);
                 else if (cursorEntity != null) Color.write(cursorEntity.components.read<Render, Renders>());
                 else Console.Write(backgroundIcon(x, y, width, height));
             }
 
+
             Console.WriteLine();
         }
+    }
+
+    public static void loadNewFrame()
+    {
+        Console.Clear();
+        while (printBuffer.Count > 0) printBuffer.Dequeue()();
     }
 }
