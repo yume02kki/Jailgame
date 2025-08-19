@@ -2,9 +2,9 @@
 using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core;
-using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Managers;
+using MazeGame.MazeGame.Core.Utility;
 
 namespace MazeGame.MazeGame.Presentation;
 
@@ -27,7 +27,7 @@ public static class Terminal
     public static void printInventory()
     {
         var inventory = GameCreator.Instance.player.getInventoryList();
-        printBuffer.Enqueue(() => Console.WriteLine("[Inventory]: " + Util.listToString(inventory.Select(entity => entity.name).ToList())));
+        printBuffer.Enqueue(() => Console.WriteLine("[Inventory]: " + Misc.listToString(inventory.Select(entity => entity.name).ToList())));
     }
 
     public static void commandFetch()
@@ -49,10 +49,10 @@ public static class Terminal
         {
             0 => () => Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, true, true),
             1 => () => Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}", ConsoleColor.DarkBlue, true, true),
-            _ => () => Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>", ConsoleColor.DarkBlue, true, true)
+            _ => () => Color.write($"# Element \"{str}\" too ambiguous <{Misc.listToString(highlight(str, filter))}>", ConsoleColor.DarkBlue, true, true)
         };
 
-        Terminal.printBuffer.Enqueue(log);
+        printBuffer.Enqueue(log);
     }
 
     private static string highlight(string term, string filter)

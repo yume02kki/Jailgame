@@ -1,5 +1,6 @@
 ﻿using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Enums;
+using MazeGame.MazeGame.Core.Utility;
 using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core.Interactables;
@@ -27,7 +28,7 @@ public class Player
 
     public void move(Directions direction)
     {
-        IntVector2 posOffset = new IntVector2(Util.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
+        IntVector2 posOffset = new IntVector2(TransformDirection.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
 
         MovementEnforcer movementEnforcer = new(this, posOffset);
 

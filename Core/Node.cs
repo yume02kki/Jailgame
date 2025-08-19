@@ -1,6 +1,8 @@
 ﻿using MazeGame.MazeGame.Core.Enums;
+using MazeGame.MazeGame.Core.Interactables;
+using MazeGame.MazeGame.Core.Utility;
 
-namespace MazeGame.MazeGame.Core.Interactables;
+namespace MazeGame.MazeGame.Core;
 
 public class Node
 {
@@ -23,6 +25,6 @@ public class Node
         if (target == null) return;
 
         neighbbors[direction] = target;
-        target.neighbbors[Util.mirrorDirection[direction]] = this;
+        target.neighbbors[TransformDirection.mirrorDirection[direction]] = this;
     }
 }

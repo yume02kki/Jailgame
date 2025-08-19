@@ -4,7 +4,6 @@ using MazeGame.MazeGame.Core;
 using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
-using MazeGame.MazeGame.Core.LoadScene;
 using MazeGame.MazeGame.Core.Module;
 using MazeGame.MazeGame.Presentation;
 

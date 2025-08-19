@@ -1,8 +1,8 @@
 ﻿using MazeGame.MazeGame.Core.Enums;
 
-namespace MazeGame.MazeGame.Core;
+namespace MazeGame.MazeGame.Core.Utility;
 
-public static class Util
+public static class TransformDirection
 {
     public static Dictionary<Directions, IntVector2> directionVector { get; } =
         new Dictionary<Directions, IntVector2>
@@ -21,19 +21,4 @@ public static class Util
             { Directions.LEFT, Directions.RIGHT },
             { Directions.RIGHT, Directions.LEFT }
         };
-
-    public static int wrapAround(int num, int border)
-    {
-        return (num >= border) ? 0 : (num <= 0 ? border : num);
-    }
-
-    public static string listToString(List<string> list)
-    {
-        return string.Join(", ", list);
-    }
-
-    public static string enumToString(Enum value)
-    {
-        return value.ToString().ToLower();
-    }
 }

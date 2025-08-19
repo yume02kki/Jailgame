@@ -1,6 +1,7 @@
 ﻿using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core.Interactables;
+using MazeGame.MazeGame.Core.Utility;
 
 namespace MazeGame.MazeGame.Core.Enforcers;
 
@@ -36,8 +37,8 @@ public class MovementEnforcer
     {
         IntVector2 result = new()
         {
-            X = Util.wrapAround(player.pos.X + offsetPos.X, player.currentNode.room.getPlayareaWidth()),
-            Y = Util.wrapAround(player.pos.Y + offsetPos.Y, player.currentNode.room.getPlayareaHeight())
+            X = Misc.wrapAround(player.pos.X + offsetPos.X, player.currentNode.room.getPlayareaWidth()),
+            Y = Misc.wrapAround(player.pos.Y + offsetPos.Y, player.currentNode.room.getPlayareaHeight())
         };
         return result;
     }

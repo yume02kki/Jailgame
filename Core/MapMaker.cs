@@ -2,10 +2,10 @@
 using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
-using MazeGame.MazeGame.Core.Module;
+using MazeGame.MazeGame.Core.Utility;
 using MazeGame.MazeGame.Presentation;
 
-namespace MazeGame.MazeGame.Core.LoadScene;
+namespace MazeGame.MazeGame.Core;
 
 public class MapMaker
 {
@@ -33,7 +33,7 @@ public class MapMaker
         foreach (char letter in sequence)
         {
             Directions directions = charToDirection(letter);
-            IntVector2 tempRoomPosition = lastPosition + Util.directionVector[directions];
+            IntVector2 tempRoomPosition = lastPosition + TransformDirection.directionVector[directions];
             nodeTable.TryGetValue(tempRoomPosition, out Node? temp);
             if (temp == null)
             {
@@ -59,7 +59,7 @@ public class MapMaker
     {
         foreach (Directions direction in Enum.GetValues<Directions>())
         {
-            IntVector2 addedPosition = Util.directionVector[direction] + position;
+            IntVector2 addedPosition = TransformDirection.directionVector[direction] + position;
             if (nodeTable.ContainsKey(addedPosition))
             {
                 doorLink(node, nodeTable[addedPosition], direction);
@@ -73,11 +73,11 @@ public class MapMaker
         IntVector2 normalPos = getDoorPosition(direction, new IntVector2(self.room.getPlayareaWidth(), self.room.getPlayareaHeight()));
         IntVector2 mirrorPos = new IntVector2
         {
-            X = Util.wrapAround(normalPos.X, target.room.getPlayareaWidth()),
-            Y = Util.wrapAround(normalPos.Y, target.room.getPlayareaHeight())
+            X = Misc.wrapAround(normalPos.X, target.room.getPlayareaWidth()),
+            Y = Misc.wrapAround(normalPos.Y, target.room.getPlayareaHeight())
         };
 
-        Directions mirror = Util.mirrorDirection[direction];
+        Directions mirror = TransformDirection.mirrorDirection[direction];
         if (direction == Directions.RIGHT || direction == Directions.DOWN)
         {
             IntVector2 tempPos = new(normalPos);
@@ -85,10 +85,10 @@ public class MapMaker
             mirrorPos = tempPos;
         }
 
-        self.room.setEntity(new Entity($"door_{Util.enumToString(direction)}", normalPos,
+        self.room.setEntity(new Entity($"door_{Misc.enumToString(direction)}", normalPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
 
-        target.room.setEntity(new Entity($"door_{Util.enumToString(mirror)}", mirrorPos,
+        target.room.setEntity(new Entity($"door_{Misc.enumToString(mirror)}", mirrorPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
     }
 
@@ -96,7 +96,7 @@ public class MapMaker
     {
         List<Entity> doors = room.getEntityList().FindAll(entity => entity.tags.Contains(Tags.Doorway)).Select(entity => entity).ToList();
 
-        return direction == null ? doors.First() : doors.Find(door => door.name.Contains(Util.enumToString(direction))) ?? doors.First();
+        return direction == null ? doors.First() : doors.Find(door => door.name.Contains(Misc.enumToString(direction))) ?? doors.First();
     }
 
     private IntVector2 getDoorPosition(Directions directions, IntVector2 pos)

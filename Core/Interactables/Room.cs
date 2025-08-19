@@ -1,6 +1,4 @@
-﻿using MazeGame.MazeGame.Core.Enums;
-
-namespace MazeGame.MazeGame.Core.Interactables;
+﻿namespace MazeGame.MazeGame.Core.Interactables;
 
 public class Room
 {
