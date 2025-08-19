@@ -85,10 +85,10 @@ public class MapMaker
             mirrorPos = tempPos;
         }
 
-        self.room.setEntity(new Entity($"door {Util.enumToString(direction)}", normalPos,
+        self.room.setEntity(new Entity($"door_{Util.enumToString(direction)}", normalPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
 
-        target.room.setEntity(new Entity($"door {Util.enumToString(mirror)}", mirrorPos,
+        target.room.setEntity(new Entity($"door_{Util.enumToString(mirror)}", mirrorPos,
             [new Open(), new Renders(new Render("☐", ConsoleColor.Green))], [Tags.Doorway]));
     }
 

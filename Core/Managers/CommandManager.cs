@@ -10,7 +10,7 @@ namespace MazeGame.MazeGame.Core.Managers;
 
 public static class CommandManager
 {
-    private static Dictionary<string, Action<List<Entity>?>> commander = new();
+    public static Dictionary<string, Action<List<Entity>?>> commander { get; } = new();
     private static Player player = GameCreator.Instance.player;
 
     static CommandManager()
@@ -51,62 +51,31 @@ public static class CommandManager
     {
         var parsedString = str.Split(' ');
         var operatorStr = parsedString.First();
-        try
-        {
-            if (commander.ContainsKey(operatorStr))
-            {
-                var cleanedStr = parsedString.Skip(1).ToArray();
-                if (cleanedStr.Length > 1) cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
 
-                commander[operatorStr](getOperands(cleanedStr));
-                return true;
-            }
-        }
-        catch (Exception exception) when (exception is InvalidCastException || exception is NullReferenceException)
         {
-        }
+            var cleanedStr = parsedString.Skip(1).ToArray();
+            if (cleanedStr.Length > 1) cleanedStr = [cleanedStr.First(), cleanedStr.Last()];
 
-        return false;
+            return GameManager.run(operatorStr, getOperands(cleanedStr));
+        }
     }
 
+    //terminalWrapper for logging status
     private static string autoComplete(string str, params List<string>[] lists)
     {
+        string result = autoComplete(str, out List<string> filter, lists);
+        Terminal.autoCompleteLog(filter, str);
+        return result;
+    }
+
+    private static string autoComplete(string str, out List<string> filter, params List<string>[] lists)
+    {
+        filter = new List<string>();
         if (str == "") return "";
-
         var list = lists.SelectMany(listTemp => listTemp).ToList();
-        var filter = list.FindAll(word => word.StartsWith(str));
-        switch (filter.Count)
-        {
-            case 0:
-                Terminal.printBuffer.Enqueue(() =>
-                    Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, selective: true, newLine: true));
-                return str;
-            case 1:
-                if (str != filter.First())
-                    Terminal.printBuffer.Enqueue(() => Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}",
-                        ConsoleColor.DarkBlue,
-                        selective: true, newLine: true));
+        filter = list.FindAll(word => word.StartsWith(str));
 
-                return filter.First();
-            default:
-                Terminal.printBuffer.Enqueue(() => Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>",
-                    ConsoleColor.DarkBlue, selective: true, newLine: true));
-                return str;
-        }
-    }
-
-    private static string highlight(string term, string filter)
-    {
-        List<string> fakeList = new();
-        fakeList.Add(filter);
-        return highlight(term, fakeList).First();
-    }
-
-    private static List<string> highlight(string term, List<string> filtered)
-    {
-        filtered = filtered.Select(a => a.Insert(a.IndexOf(term), "[")).ToList();
-        filtered = filtered.Select(a => a.Insert(a.IndexOf(term) + term.Length, "]")).ToList();
-        return filtered;
+        return filter.Count == 1 ? filter.First() : str;
     }
 
     private static List<Entity> getOperands(string[] names)

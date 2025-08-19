@@ -2,6 +2,7 @@
 using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core;
+using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Managers;
 
@@ -40,6 +41,32 @@ public static class Terminal
             validInput = CommandManager.get(Console.ReadLine() ?? "");
             if (!validInput) Color.write("Invalid command, try again", ConsoleColor.Red);
         }
+    }
+
+    public static void autoCompleteLog(List<string> filter, string str)
+    {
+        Action log = filter.Count switch
+        {
+            0 => () => Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, true, true),
+            1 => () => Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}", ConsoleColor.DarkBlue, true, true),
+            _ => () => Color.write($"# Element \"{str}\" too ambiguous <{Util.listToString(highlight(str, filter))}>", ConsoleColor.DarkBlue, true, true)
+        };
+
+        Terminal.printBuffer.Enqueue(log);
+    }
+
+    private static string highlight(string term, string filter)
+    {
+        List<string> fakeList = new();
+        fakeList.Add(filter);
+        return highlight(term, fakeList).First();
+    }
+
+    private static List<string> highlight(string term, List<string> filtered)
+    {
+        filtered = filtered.Select(a => a.Insert(a.IndexOf(term), "[")).ToList();
+        filtered = filtered.Select(a => a.Insert(a.IndexOf(term) + term.Length, "]")).ToList();
+        return filtered;
     }
 
     private static char backgroundIcon(int x, int y, int width, int height)
