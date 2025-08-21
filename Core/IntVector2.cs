@@ -1,5 +1,8 @@
-﻿namespace MazeGame.MazeGame.Core;
+﻿using System.Text.Json.Serialization;
 
+namespace MazeGame.MazeGame.Core;
+
+[JsonConverter(typeof(IntVector2Converter))]
 public struct IntVector2 : IEquatable<IntVector2>
 {
     public int X { get; set; }

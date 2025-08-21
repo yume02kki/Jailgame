@@ -10,14 +10,12 @@ namespace MazeGame.MazeGame.Core;
 public class MapMaker
 {
     private Dictionary<IntVector2, Node> nodeTable;
-    private int width;
-    private int height;
+    private IntVector2 size;
 
-    public MapMaker(int width, int height)
+    public MapMaker(IntVector2 size)
     {
         nodeTable = new Dictionary<IntVector2, Node>();
-        this.width = width;
-        this.height = height;
+        this.size = size;
     }
 
     public Node? getNode(IntVector2 pos) => nodeTable.GetValueOrDefault(pos);
@@ -26,7 +24,7 @@ public class MapMaker
     public Node generateMap(string sequence)
     {
         int count = 1;
-        Node spawn = new Node(new Room("spawn", width, height));
+        Node spawn = new Node(new Room("spawn", size));
         nodeTable[new IntVector2(0, 0)] = spawn;
         Node traverse = spawn;
         IntVector2 lastPosition = nodeTable.Last().Key;
@@ -37,7 +35,7 @@ public class MapMaker
             nodeTable.TryGetValue(tempRoomPosition, out Node? temp);
             if (temp == null)
             {
-                temp = new Node(new Room("" + count, width, height));
+                temp = new Node(new Room("" + count, size));
                 nodeTable[tempRoomPosition] = temp;
             }
             else

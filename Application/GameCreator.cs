@@ -1,10 +1,12 @@
-﻿using MazeGame.MazeGame.Application.Commands;
+﻿using System.Xml.Serialization;
+using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core;
 using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
+using MazeGame.MazeGame.Core.Serialization;
 using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Application;
@@ -27,14 +29,17 @@ public class GameCreator
     {
         //game setup
         {
-            init = new MapMaker(SIZE_W, SIZE_H);
-            rooms = new Dictionary<string, Room>();
+            init = new MapMaker(new IntVector2(SIZE_W, SIZE_H));
             Node spawnNode = init.generateMap(SEQUENCE);
+            /*
+            rooms = new Dictionary<string, Room>();
             rooms["spawn"] = init.getRoom(new IntVector2(0, 0))!;
             rooms["exit"] = init.getRoom(new IntVector2(-1, 4))!;
             rooms["dog"] = init.getRoom(new IntVector2(-1, 3))!;
             rooms["guard"] = init.getRoom(new IntVector2(-2, 3))!;
             rooms["dogfood"] = init.getRoom(new IntVector2(0, 3))!;
+            */
+            rooms = GameSaver.load<Dictionary<string, Room>>()!;
             player = new Player(spawnNode, new IntVector2(4, 2));
         }
 
@@ -97,5 +102,7 @@ public class GameCreator
             var components = new List<Component> { new Renders(new Render("♕", ConsoleColor.Yellow)), new OnLoad(() => GameState = GameStates.WIN), };
             rooms["exit"].setEntity(new Entity("win", new IntVector2(2, 2), components: components));
         }
+
+        // GameSaver.save(rooms);
     }
 }
