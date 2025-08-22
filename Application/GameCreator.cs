@@ -13,6 +13,16 @@ namespace MazeGame.MazeGame.Application;
 
 public class GameCreator
 {
+    // = = = = = =
+    // = = = = = = =
+    // = = = = = = 
+    
+    //todo: make component be non abstract class (stores dynamic data, action execute(),action fetch()), make all Commands instances of that and remove fetcher/executer
+    
+    // = = = = = = 
+    // = = = = = = =
+    // = = = = = =
+    
     //singleton
     private static Lazy<GameCreator> _instance { get; set; } = new Lazy<GameCreator>(() => new GameCreator());
 
@@ -46,7 +56,6 @@ public class GameCreator
         };
 
         player = new Player(nodes["spawn"], new IntVector2(3, 2));
-        Console.WriteLine(player.pos);
 
         //Needle
         Entity needle = new Entity("needle");

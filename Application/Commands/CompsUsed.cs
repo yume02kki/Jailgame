@@ -6,16 +6,11 @@ namespace MazeGame.MazeGame.Application.Commands;
 public class CompsUsed
 {
     public List<Component> components { get; set; }
-    // [JsonInclude] private List<dynamic> componentsJson { get; set; }
 
     public CompsUsed(params List<Component> components)
     {
         this.components = new(components);
-        // this.componentsJson = new(components);
     }
-
-    // [JsonConstructor]
-    // public CompsUsed(){}
 
     public Executor? get<TComponent>() where TComponent : Executor =>
         components.Find(component => component is TComponent) as TComponent;
