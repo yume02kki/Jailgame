@@ -1,11 +1,13 @@
-﻿using MazeGame.MazeGame.Core.Enforcers;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Open : executor
+public class Open : Executor
 {
     public bool isOpen { get; set; }
+    [JsonInclude]
     private LockEnforcer? lockEnforcer;
 
     public Open(bool startsOpen = true, LockEnforcer? lockEnforcer = null)

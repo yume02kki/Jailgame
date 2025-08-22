@@ -1,4 +1,5 @@
-﻿using MazeGame.MazeGame.Core.Enums;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Utility;
 
@@ -6,8 +7,11 @@ namespace MazeGame.MazeGame.Core;
 
 public class Node
 {
-    public Dictionary<Directions, Node?> neighbbors { get; }
+    [JsonIgnore] public Dictionary<Directions, Node?> neighbbors { get; }
     public Room room { get; set; }
+
+    [JsonConstructor]
+    public Node() { }
 
     public Node(Room room, Node? up = null, Node? right = null, Node? down = null, Node? left = null)
     {

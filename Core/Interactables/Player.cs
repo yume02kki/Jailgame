@@ -1,4 +1,6 @@
-﻿using MazeGame.MazeGame.Core.Enforcers;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Application;
+using MazeGame.MazeGame.Core.Enforcers;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Utility;
 using MazeGame.MazeGame.Presentation;
@@ -7,13 +9,15 @@ namespace MazeGame.MazeGame.Core.Interactables;
 
 public class Player
 {
-    private Dictionary<string, Entity> inventory;
+    public Dictionary<string, Entity> inventory { get; set; }
     public Node currentNode { get; set; }
-    public IntVector2 pos { get; set; } = new(0, 0);
-    public Render render { get; } = new Render("☺");
+    public IntVector2 pos { get; set; }
+    public Render render { get; } = Icons.get("player");
+    [JsonIgnore] public MovementEnforcer movementEnforcer { get; set; }
 
     public Player(Node currentNode, IntVector2 pos, Dictionary<string, Entity>? inventory = null)
     {
+        this.movementEnforcer = new MovementEnforcer(this);
         this.inventory = inventory ?? new Dictionary<string, Entity>();
         this.currentNode = currentNode;
         this.pos = pos;
@@ -28,19 +32,6 @@ public class Player
 
     public void move(Directions direction)
     {
-        IntVector2 posOffset = new IntVector2(TransformDirection.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
-
-        MovementEnforcer movementEnforcer = new(this, posOffset);
-
-        if (movementEnforcer.collide()) return;
-
-        if (movementEnforcer.isPortal())
-        {
-            currentNode = currentNode.neighbbors[direction]!;
-            movementEnforcer.roomSwitchHook(); //currentNode hook
-
-            pos = movementEnforcer.wrapPosAround();
-        }
-        else if (!movementEnforcer.isClipping()) pos += posOffset;
+        movementEnforcer.runAll(direction);
     }
 }

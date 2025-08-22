@@ -8,11 +8,15 @@ using MazeGame.MazeGame.Core.Utility;
 
 namespace MazeGame.MazeGame.Presentation;
 
-public static class Terminal
+public class Terminal
 {
     private const string INFO_PHRASE = "You are in room \"{0}\". These are the things you see: [{1}]";
     public static Queue<Action> printBuffer = new Queue<Action>();
 
+
+    public static void log(Action action) => printBuffer.Enqueue(action);
+    public static void log(string message) => printBuffer.Enqueue(()=>Console.WriteLine(message));
+    
     public static void renderFrame(Player player)
     {
         var entityNames = player.currentNode.room.getEntityList().Count > 0
@@ -24,10 +28,9 @@ public static class Terminal
         commandFetch();
     }
 
-    public static void printInventory()
+    public static void printInventory(List<Entity> inventory)
     {
-        var inventory = GameCreator.Instance.player.getInventoryList();
-        printBuffer.Enqueue(() => Console.WriteLine("[Inventory]: " + Misc.listToString(inventory.Select(entity => entity.name).ToList())));
+        log(() => Console.WriteLine("[Inventory]: " + Misc.listToString(inventory.Select(entity => entity.name).ToList())));
     }
 
     public static void commandFetch()
@@ -45,14 +48,14 @@ public static class Terminal
 
     public static void autoCompleteLog(List<string> filter, string str)
     {
-        Action log = filter.Count switch
+        Action logStatus = filter.Count switch
         {
             0 => () => Color.write($"# element \"[{str}]\" not found", ConsoleColor.DarkBlue, true, true),
             1 => () => Color.write($"# AutoCompleted \"[{str}]\" => {highlight(str, filter.First())}", ConsoleColor.DarkBlue, true, true),
             _ => () => Color.write($"# Element \"{str}\" too ambiguous <{Misc.listToString(highlight(str, filter))}>", ConsoleColor.DarkBlue, true, true)
         };
 
-        printBuffer.Enqueue(log);
+        log(logStatus);
     }
 
     private static string highlight(string term, string filter)
@@ -69,15 +72,15 @@ public static class Terminal
         return filtered;
     }
 
-    private static char backgroundIcon(int x, int y, int width, int height)
+    private static Render backgroundIcon(int x, int y, int width, int height)
     {
-        if (x == 0 && y == 0) return '╔';
-        if (x == width && y == 0) return '╗';
-        if (x == 0 && y == height) return '╚';
-        if (x == width && y == height) return '╝';
-        if (y == 0 || y == height) return '═';
-        if (x == 0 || x == width) return '║';
-        return ' ';
+        if (x == 0 && y == 0) return Icons.get("topLeftCorner");
+        if (x == width && y == 0) return Icons.get("topRightCorner");
+        if (x == 0 && y == height) return Icons.get("bottomLeftCorner");
+        if (x == width && y == height) return Icons.get("bottomRightCorner");
+        if (y == 0 || y == height) return Icons.get("wallX");
+        if (x == 0 || x == width) return Icons.get("wallY");
+        return new Render(" ");
     }
 
     public static bool isBorder(int x, int y, int width, int height) => y == 0 || y == height || x == 0 || x == width;
@@ -95,7 +98,7 @@ public static class Terminal
 
                 if (cursorPos == player.pos) Color.write(player.render);
                 else if (cursorEntity != null) Color.write(cursorEntity.components.read<Render, Renders>());
-                else Console.Write(backgroundIcon(x, y, width, height));
+                else Color.write(backgroundIcon(x, y, width, height));
             }
 
 

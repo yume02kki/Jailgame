@@ -1,19 +1,30 @@
-﻿using MazeGame.MazeGame.Application.Commands;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Application.Commands;
 using MazeGame.MazeGame.Application.Enums;
+using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Utility;
+using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core.Enforcers;
-
-public class MovementEnforcer
+public class MovementEnforcer(Player player)
 {
-    private Player player;
-    private IntVector2 offsetPos;
-
-    public MovementEnforcer(Player player, IntVector2 offsetPos)
+    public void runAll(Directions direction)
     {
-        this.offsetPos = offsetPos;
-        this.player = player;
+        IntVector2 posOffset = new IntVector2(TransformDirection.directionVector[direction]) * new IntVector2(1, -1); //Y to Column
+        
+        if (collide(posOffset)) return;
+        if (isPortal(posOffset))
+        {
+            player.currentNode = player.currentNode.neighbbors[direction]!;
+            roomSwitchHook();
+
+            player.pos = wrapPosAround(posOffset);
+        }
+        else if(isClipping(posOffset)) return;
+        
+
+        player.pos += posOffset;
     }
 
     public void roomSwitchHook()
@@ -21,19 +32,17 @@ public class MovementEnforcer
         player.currentNode.room.getEntityList().ForEach(entity => entity.components.execute<OnLoad>());
     }
 
-    public bool collide()
+    public bool collide(IntVector2 offsetPos)
     {
-        return player.currentNode.room.tryGet(
-            player.pos + offsetPos)?.components.read<bool, Collide>() ?? false;
+        return player.currentNode.room.tryGet(player.pos + offsetPos)?.components.read<bool, Collide>()??false;
     }
 
-    public bool isPortal()
+    public bool isPortal(IntVector2 offsetPos)
     {
-        return ((player.currentNode.room.tryGet(player.pos + offsetPos))?.tags.Contains(Tags.Doorway) ?? false) &&
-               !(player.currentNode.room.tryGet(player.pos + offsetPos)?.components.read<bool, Collide>() ?? false);
+        return player.currentNode.room.tryGet(player.pos + offsetPos)?.tags.Contains(Tags.Doorway) ?? false;
     }
 
-    public IntVector2 wrapPosAround()
+    public IntVector2 wrapPosAround(IntVector2 offsetPos)
     {
         IntVector2 result = new()
         {
@@ -43,7 +52,7 @@ public class MovementEnforcer
         return result;
     }
 
-    public bool isClipping()
+    public bool isClipping(IntVector2 offsetPos)
     {
         IntVector2 newPos = new IntVector2(offsetPos + player.pos);
         return (player.currentNode.room.getPlayareaWidth() <= newPos.X || newPos.X == 0) ||

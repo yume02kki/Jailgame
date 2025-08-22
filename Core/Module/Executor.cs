@@ -1,19 +1,19 @@
 ﻿namespace MazeGame.MazeGame.Core.Module;
 
-public abstract class executor : Component
+public class Executor : Component
 {
-    Action<Object> _action;
+    private Action<Object> _action;
 
-    public executor()
+    public Executor()
     {
     }
 
-    public executor(Action<Object> action)
+    public Executor(Action<Object> action)
     {
         _action = action;
     }
 
-    public executor(Action action)
+    public Executor(Action action)
     {
         _action = _ => action();
     }

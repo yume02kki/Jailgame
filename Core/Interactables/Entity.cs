@@ -5,7 +5,6 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Core.Interactables;
 
-[Serializable]
 public class Entity
 {
     public string name { get; set; }
@@ -18,17 +17,18 @@ public class Entity
         this.name = name;
         this.pos = pos;
         this.tags = tags ?? new HashSet<Tags>();
-        this.components = new CompsUsed(components ?? new List<Component>());
+        this.components = new CompsUsed(components??new List<Component>());
     }
-
+    
     [JsonConstructor]
-    public Entity(string name, IntVector2? pos, CompsUsed components, HashSet<Tags>? tags)
+    public Entity(string name, CompsUsed components, IntVector2? pos, HashSet<Tags>? tags = null)
     {
         this.name = name;
-        this.pos = pos;
         this.components = components;
+        this.pos = pos;
         this.tags = tags ?? new HashSet<Tags>();
     }
+
 
     public override string ToString() => name;
 }

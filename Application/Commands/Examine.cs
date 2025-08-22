@@ -1,10 +1,12 @@
-﻿using MazeGame.MazeGame.Core.Interactables;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Examine : executor
+public class Examine : Executor
 {
+    [JsonInclude]
     private Entity _item;
     private Action<Entity> _action;
 

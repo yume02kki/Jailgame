@@ -2,16 +2,10 @@
 
 public struct Render
 {
-    private string _icon;
-    private ConsoleColor? _color;
-
-    public Render(string icon)
-    {
-        _icon = icon;
-        _color = null;
-    }
-
-    public Render(string icon, ConsoleColor? color)
+    public string _icon {get; set; }
+    public ConsoleColor? _color {get; set; }
+    
+    public Render(string icon, ConsoleColor? color=null)
     {
         _icon = icon;
         _color = color;

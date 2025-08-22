@@ -1,19 +1,19 @@
 ﻿namespace MazeGame.MazeGame.Core.Module;
 
-public abstract class fetcher<G> : Component
+public class Fetcher<G> : Component
 {
     Func<Object, Object?> _func;
 
-    public fetcher()
+    public Fetcher()
     {
     }
 
-    public fetcher(Func<Object, Object> func)
+    public Fetcher(Func<Object, Object> func)
     {
         _func = func;
     }
 
-    public fetcher(Func<Object> func)
+    public Fetcher(Func<Object> func)
     {
         _func = _ => func();
     }

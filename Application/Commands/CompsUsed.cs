@@ -1,29 +1,38 @@
-﻿using MazeGame.MazeGame.Core.Module;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
 public class CompsUsed
 {
-    private List<Component> components;
-    public CompsUsed(params List<Component> components) => this.components = new List<Component>(components);
-    public CompsUsed() => this.components = new List<Component>();
+    public List<Component> components { get; set; }
+    // [JsonInclude] private List<dynamic> componentsJson { get; set; }
 
-    public executor? get<TComponent>() where TComponent : executor =>
-        components.Find(component => component is TComponent) as TComponent;
-
-    public fetcher<GRead>? get<GRead, TComponent>() where TComponent : fetcher<GRead> =>
-        components.Find(component => component is fetcher<GRead>) as fetcher<GRead>;
-
-    public void execute<TComponent>() where TComponent : executor => (get<TComponent>())?.execute();
-
-    public void execute<TComponent>(dynamic argument) where TComponent : executor =>
-        (get<TComponent>())?.execute(argument);
-
-    public GRead? read<GRead, TComponent>() where TComponent : fetcher<GRead>
+    public CompsUsed(params List<Component> components)
     {
-        Component? reader = get<GRead, TComponent>();
-        return reader is fetcher<GRead> ? ((fetcher<GRead>)reader).read() : default;
+        this.components = new(components);
+        // this.componentsJson = new(components);
     }
 
-    public void add(executor executor) => components.Add(executor);
+    // [JsonConstructor]
+    // public CompsUsed(){}
+
+    public Executor? get<TComponent>() where TComponent : Executor =>
+        components.Find(component => component is TComponent) as TComponent;
+
+    public Fetcher<GRead>? get<GRead, TComponent>() where TComponent : Fetcher<GRead> =>
+        components.Find(component => component is Fetcher<GRead>) as Fetcher<GRead>;
+
+    public void execute<TComponent>() where TComponent : Executor => (get<TComponent>())?.execute();
+
+    public void execute<TComponent>(dynamic argument) where TComponent : Executor =>
+        (get<TComponent>())?.execute(argument);
+
+    public GRead? read<GRead, TComponent>() where TComponent : Fetcher<GRead>
+    {
+        Component? reader = get<GRead, TComponent>();
+        return reader is Fetcher<GRead> ? ((Fetcher<GRead>)reader).read() : default;
+    }
+
+    public void add(Executor executor) => components.Add(executor);
 }

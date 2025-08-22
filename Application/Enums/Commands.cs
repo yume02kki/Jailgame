@@ -9,5 +9,7 @@ public enum Commands
     up,
     right,
     down,
-    left
+    left,
+    save,
+    load,
 }

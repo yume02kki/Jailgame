@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Xml.Serialization;
+using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core.Serialization;
 
@@ -17,15 +18,15 @@ public static class GameSaver
 
     public static void save(object anyObject)
     {
-        using FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "Save.xml", FileMode.Create);
-        JsonSerializer.Serialize(fs, anyObject);
+        using FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "SaveFile.json", FileMode.Create);
+        JsonSerializer.Serialize(fs, anyObject,jsonOptions);
 
-        Console.WriteLine(JsonSerializer.Serialize(anyObject)); //debug
+        Terminal.log(JsonSerializer.Serialize(anyObject,jsonOptions)); //debug
     }
 
     public static T? load<T>() where T : class
     {
-        using FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "Save.xml", FileMode.Open);
-        return JsonSerializer.Deserialize<T>(fs);
+        using FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "SaveFile.json", FileMode.Open);
+        return JsonSerializer.Deserialize<T>(fs,jsonOptions);
     }
 }

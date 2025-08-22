@@ -4,6 +4,7 @@ using MazeGame.MazeGame.Application.Enums;
 using MazeGame.MazeGame.Core.Enums;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
+using MazeGame.MazeGame.Core.Serialization;
 using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core.Managers;
@@ -20,11 +21,17 @@ public static class CommandManager
         add(Commands.open, operands => execute<Open>(operands));
         add(Commands.use, operands => execute<Used>(operands.LastOrDefault(), operands.FirstOrDefault()));
         add(Commands.examine, operands => execute<Examine>(operands));
-        add(Commands.inventory, _ => Terminal.printInventory());
+        add(Commands.inventory, _ => Terminal.printInventory(GameCreator.Instance.player.getInventoryList()));
         add(Commands.up, _ => player.move(Directions.UP));
         add(Commands.right, _ => player.move(Directions.RIGHT));
         add(Commands.down, _ => player.move(Directions.DOWN));
         add(Commands.left, _ => player.move(Directions.LEFT));
+        add(Commands.save, _ => GameSaver.save(GameCreator.Instance));
+        add(Commands.load, _ =>
+        {
+            GameCreator.Instance.resetInstance(GameSaver.load<GameCreator>()!);
+            Terminal.log(() => Console.WriteLine(player.pos));
+        });
 
         //shortcuts
         add("inv", commander[nameof(Commands.inventory)]);
@@ -34,7 +41,7 @@ public static class CommandManager
         add("l", commander[nameof(Commands.left)]);
     }
 
-    private static void execute<TExecutor>(params List<Entity> operands) where TExecutor : executor
+    private static void execute<TExecutor>(params List<Entity> operands) where TExecutor : Executor
     {
         if (operands.Count == 0) return;
         if (operands.Count == 1)

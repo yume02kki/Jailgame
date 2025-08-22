@@ -10,15 +10,15 @@ class Program
     public static void Main(String[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
-        GameCreator gameCreator = GameCreator.Instance;
-        while (gameCreator.GameState == GameStates.ONGOING)
+        GameCreator getInstance() => GameCreator.Instance;
+        while (getInstance().gameState == GameStates.ONGOING)
         {
-            Terminal.terminalUI(gameCreator.player);
-            Terminal.renderFrame(gameCreator.player);
+            Terminal.terminalUI(getInstance().player);
+            Terminal.renderFrame(getInstance().player);
             Terminal.loadNewFrame();
         }
 
-        switch (gameCreator.GameState)
+        switch (getInstance().gameState)
         {
             case GameStates.WIN:
                 Console.WriteLine("\n=== YOU WIN: ESCAPED THE JAIL ===\n");
@@ -28,6 +28,6 @@ class Program
                 break;
         }
 
-        Terminal.terminalUI(gameCreator.player);
+        Terminal.terminalUI(getInstance().player);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class OnLoad : executor
+public class OnLoad : Executor
 {
     public OnLoad(Action action) : base(_ => action())
     {
