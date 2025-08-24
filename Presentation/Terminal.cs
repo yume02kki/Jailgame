@@ -15,10 +15,11 @@ public class Terminal
 
 
     public static void log(Action action) => printBuffer.Enqueue(action);
-    public static void log(string message) => printBuffer.Enqueue(()=>Console.WriteLine(message));
-    
-    public static void renderFrame(Player player)
+    public static void log(string message) => printBuffer.Enqueue(() => Console.WriteLine(message));
+
+    public static void renderFrame()
     {
+        Player player = GameCreator.Instance.player;
         var entityNames = player.currentNode.room.getEntityList().Count > 0
             ? player.currentNode.room.getEntityList().Select(entity => entity.ToString())
                 .Aggregate((acc, next) => acc + ", " + next)
@@ -36,7 +37,7 @@ public class Terminal
     public static void commandFetch()
     {
         var validInput = false;
-        string commandsString = string.Join(" | ", Enum.GetNames(typeof(Commands)).ToList());
+        var commandsString = string.Join(" | ", Enum.GetNames(typeof(Commands)).ToList());
         Color.write(commandsString, ConsoleColor.DarkMagenta, true);
         while (!validInput)
         {
@@ -60,7 +61,7 @@ public class Terminal
 
     private static string highlight(string term, string filter)
     {
-        List<string> fakeList = new();
+        var fakeList = new List<string>();
         fakeList.Add(filter);
         return highlight(term, fakeList).First();
     }
@@ -85,19 +86,20 @@ public class Terminal
 
     public static bool isBorder(int x, int y, int width, int height) => y == 0 || y == height || x == 0 || x == width;
 
-    public static void terminalUI(Player player)
+    public static void terminalUI()
     {
+        Player player = GameCreator.Instance.player;
         var width = player.currentNode.room.getPlayareaWidth();
         var height = player.currentNode.room.getPlayareaHeight();
         for (var y = 0; y <= height; y++)
         {
             for (var x = 0; x <= width; x++)
             {
-                var cursorPos = new IntVector2(x, y);
-                var cursorEntity = player.currentNode.room.tryGet(cursorPos);
+                IntVector2 cursorPos = new IntVector2(x, y);
+                Entity? cursorEntity = player.currentNode.room.tryGet(cursorPos);
 
                 if (cursorPos == player.pos) Color.write(player.render);
-                else if (cursorEntity != null) Color.write(cursorEntity.components.read<Render, Renders>());
+                else if (cursorEntity?.components.execute(typeof(Renders)) is Render render) Color.write(render);
                 else Color.write(backgroundIcon(x, y, width, height));
             }
 

@@ -5,29 +5,18 @@ namespace MazeGame.MazeGame.Application.Commands;
 
 public class CompsUsed
 {
-    public List<Component> components { get; set; }
+    public List<Icomponent> components { get; set; }
 
-    public CompsUsed(params List<Component> components)
+    [JsonConstructor]
+    public CompsUsed()
+    { }
+
+    public CompsUsed(params List<Icomponent> components)
     {
-        this.components = new(components);
+        this.components = new List<Icomponent>(components);
     }
 
-    public Executor? get<TComponent>() where TComponent : Executor =>
-        components.Find(component => component is TComponent) as TComponent;
+    public Icomponent? get(Type type) => components.Find(component => component.GetType() == type);
 
-    public Fetcher<GRead>? get<GRead, TComponent>() where TComponent : Fetcher<GRead> =>
-        components.Find(component => component is Fetcher<GRead>) as Fetcher<GRead>;
-
-    public void execute<TComponent>() where TComponent : Executor => (get<TComponent>())?.execute();
-
-    public void execute<TComponent>(dynamic argument) where TComponent : Executor =>
-        (get<TComponent>())?.execute(argument);
-
-    public GRead? read<GRead, TComponent>() where TComponent : Fetcher<GRead>
-    {
-        Component? reader = get<GRead, TComponent>();
-        return reader is Fetcher<GRead> ? ((Fetcher<GRead>)reader).read() : default;
-    }
-
-    public void add(Executor executor) => components.Add(executor);
+    public object? execute(Type type, object? argument = null) => get(type)?.execute(argument);
 }

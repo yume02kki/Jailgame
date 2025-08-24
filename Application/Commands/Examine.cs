@@ -1,23 +1,26 @@
 ﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Application;
 using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
 
-namespace MazeGame.MazeGame.Application.Commands;
-
-public class Examine : Executor
+public class Examine : Component<VoidType>
 {
-    [JsonInclude]
-    private Entity _item;
-    private Action<Entity> _action;
+    [JsonInclude] public Entity item { get; set; } = null!;
 
-    public Examine(Entity item, Action<Entity> action)
+    [JsonConstructor]
+    public Examine()
     {
-        _item = item;
-        _action = action;
+        rewire();
     }
 
-    public override void execute()
+    public void rewire()
     {
-        _action(_item);
+        setFunction(() => GameCreator.Instance.player.addToInventory(item));
+    }
+
+    public Examine(Entity item)
+    {
+        this.item = item;
+        rewire();
     }
 }

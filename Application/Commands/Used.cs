@@ -1,14 +1,21 @@
-﻿using MazeGame.MazeGame.Core.Interactables;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Interactables;
 using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Used : Executor
+public class Used : Component<bool>
 {
-    public Used(Entity expected, Action action) : base(sender =>
+    [JsonConstructor]
+    public Used()
+    { }
+
+
+    public Used(Entity expected, Action<Entity> action)
     {
-        if (sender == expected) action();
-    })
-    {
+        setFunction((sender) =>
+        {
+            if (sender == expected) action((Entity)sender);
+        });
     }
 }

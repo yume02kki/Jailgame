@@ -1,10 +1,16 @@
-﻿using MazeGame.MazeGame.Core.Module;
+﻿using System.Text.Json.Serialization;
+using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class OnLoad : Executor
+public class OnLoad : Component<VoidType>
 {
-    public OnLoad(Action action) : base(_ => action())
+    [JsonConstructor]
+    public OnLoad()
+    { }
+
+    public OnLoad(Action action)
     {
+        setFunction(action);
     }
 }

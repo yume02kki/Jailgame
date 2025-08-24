@@ -3,14 +3,14 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Collide : Fetcher<bool>
+public class Collide : Component<bool>
 {
-    private Func<bool> _hook;
+    [JsonConstructor]
+    public Collide()
+    { }
 
-    public Collide(Func<bool> hook)
+    public Collide(Func<bool> value)
     {
-        _hook = hook;
+        setFunction(_ => value());
     }
-
-    public override bool read() => _hook();
 }

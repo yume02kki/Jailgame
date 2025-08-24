@@ -1,23 +1,23 @@
-﻿namespace MazeGame.MazeGame.Presentation;
+﻿using System.Text.Json.Serialization;
 
-public struct Render
+namespace MazeGame.MazeGame.Presentation;
+
+public class Render
 {
-    public string _icon {get; set; }
-    public ConsoleColor? _color {get; set; }
-    
-    public Render(string icon, ConsoleColor? color=null)
+    public string _icon { get; set; }
+    public ConsoleColor? _color { get; set; }
+
+    [JsonConstructor]
+    public Render()
+    { }
+
+    public Render(string icon, ConsoleColor? color = null)
     {
         _icon = icon;
         _color = color;
     }
 
-    public string icon()
-    {
-        return this._icon;
-    }
+    public string icon() => _icon;
 
-    public ConsoleColor? color()
-    {
-        return this._color;
-    }
+    public ConsoleColor? color() => _color;
 }

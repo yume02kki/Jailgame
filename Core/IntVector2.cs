@@ -2,8 +2,7 @@
 
 namespace MazeGame.MazeGame.Core;
 
-[JsonConverter(typeof(IntVector2Converter))]
-public struct IntVector2 : IEquatable<IntVector2>
+public class IntVector2 : IEquatable<IntVector2>
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -16,8 +15,8 @@ public struct IntVector2 : IEquatable<IntVector2>
 
     public IntVector2(IntVector2 vector)
     {
-        this.X = vector.X;
-        this.Y = vector.Y;
+        X = vector.X;
+        Y = vector.Y;
     }
 
     public static IntVector2 operator +(IntVector2 a, IntVector2 b) => new IntVector2(a.X + b.X, a.Y + b.Y);
@@ -30,5 +29,8 @@ public struct IntVector2 : IEquatable<IntVector2>
     public static bool operator !=(IntVector2 a, IntVector2 b) => !(a == b);
     public override string ToString() => $"({X}, {Y})";
 
-    public bool Equals(IntVector2 other) => X == other.X && Y == other.Y;
+    public bool Equals(IntVector2? other) => X == other?.X && Y == other?.Y;
+
+    public override bool Equals(object? compared) => compared is IntVector2 other && this == other;
+    public override int GetHashCode() => HashCode.Combine(X, Y);
 }

@@ -7,14 +7,19 @@ namespace MazeGame.MazeGame;
 
 class Program
 {
-    public static void Main(String[] args)
+    public static void Main(string[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
-        GameCreator getInstance() => GameCreator.Instance;
+
+        GameCreator getInstance()
+        {
+            return GameCreator.Instance;
+        }
+
         while (getInstance().gameState == GameStates.ONGOING)
         {
-            Terminal.terminalUI(getInstance().player);
-            Terminal.renderFrame(getInstance().player);
+            Terminal.terminalUI();
+            Terminal.renderFrame();
             Terminal.loadNewFrame();
         }
 
@@ -28,6 +33,6 @@ class Program
                 break;
         }
 
-        Terminal.terminalUI(getInstance().player);
+        Terminal.terminalUI();
     }
 }

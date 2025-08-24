@@ -7,11 +7,12 @@ namespace MazeGame.MazeGame.Core;
 
 public class Node
 {
-    [JsonIgnore] public Dictionary<Directions, Node?> neighbbors { get; }
+    public Dictionary<Directions, Node?> neighbbors { get; set; }
     public Room room { get; set; }
 
     [JsonConstructor]
-    public Node() { }
+    public Node()
+    { }
 
     public Node(Room room, Node? up = null, Node? right = null, Node? down = null, Node? left = null)
     {

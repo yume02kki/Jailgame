@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Core;
 
@@ -8,10 +7,10 @@ public class IntVector2Converter : JsonConverter<IntVector2>
 {
     public override IntVector2 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        string? str = reader.GetString();
+        var str = reader.GetString();
         if (str == null) return default;
 
-        string[] coordinates = str[(str.IndexOf('(')+1)..str.IndexOf(')')].Split(',');
+        var coordinates = str[(str.IndexOf('(') + 1)..str.IndexOf(')')].Split(',');
 
         return new IntVector2(int.Parse(coordinates[0]), int.Parse(coordinates[1]));
     }

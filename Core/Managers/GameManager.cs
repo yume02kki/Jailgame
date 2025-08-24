@@ -13,15 +13,9 @@ public static class GameManager
         }
 
         catch (InvalidCastException exception)
-        {
-        }
-
-        catch (NullReferenceException exception)
-        {
-        }
+        { }
         catch (KeyNotFoundException exception)
-        {
-        }
+        { }
 
         return false;
     }

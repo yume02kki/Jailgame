@@ -1,30 +1,41 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using MazeGame.MazeGame.Core.Module;
 using MazeGame.MazeGame.Presentation;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class Renders : Fetcher<Render>
+public class Renders : Component<Render>
 {
-    private Func<bool> _hook;
-    [JsonInclude]
-    private Render _renderDefault;
-    [JsonInclude]    
-    private Render? _renderChanged;
+    public Render renderDefault { get; set; }
+    public Render? renderChanged { get; set; }
+    [JsonInclude] private string? name { get; set; }
+    private Func<Render> getRender { get; set; }
 
-    public Renders(Func<bool> hook, Render renderDefault, Render renderChanged)
+    [JsonConstructor]
+    public Renders()
     {
-        _renderDefault = renderDefault;
-        _renderChanged = renderChanged;
-        _hook = hook;
+        setFunction(() =>
+            {
+                if (name != null)
+                {
+                    return readRegister(name)!(null);
+                }
+
+                return renderDefault;
+            }
+        );
     }
 
-    public Renders(Render renderDefault)
-    {
-        _renderDefault = renderDefault;
-        _renderChanged = null;
-        _hook = () => true;
-    }
 
-    public override Render read() => _hook() ? _renderDefault : (_renderChanged ?? _renderDefault);
+    public Renders(Render renderDefault, Render? renderChanged = null, Func<bool>? hook = null, string? name = null)
+    {
+        this.renderDefault = renderDefault;
+        this.name = name;
+        this.renderChanged = renderChanged;
+        hook = hook ?? (() => true);
+        getRender = () => hook() ? renderDefault : renderChanged ?? renderDefault;
+        if (name != null) writeRegister(name, (_) => getRender());
+        setFunction(_ => getRender());
+    }
 }
