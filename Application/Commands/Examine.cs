@@ -10,17 +10,12 @@ public class Examine : Component<VoidType>
     [JsonConstructor]
     public Examine()
     {
-        rewire();
+        getFunction();
     }
 
-    public void rewire()
-    {
-        setFunction(() => GameCreator.Instance.player.addToInventory(item));
-    }
-
-    public Examine(Entity item)
+    public Examine(string name, Entity item) : base(name)
     {
         this.item = item;
-        rewire();
+        setFunction(() => GameCreator.Instance.player.addToInventory(item));
     }
 }

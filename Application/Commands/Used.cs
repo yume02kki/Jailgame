@@ -8,14 +8,16 @@ public class Used : Component<bool>
 {
     [JsonConstructor]
     public Used()
-    { }
-
-
-    public Used(Entity expected, Action<Entity> action)
     {
-        setFunction((sender) =>
+        getFunction();
+    }
+
+
+    public Used(string name, Entity expected, Action<Entity> action) : base(name)
+    {
+        setFunction((Action<Entity>)(sender =>
         {
-            if (sender == expected) action((Entity)sender);
-        });
+            if (sender == expected) action(sender);
+        }));
     }
 }

@@ -3,15 +3,15 @@ using MazeGame.MazeGame.Core.Module;
 
 namespace MazeGame.MazeGame.Application.Commands;
 
-public class CompsUsed
+public class ComponentsUsed
 {
     public List<Icomponent> components { get; set; }
 
     [JsonConstructor]
-    public CompsUsed()
+    public ComponentsUsed()
     { }
 
-    public CompsUsed(params List<Icomponent> components)
+    public ComponentsUsed(params List<Icomponent> components)
     {
         this.components = new List<Icomponent>(components);
     }

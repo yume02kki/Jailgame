@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 using MazeGame.MazeGame.Application.Commands;
 
@@ -6,12 +6,11 @@ namespace MazeGame.MazeGame.Core.Module;
 
 public readonly struct VoidType
 {
-    public static readonly VoidType empty = new VoidType(); //readonly static therefore nothing happens
+    public static readonly VoidType empty = new VoidType();
 }
 
 [JsonDerivedType(typeof(Collide), "Collide")]
 [JsonDerivedType(typeof(Examine), "Examine")]
-[JsonDerivedType(typeof(Locked), "Locked")]
 [JsonDerivedType(typeof(OnLoad), "OnLoad")]
 [JsonDerivedType(typeof(Open), "Open")]
 [JsonDerivedType(typeof(Renders), "Renders")]
@@ -19,40 +18,37 @@ public readonly struct VoidType
 public interface Icomponent
 {
     public object? execute(object? argument = null);
-};
+}
 
-public class Component<returnType> : Icomponent
+public class Component<Treturn> : Icomponent
 {
-    [JsonIgnore] public Func<object?, returnType> function { get; private set; }
-    public Dictionary<string, object> data { get; set; }
+    public string? name { get; set; }
+    private static int entityId = 0;
+    private static readonly Dictionary<string, Delegate> registry = new Dictionary<string, Delegate>();
 
-    private static Dictionary<string, Func<object?, returnType>> registry = new Dictionary<string, Func<object?, returnType>>();
-
-
-    public Component()
+    public Component(string? name = null)
     {
-        data = new Dictionary<string, object>();
+        this.name = "" + entityId;
+        entityId++;
     }
 
-    public void set(params (string key, object value)[] pairs) => pairs.ToList().ForEach(pair => data[pair.key] = pair.value);
-
-    public void writeRegister(string name, Func<object?, returnType> func) => function = registry[name] = func;
-    public Func<object?, returnType>? readRegister(string name) => registry.GetValueOrDefault(name);
-
-    public void setFunction(Func<object?, returnType> func) => function = func;
-    public void setFunction(Func<returnType> func) => setFunction(_ => func());
-
-    public void setFunction(Action<object?> action) => setFunction(arg =>
+    public Delegate getFunction(Delegate? fallback = null)
     {
-        action(arg);
-        return default!;
-    });
+        fallback ??= () => { };
+        return name != null && registry.TryGetValue(name, out Delegate? found) ? found : fallback;
+    }
 
-    public void setFunction(Action action) => setFunction(_ =>
+
+    public void setFunction(Delegate func)
     {
-        action();
-        return default!;
-    });
+        if (name != null) registry[name] = func;
+    }
 
-    public object? execute(object? argument = null) => function(argument);
+
+    public object? execute(object? arg = null)
+    {
+        Delegate func = getFunction();
+        var paramsCount = func.Method.GetParameters().Length;
+        return paramsCount == 0 ? func.DynamicInvoke() : func.DynamicInvoke(arg);
+    }
 }

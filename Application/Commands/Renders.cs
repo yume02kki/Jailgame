@@ -9,33 +9,19 @@ public class Renders : Component<Render>
 {
     public Render renderDefault { get; set; }
     public Render? renderChanged { get; set; }
-    [JsonInclude] private string? name { get; set; }
-    private Func<Render> getRender { get; set; }
 
     [JsonConstructor]
     public Renders()
     {
-        setFunction(() =>
-            {
-                if (name != null)
-                {
-                    return readRegister(name)!(null);
-                }
-
-                return renderDefault;
-            }
-        );
+        getFunction(() => renderDefault);
     }
 
 
-    public Renders(Render renderDefault, Render? renderChanged = null, Func<bool>? hook = null, string? name = null)
+    public Renders(string name, Render renderDefault, Render? renderChanged = null, Func<bool>? hook = null) : base(name)
     {
         this.renderDefault = renderDefault;
-        this.name = name;
         this.renderChanged = renderChanged;
-        hook = hook ?? (() => true);
-        getRender = () => hook() ? renderDefault : renderChanged ?? renderDefault;
-        if (name != null) writeRegister(name, (_) => getRender());
-        setFunction(_ => getRender());
+        hook ??= () => true;
+        setFunction(() => hook() ? this.renderDefault : this.renderChanged ?? this.renderDefault);
     }
 }

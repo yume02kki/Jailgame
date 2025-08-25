@@ -8,7 +8,7 @@ namespace MazeGame.MazeGame.Core.Interactables;
 public class Entity
 {
     public string name { get; set; }
-    public CompsUsed components { get; set; }
+    public ComponentsUsed components { get; set; }
     public IntVector2? pos { get; set; }
     public HashSet<Tags> tags { get; set; }
 
@@ -17,7 +17,7 @@ public class Entity
         this.name = name;
         this.pos = pos;
         this.tags = tags ?? new HashSet<Tags>();
-        this.components = new CompsUsed(components ?? new List<Icomponent>());
+        this.components = new ComponentsUsed(components ?? new List<Icomponent>());
     }
 
     [JsonConstructor]

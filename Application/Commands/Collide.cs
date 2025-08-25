@@ -7,10 +7,12 @@ public class Collide : Component<bool>
 {
     [JsonConstructor]
     public Collide()
-    { }
-
-    public Collide(Func<bool> value)
     {
-        setFunction(_ => value());
+        getFunction(() => false);
+    }
+
+    public Collide(string name, Func<bool> value) : base(name)
+    {
+        setFunction(value);
     }
 }
