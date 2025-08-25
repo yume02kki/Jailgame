@@ -6,10 +6,12 @@ namespace MazeGame.MazeGame.Application.Commands;
 public class OnLoad : Component<VoidType>
 {
     [JsonConstructor]
-    public OnLoad() : base(null)
-    { }
+    public OnLoad()
+    {
+        getFunction();
+    }
 
-    public OnLoad(string name, Action action) : base(name)
+    public OnLoad(Action action)
     {
         setFunction(action);
     }

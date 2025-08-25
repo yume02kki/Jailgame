@@ -11,7 +11,7 @@ public class Collide : Component<bool>
         getFunction(() => false);
     }
 
-    public Collide(string name, Func<bool> value) : base(name)
+    public Collide(Func<bool> value)
     {
         setFunction(value);
     }

@@ -13,7 +13,7 @@ public class Examine : Component<VoidType>
         getFunction();
     }
 
-    public Examine(string name, Entity item) : base(name)
+    public Examine(Entity item)
     {
         this.item = item;
         setFunction(() => GameCreator.Instance.player.addToInventory(item));

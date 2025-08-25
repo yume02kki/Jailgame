@@ -17,7 +17,7 @@ public class Renders : Component<Render>
     }
 
 
-    public Renders(string name, Render renderDefault, Render? renderChanged = null, Func<bool>? hook = null) : base(name)
+    public Renders(Render renderDefault, Render? renderChanged = null, Func<bool>? hook = null)
     {
         this.renderDefault = renderDefault;
         this.renderChanged = renderChanged;

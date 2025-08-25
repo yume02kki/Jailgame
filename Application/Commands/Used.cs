@@ -13,7 +13,7 @@ public class Used : Component<bool>
     }
 
 
-    public Used(string name, Entity expected, Action<Entity> action) : base(name)
+    public Used(Entity expected, Action<Entity> action)
     {
         setFunction((Action<Entity>)(sender =>
         {

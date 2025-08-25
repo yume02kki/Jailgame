@@ -11,7 +11,6 @@ public class Player
     public Node currentNode { get; set; }
     public IntVector2 pos { get; set; }
     public Render render { get; } = Icons.get("player");
-    public MovementEnforcer movementEnforcer { get; set; }
 
     [JsonConstructor]
     public Player()
@@ -19,7 +18,6 @@ public class Player
 
     public Player(Node currentNode, IntVector2 pos, Dictionary<string, Entity>? inventory = null)
     {
-        movementEnforcer = new MovementEnforcer();
         this.inventory = inventory ?? new Dictionary<string, Entity>();
         this.currentNode = currentNode;
         this.pos = pos;
@@ -31,5 +29,5 @@ public class Player
 
     public void addToInventory(Entity item) => inventory.TryAdd(item.name, item);
 
-    public void move(Directions direction) => movementEnforcer.runAll(this, direction);
+    public void move(Directions direction) => MovementEnforcer.runAll(direction);
 }

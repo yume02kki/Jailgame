@@ -7,29 +7,28 @@ namespace MazeGame.MazeGame.Core;
 
 public class Node
 {
-    public Dictionary<Directions, Node?> neighbbors { get; set; }
     public Room room { get; set; }
+    private static int nodeId = 0;
+    private static Dictionary<int, Node> allNodes { get; set; } = new Dictionary<int, Node>();
+    public int[] neighbors { get; set; } = [-1, -1, -1, -1]; // up down left right
+    public int myId { get; set; }
 
-    [JsonConstructor]
-    public Node()
-    { }
-
-    public Node(Room room, Node? up = null, Node? right = null, Node? down = null, Node? left = null)
+    public Node(Room room)
     {
-        this.room = room;
-        neighbbors = new Dictionary<Directions, Node?>();
+        myId = nodeId;
+        allNodes[myId] = this;
+        nodeId++;
 
-        link(Directions.UP, up);
-        link(Directions.RIGHT, right);
-        link(Directions.DOWN, down);
-        link(Directions.LEFT, left);
+        this.room = room;
     }
+
+    public Node? getNeighbor(Directions direction) => allNodes[neighbors[(int)direction]];
 
     public void link(Directions direction, Node? target)
     {
         if (target == null) return;
-
-        neighbbors[direction] = target;
-        target.neighbbors[TransformDirection.mirrorDirection[direction]] = this;
+        neighbors[(int)direction] = target.myId;
+        Directions mirrorDirection = TransformDirection.mirrorDirection[direction];
+        allNodes[target.myId].neighbors[(int)mirrorDirection] = myId;
     }
 }

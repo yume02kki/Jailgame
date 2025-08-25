@@ -8,8 +8,7 @@ public static class GameSaver
 {
     private static readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
     {
-        WriteIndented = true,
-        ReferenceHandler = ReferenceHandler.IgnoreCycles
+        WriteIndented = true
     };
 
     static GameSaver()

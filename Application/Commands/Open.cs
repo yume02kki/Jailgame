@@ -15,7 +15,7 @@ public class Open : Component<VoidType>
         getFunction();
     }
 
-    public Open(string name, OpenEnforcer? enforcer = null) : base(name)
+    public Open(OpenEnforcer? enforcer = null)
     {
         isOpen = false;
         this.enforcer = enforcer;

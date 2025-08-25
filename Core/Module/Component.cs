@@ -22,26 +22,25 @@ public interface Icomponent
 
 public class Component<Treturn> : Icomponent
 {
-    public string? name { get; set; }
-    private static int entityId = 0;
-    private static readonly Dictionary<string, Delegate> registry = new Dictionary<string, Delegate>();
+    private static int entityId { get; set; } = 0;
+    public int myId { get; set; }
+    private static readonly Dictionary<int, Delegate> registry = new Dictionary<int, Delegate>();
 
-    public Component(string? name = null)
+    public Component()
     {
-        this.name = "" + entityId;
-        entityId++;
+        myId = entityId++;
     }
 
     public Delegate getFunction(Delegate? fallback = null)
     {
         fallback ??= () => { };
-        return name != null && registry.TryGetValue(name, out Delegate? found) ? found : fallback;
+        return registry.TryGetValue(myId, out Delegate? found) ? found : fallback;
     }
 
 
     public void setFunction(Delegate func)
     {
-        if (name != null) registry[name] = func;
+        registry[myId] = func;
     }
 
 
